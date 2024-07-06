@@ -11,25 +11,11 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource"
-                  ref="dataSource"/>
-        <property name="packagesToScan"
-                  value="com.pahappa.systems.pettycashsystem.spring"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">
-                    update
-                </prop>
-                <prop key="hibernate.dialect">
-                    org.hibernate.dialect.MySQL8Dialect
-                </prop>
-            </props>
-        </property>
-    </bean>
+    <context:component-scan base-package="com.pahappa.systems.pettycashsystem"/>
+    <context:annotation-config/>
+    <context:spring-configured/>
 
-
+    <!-- Data Source Declaration -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/petty_cash_system?createDatabaseIfNotExist=true" />
@@ -40,15 +26,25 @@
         <property name="maxStatements" value="0" />
     </bean>
 
+    <!-- Session Factory Declaration -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.pahappa.systems.pettycashsystem"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
 
+    <!-- Enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager"/>
 
-    <bean id="txManager"
-          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    <!-- Transaction Manager Declaration -->
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
 </beans>
-
-
-
-
-

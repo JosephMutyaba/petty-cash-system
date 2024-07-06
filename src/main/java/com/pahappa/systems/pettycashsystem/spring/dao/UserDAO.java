@@ -22,13 +22,6 @@ public class UserDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("from User", User.class).list();
-    }
-
-    public User getUserById(Long id) {
-        return getCurrentSession().get(User.class, id);
-    }
 
     @Transactional
     public void createUser(User user) {
@@ -40,11 +33,5 @@ public class UserDAO {
         getCurrentSession().update(user);
     }
 
-    @Transactional
-    public void deleteUser(Long id) {
-        User user = getUserById(id);
-        if (user != null) {
-            getCurrentSession().delete(user);
-        }
-    }
+
 }

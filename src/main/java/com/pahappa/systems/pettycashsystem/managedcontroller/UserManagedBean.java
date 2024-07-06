@@ -5,13 +5,13 @@ import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.view.ViewScoped;
+import java.io.Serializable;
 import java.util.List;
 
 @ManagedBean
-@RequestScoped
-public class UserManagedBean {
+@ViewScoped
+public class UserManagedBean implements Serializable {
 
     private UserService userService=new UserService();
 
