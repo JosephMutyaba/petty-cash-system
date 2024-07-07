@@ -5,7 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class UserDAO {
@@ -17,8 +18,36 @@ public class UserDAO {
         this.sessionFactory = sessionFactory;
     }
 
+    // Create operation
     public void createUser(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        getCurrentSession().save(user);
+    }
+
+    // Read operation: Get user by ID
+    public User getUserById(int userId) {
+        return getCurrentSession().get(User.class, userId);
+    }
+
+    // Read operation: Get all users
+    public List<User> getAllUsers() {
+        return getCurrentSession().createQuery("FROM User", User.class).list();
+    }
+
+    // Update operation
+    public void updateUser(User user) {
+        getCurrentSession().update(user);
+    }
+
+    // Delete operation
+    public void deleteUser(int userId) {
+        User user = getCurrentSession().load(User.class, userId);
+        if (user != null) {
+            getCurrentSession().delete(user);
+        }
+    }
+
+    // Utility method to get current session
+    private Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 }
-

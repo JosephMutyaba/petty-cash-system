@@ -4,11 +4,12 @@ import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserDAO userDAO;
@@ -18,9 +19,29 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    @Transactional
+    // Create operation
     public void createUser(User user) {
         userDAO.createUser(user);
+    }
+
+    // Read operation: Get user by ID
+    public User getUserById(int userId) {
+        return userDAO.getUserById(userId);
+    }
+
+    // Read operation: Get all users
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
+    }
+
+    // Update operation
+    public void updateUser(User user) {
+        userDAO.updateUser(user);
+    }
+
+    // Delete operation
+    public void deleteUser(int userId) {
+        userDAO.deleteUser(userId);
     }
 }
 
@@ -31,27 +52,3 @@ public class UserService {
 
 
 
-
-
-
-
-
-
-
-//@Service
-//@Transactional
-//public class UserService {
-//
-//    private final UserDAO userDAO;
-//
-//    @Autowired
-//    public UserService() {
-//        this.userDAO = new UserDAO();
-//    }
-//
-//
-//    public void createUser(User user) {
-//        userDAO.createUser(user);
-//    }
-//
-//}
