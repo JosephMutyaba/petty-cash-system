@@ -12,10 +12,12 @@ public class Accountability {
     private Long id;
     private String description;
     private String extraClaims;
+
+    @Column(nullable = false)
     private Double amountSpent;
 
     @OneToOne
-    @JoinColumn(name = "requisition_id")
+    @JoinColumn(name = "requisition_id", nullable = false)
     private Requisition requisition;
 
     @Temporal(TemporalType.DATE)
@@ -105,5 +107,18 @@ public class Accountability {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getDescription(), getExtraClaims(), getAmountSpent(), getRequisition(), getDateSubmitted(), Arrays.hashCode(getReceiptImage()));
+    }
+
+    @Override
+    public String toString() {
+        return "Accountability{" +
+                "id=" + id +
+                ", extraClaims='" + extraClaims + '\'' +
+                ", amountSpent=" + amountSpent +
+                ", requisition=" + requisition +
+                ", dateSubmitted=" + dateSubmitted +
+                ", receiptImage=" + Arrays.toString(receiptImage) +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

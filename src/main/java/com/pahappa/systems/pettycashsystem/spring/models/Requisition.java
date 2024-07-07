@@ -3,16 +3,18 @@ package com.pahappa.systems.pettycashsystem.spring.models;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Requisition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String justification;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -20,17 +22,27 @@ public class Requisition {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "budgetline_id")
+    @JoinColumn(name = "budgetline_id", nullable = false)
     private BudgetLine budgetline;
 
     private String ops_man_review;
     private String ceo_review;
 
+    @Column(nullable = false)
     private Long estimatedAmount;
-    private Long amountGranted;
-    private String status;
+
+
+    private Long amountGranted = estimatedAmount; // amount granted is by default equal to estimated amount
+
+    @Column(nullable = false)
+    private String status="NEW";
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
+
+
     private Date maxDateNeeded;
+
     private Date dateApproved;
 
     public Requisition() {
@@ -154,5 +166,37 @@ public class Requisition {
 
     public void setDateApproved(Date dateApproved) {
         this.dateApproved = dateApproved;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Requisition that = (Requisition) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getJustification(), that.getJustification()) && Objects.equals(getUser(), that.getUser()) && Objects.equals(getAccountability(), that.getAccountability()) && Objects.equals(getBudgetline(), that.getBudgetline()) && Objects.equals(getOps_man_review(), that.getOps_man_review()) && Objects.equals(getCeo_review(), that.getCeo_review()) && Objects.equals(getEstimatedAmount(), that.getEstimatedAmount()) && Objects.equals(getAmountGranted(), that.getAmountGranted()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getDateCreated(), that.getDateCreated()) && Objects.equals(getMaxDateNeeded(), that.getMaxDateNeeded()) && Objects.equals(getDateApproved(), that.getDateApproved());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getJustification(), getUser(), getAccountability(), getBudgetline(), getOps_man_review(), getCeo_review(), getEstimatedAmount(), getAmountGranted(), getStatus(), getDateCreated(), getMaxDateNeeded(), getDateApproved());
+    }
+
+    @Override
+    public String toString() {
+        return "Requisition{" +
+                "id=" + id +
+                ", justification='" + justification + '\'' +
+                ", user=" + user +
+                ", accountability=" + accountability +
+                ", budgetline=" + budgetline +
+                ", ops_man_review='" + ops_man_review + '\'' +
+                ", ceo_review='" + ceo_review + '\'' +
+                ", estimatedAmount=" + estimatedAmount +
+                ", amountGranted=" + amountGranted +
+                ", status='" + status + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", maxDateNeeded=" + maxDateNeeded +
+                ", dateApproved=" + dateApproved +
+                '}';
     }
 }

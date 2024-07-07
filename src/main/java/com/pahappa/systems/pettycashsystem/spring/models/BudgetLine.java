@@ -3,25 +3,39 @@ package com.pahappa.systems.pettycashsystem.spring.models;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class BudgetLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
     private Date startDate;
+
+    @Column(nullable = false)
     private Date endDate;
+
+    @Column(nullable = false)
     private Double amount;
-    private Double balance;
+
+
+    private Double balance=amount;
+
     private Date dateApproved;
-    private String status;
+
+    @Column(nullable = false)
+    private String status="DRAFT";  // DRAFT/ APPROVED
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisitions;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "budgetLineCategory_id")
+    @JoinColumn(name = "budgetLineCategory_id", nullable = false)
     private BudgetLineCategory budgetLineCategory;
 
     public BudgetLine() {}
@@ -117,5 +131,35 @@ public class BudgetLine {
 
     public void setBudgetLineCategory(BudgetLineCategory budgetLineCategory) {
         this.budgetLineCategory = budgetLineCategory;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BudgetLine that = (BudgetLine) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getStartDate(), that.getStartDate()) && Objects.equals(getEndDate(), that.getEndDate()) && Objects.equals(getAmount(), that.getAmount()) && Objects.equals(getBalance(), that.getBalance()) && Objects.equals(getDateApproved(), that.getDateApproved()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getRequisitions(), that.getRequisitions()) && Objects.equals(getBudgetLineCategory(), that.getBudgetLineCategory());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDescription(), getStartDate(), getEndDate(), getAmount(), getBalance(), getDateApproved(), getStatus(), getRequisitions(), getBudgetLineCategory());
+    }
+
+    @Override
+    public String toString() {
+        return "BudgetLine{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", amount=" + amount +
+                ", balance=" + balance +
+                ", dateApproved=" + dateApproved +
+                ", status='" + status + '\'' +
+                ", requisitions=" + requisitions +
+                ", budgetLineCategory=" + budgetLineCategory +
+                '}';
     }
 }

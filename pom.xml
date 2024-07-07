@@ -29,21 +29,6 @@
       <version>13.0.0</version>
     </dependency>
 
-    <!-- JSF -->
-    <!-- Updated JSF dependencies -->
-<!--    <dependency>-->
-<!--      <groupId>jakarta.faces</groupId>-->
-<!--      <artifactId>jakarta.faces-api</artifactId>-->
-<!--      <version>3.0.0</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.glassfish</groupId>-->
-<!--      <artifactId>jakarta.faces</artifactId>-->
-<!--      <version>3.0.0</version>-->
-<!--    </dependency>-->
-
-
-
         <dependency>
       <groupId>javax.faces</groupId>
       <artifactId>javax.faces-api</artifactId>
@@ -79,65 +64,6 @@
       <artifactId>javax.el</artifactId>
       <version>1.1.3</version>
     </dependency>
-
-
-
-
-<!--    &lt;!&ndash; Spring 6 dependencies &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-core</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-context</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-web</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-aop</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-context-support</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-aspects</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-tx</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-orm</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework</groupId>-->
-<!--      <artifactId>spring-test</artifactId>-->
-<!--      <version>6.1.10</version>-->
-<!--    </dependency>-->
-
-
-
-
-
-
-
-
-
 
         <!-- Spring 5 dependencies -->
     <dependency>
@@ -188,25 +114,11 @@
       <version>5.3.24</version>
     </dependency>
 
-
-
-<!--    hibernate-->
-<!--    <dependency>-->
-<!--      <groupId>org.hibernate</groupId>-->
-<!--      <artifactId>hibernate-core</artifactId>-->
-<!--      <version>6.4.9.Final</version>-->
-<!--    </dependency>-->
-
-
-
-
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>5.6.12.Final</version>
     </dependency>
-
-
 
     <dependency>
       <groupId>org.javassist</groupId>
