@@ -13,20 +13,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/UserManagedBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/UserManagedBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/AccountabilityDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/BudgetLineCategoryDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/BudgetLineDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/RequisitionDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/RoleDAO.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/dao/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/AccountabilityService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/BudgetLineCategoryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/BudgetLineService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/RequisitionService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/RoleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/models/Accountability.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/models/Accountability.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/applicationContext.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/createUser.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/createUser.xhtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,27 +56,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.PCS [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.PCS [install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.PCS [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.PCS [test].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Tomcat Server.Tomcat 9.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Joseph Maximillian/Desktop/PCS/PCS/src/main/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.PCS [clean].executor": "Run",
+    "Maven.PCS [install].executor": "Run",
+    "Maven.PCS [package].executor": "Run",
+    "Maven.PCS [test].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Tomcat Server.Tomcat 9.executor": "Run",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Joseph Maximillian/Desktop/PCS/PCS/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Joseph Maximillian\Desktop\PCS\PCS\src\main\resources" />
@@ -201,11 +192,27 @@
       <workItem from="1720114567437" duration="6416000" />
       <workItem from="1720171826471" duration="36384000" />
       <workItem from="1720270308367" duration="3954000" />
-      <workItem from="1720274778284" duration="8417000" />
+      <workItem from="1720274778284" duration="13444000" />
+      <workItem from="1720296337966" duration="10617000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/spring/services/UserService.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="5" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

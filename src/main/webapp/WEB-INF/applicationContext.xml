@@ -27,9 +27,10 @@
     </bean>
 
     <!-- Session Factory Declaration -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <bean id="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.pahappa.systems.pettycashsystem"/>
+        <property name="packagesToScan" value="com.pahappa.systems.pettycashsystem.spring"/>
+
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -44,7 +45,7 @@
 
     <!-- Transaction Manager Declaration -->
     <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="SessionFactory"/>
     </bean>
 
 </beans>

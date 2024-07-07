@@ -1,7 +1,9 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Accountability {
@@ -90,5 +92,18 @@ public class Accountability {
 
     public void setReceiptImage(byte[] receiptImage) {
         this.receiptImage = receiptImage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Accountability that = (Accountability) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getExtraClaims(), that.getExtraClaims()) && Objects.equals(getAmountSpent(), that.getAmountSpent()) && Objects.equals(getRequisition(), that.getRequisition()) && Objects.equals(getDateSubmitted(), that.getDateSubmitted()) && Objects.deepEquals(getReceiptImage(), that.getReceiptImage());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDescription(), getExtraClaims(), getAmountSpent(), getRequisition(), getDateSubmitted(), Arrays.hashCode(getReceiptImage()));
     }
 }

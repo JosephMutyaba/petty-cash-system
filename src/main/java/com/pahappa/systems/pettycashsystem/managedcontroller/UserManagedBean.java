@@ -3,17 +3,24 @@ package com.pahappa.systems.pettycashsystem.managedcontroller;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
-import java.util.List;
 
 @ManagedBean
 @ViewScoped
+@Component
 public class UserManagedBean implements Serializable {
 
-    private UserService userService=new UserService();
+    private final UserService userService;
+
+    @Autowired
+    public UserManagedBean(UserService userService) {
+        this.userService = userService;
+    }
 
 
     private Long id;
@@ -79,11 +86,6 @@ public class UserManagedBean implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public void saveUser() {

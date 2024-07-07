@@ -9,19 +9,49 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class UserService {
 
     private final UserDAO userDAO;
 
     @Autowired
-    public UserService() {
-        this.userDAO = new UserDAO();
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
-
+    @Transactional
     public void createUser(User user) {
         userDAO.createUser(user);
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//@Service
+//@Transactional
+//public class UserService {
+//
+//    private final UserDAO userDAO;
+//
+//    @Autowired
+//    public UserService() {
+//        this.userDAO = new UserDAO();
+//    }
+//
+//
+//    public void createUser(User user) {
+//        userDAO.createUser(user);
+//    }
+//
+//}
