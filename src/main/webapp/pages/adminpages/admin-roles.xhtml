@@ -1,11 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- admin.xhtml -->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="Hello, world"/>
-</f:view>
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Admin Employees</title>
+    <h:outputStylesheet name="/admin/employees.css"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <ui:include src="/pages/adminpages/sidebar.xhtml"/>
+        <div class="main-content">
+            <div class="main-content">
+                <h2>Roles</h2>
+                <div class="actions">
+                    <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
+                    <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+                </div>
+
+                <p:dataTable value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
+                    <p:column headerText="No">
+                        <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee)}"/>
+                    </p:column>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{employee.firstname}"/>
+                    </p:column>
+                    <p:column headerText="Permissions">
+                        <h:outputText value="#{employee.username}"/>
+                    </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{employee.email}"/>
+                    </p:column>
+                    <p:column headerText="Actions">
+                        <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action margins"/>
+                        <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </div>
+</h:body>
 </html>

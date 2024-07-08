@@ -1,27 +1,26 @@
+<!-- admin.xhtml -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
+    <title>Admin Employees</title>
     <h:outputStylesheet name="/admin/employees.css"/>
 </h:head>
-
-
 <h:body>
     <div class="container">
         <ui:include src="/pages/adminpages/sidebar.xhtml"/>
-
         <div class="main-content">
             <h2>Employees</h2>
-
+            <h4>Statistics</h4>
             <div class="stats">
                 <p:panelGrid columns="3" styleClass="stats-grid">
                     <p:panel header="Male" styleClass="stat-panel">
                         <h:outputText value="27" styleClass="stat-value"/>
                     </p:panel>
                     <p:panel header="Female" styleClass="stat-panel">
-                        <h:outputText value="24" styleClass="stat-value"/>
+                        <h:outputText value="36" styleClass="stat-value"/>
                     </p:panel>
                     <p:panel header="M:F" styleClass="stat-panel">
                         <h:outputText value="3:4" styleClass="stat-value"/>
@@ -30,13 +29,16 @@
             </div>
 
             <div class="actions">
-                <p:commandButton value="+ Add New" icon="pi pi-plus" styleClass="add-button"/>
-                <p:commandButton value="- Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
             </div>
 
             <p:dataTable value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
                 <p:column headerText="No">
-                    <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee)+1}"/>
+                    <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee)}"/>
+                </p:column>
+                <p:column headerText="Firstname">
+                    <h:outputText value="#{employee.firstname}"/>
                 </p:column>
                 <p:column headerText="username">
                     <h:outputText value="#{employee.username}"/>
@@ -48,11 +50,8 @@
                     <h:outputText value="#{employee.role.name}"/>
                 </p:column>
                 <p:column headerText="Actions">
-                    <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
+                    <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action margins"/>
                     <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
-                </p:column>
-                <p:column headerText="Firstname">
-                    <h:outputText value="#{employee.firstname}"/>
                 </p:column>
             </p:dataTable>
         </div>
