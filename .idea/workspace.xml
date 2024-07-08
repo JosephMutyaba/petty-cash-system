@@ -11,11 +11,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d5bc2756-df34-4e23-9718-d1a0ed9f9432" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-dashboard.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-dashboard.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/UserManagedBean.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/admin/GetEmployees.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/admin/GetEmployees.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-employees.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-employees.xhtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/sidebar.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/sidebar.xhtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/auth/login.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/auth/login.xhtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/createUser.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/createUser.xhtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/createUser.xhtml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +102,7 @@
       </deployment>
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="f6b09cc8-4a1e-4bc1-a3b1-365a94b4e773" />
-        <option name="HTTP_PORT" value="8082" />
+        <option name="HTTP_PORT" value="8444" />
       </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
       <predefined_log_file enabled="true" id="Tomcat Catalina" />
