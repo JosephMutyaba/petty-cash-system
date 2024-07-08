@@ -1,14 +1,17 @@
+* {box-sizing: border-box}
 body{
     margin: 0;
 }
 
 
 .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 250px 80%;
+    grid-auto-flow: column;
 }
 
 .sidebar {
-    width: 20%;
+    /*width: 20%;*/
     background-color: #333;
     color: white;
     padding: 15px;
@@ -22,21 +25,27 @@ body{
 
 .main-content {
     width: 80%;
+    flex: 1;
     padding: 15px;
     overflow-y: auto;
 }
 
 .stats {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*margin-bottom: 20px;*/
 }
 
 .charts {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    padding: 15px;
 }
 
 .bar-chart, .pie-chart {
     width: 48%;
+    background-color: #fafafa;
+    border-radius: 4px;
+    height: 400px;
+    /*box-shadow: 0 0 10px #ccc;*/
 }
