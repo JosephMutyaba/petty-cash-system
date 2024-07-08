@@ -19,21 +19,18 @@
                     <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
                 </div>
 
-                <p:dataTable value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
+                <p:dataTable value="#{allRoles.roles}" var="role" paginator="true" rows="5">
                     <p:column headerText="No">
-                        <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee)}"/>
+                        <h:outputText value="#{allRoles.roles.indexOf(role)+1}"/>
                     </p:column>
-                    <p:column headerText="Name">
-                        <h:outputText value="#{employee.firstname}"/>
-                    </p:column>
-                    <p:column headerText="Permissions">
-                        <h:outputText value="#{employee.username}"/>
+                    <p:column headerText="Role name">
+                        <h:outputText value="#{role.name}"/>
                     </p:column>
                     <p:column headerText="Description">
-                        <h:outputText value="#{employee.email}"/>
+                        <h:outputText value="#{role.description}"/>
                     </p:column>
                     <p:column headerText="Actions">
-                        <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action margins"/>
+                        <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
                         <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
                     </p:column>
                 </p:dataTable>

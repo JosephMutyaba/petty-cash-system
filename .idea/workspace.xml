@@ -10,8 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5bc2756-df34-4e23-9718-d1a0ed9f9432" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-roles.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-roles.xhtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +70,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Smart Tomcat.tom.executor": "Run",
     "Tomcat Server.Tomcat 9.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "pcs/backend",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Joseph Maximillian/Desktop/PCS/PCS/src/main/resources",
     "node.js.detected.package.eslint": "true",
