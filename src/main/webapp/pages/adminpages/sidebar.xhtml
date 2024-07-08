@@ -1,11 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="Hello, world"/>
-</f:view>
-</html>
+<!-- sidebar.xhtml -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="sidebar">
+        <h3>ADMIN</h3>
+        <p:menu>
+            <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home"/>
+            <p:menuitem value="Employees" outcome="/pages/adminpages/admin-employees" icon="pi pi-users"/>
+            <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase"/>
+            <p:menuitem value="Requisitions" outcome="/pages/adminpages/admin-requisitions" icon="pi pi-file"/>
+            <p:menuitem value="Budgetlines" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-chart-bar"/>
+            <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog"/>
+            <p:menuitem value="Logout" outcome="" icon="pi pi-sign-out"/>
+        </p:menu>
+    </div>
+</ui:composition>

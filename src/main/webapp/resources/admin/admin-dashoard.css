@@ -1,0 +1,42 @@
+body{
+    margin: 0;
+}
+
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar h3 {
+    color: white;
+}
+
+.main-content {
+    width: 80%;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bar-chart, .pie-chart {
+    width: 48%;
+}
