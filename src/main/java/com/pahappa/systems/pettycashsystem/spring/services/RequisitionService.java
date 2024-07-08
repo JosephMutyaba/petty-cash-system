@@ -38,4 +38,8 @@ public class RequisitionService {
     public void deleteRequisition(Long id) {
         requisitionDAO.deleteRequisition(id);
     }
+
+    public List<Requisition> getAllRequisitionsByStatus(String reqStatus) {
+        return requisitionDAO.getAllRequisitionsByStatus(reqStatus);
+    }
 }

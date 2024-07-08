@@ -41,4 +41,11 @@ public class RequisitionDAO {
             sessionFactory.getCurrentSession().delete(requisition);
         }
     }
+
+    public List<Requisition> getAllRequisitionsByStatus(String req_status) {
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status=:reqStatus")
+                .setParameter("reqStatus", req_status)
+                .getResultList();
+    }
+
 }
