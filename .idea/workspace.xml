@@ -10,12 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5bc2756-df34-4e23-9718-d1a0ed9f9432" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/UserManagedBean.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/admin/GetEmployees.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pahappa/systems/pettycashsystem/managedcontroller/admin/GetEmployees.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-employees.xhtml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/admin-employees.xhtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/adminpages/createUser.xhtml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
