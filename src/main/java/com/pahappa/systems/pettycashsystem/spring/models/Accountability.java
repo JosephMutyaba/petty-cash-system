@@ -17,7 +17,7 @@ public class Accountability {
     @Column(nullable = false)
     private Double amountSpent;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requisition_id", nullable = false)
     private Requisition requisition;
 

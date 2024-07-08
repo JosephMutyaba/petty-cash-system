@@ -52,6 +52,10 @@ public class UserService {
     public List<User> findByRoleName(String role_name) {
         return userDAO.findByRoleName(role_name);
     }
+
+    public User findUserByUsernameAndPassword(String username, String password) {
+        return userDAO.findUserByUsernameAndPassword(username, password);
+    }
 }
 
 

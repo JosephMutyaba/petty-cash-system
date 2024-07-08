@@ -77,4 +77,10 @@ public class UserDAO {
         }
     }
 
+    public User findUserByUsernameAndPassword(String username, String password) {
+        return (User) getCurrentSession().createQuery("from User where username=:username and Password=:password")
+                .setParameter("username", username)
+                .setParameter("password", password)
+                .uniqueResult();
+    }
 }
