@@ -12,10 +12,24 @@
     <div class="container">
         <ui:include src="/pages/adminpages/sidebar.xhtml"/>
         <div class="main-content">
-            <div class="main-content">
-                <h2>Settings</h2>
-
-            </div>
+            <h2>Settings</h2>
+            <h:form styleClass="settings">
+                <p:panelGrid columns="2">
+                    <span>First Name</span>
+                    <p:inputText placeholder="First Name"/>
+                    <span>Last Name</span>
+                    <p:inputText placeholder="Last Name"/>
+                    <span>Username</span>
+                    <p:inputText placeholder="Username"/>
+                    <span>Password</span>
+                    <p:password placeholder="Password"/>
+                    <span>Role</span>
+                    <p:inputText placeholder="Role" disabled="true" value="ADMIN"/>
+                    <span>Permissions</span>
+                    <p:inputTextarea placeholder="Permissions"/>
+                </p:panelGrid>
+                <p:commandButton value="Save" icon="pi pi-file-edit"/>
+            </h:form>
         </div>
     </div>
 </h:body>
