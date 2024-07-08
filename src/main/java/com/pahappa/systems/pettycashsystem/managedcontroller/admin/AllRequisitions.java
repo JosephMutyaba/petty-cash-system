@@ -2,6 +2,7 @@ package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.services.RequisitionService;
+import org.primefaces.event.TabChangeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,5 +62,56 @@ public class AllRequisitions implements Serializable {
 
     public void setPaidRequisitions(List<Requisition> paidRequisitions) {
         this.paidRequisitions = paidRequisitions;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private int activeTab = 0;
+    private List<Requisition> requisitionsForActiveTab;
+
+
+    public void onTabChange(TabChangeEvent event) {
+        String tabId = event.getTab().getId();
+        switch (tabId) {
+            case "pendingTab":
+                activeTab = 0;
+                requisitionsForActiveTab = getPendingRequisitions();
+                break;
+            case "approvedTab":
+                activeTab = 1;
+                requisitionsForActiveTab = getApprovedRequisitions();
+                break;
+            case "rejectedTab":
+                activeTab = 2;
+                requisitionsForActiveTab = getRejectedRequisitions();
+                break;
+            case "paid":
+                activeTab = 3;
+                requisitionsForActiveTab = getPaidRequisitions();
+                break;
+        }
+    }
+
+    public List<Requisition> getRequisitionsForActiveTab() {
+        if (requisitionsForActiveTab == null) {
+            requisitionsForActiveTab = getPendingRequisitions();
+        }
+        return requisitionsForActiveTab;
+    }
+
+    public int getActiveTab() {
+        return activeTab;
+    }
+
+    public void setActiveTab(int activeTab) {
+        this.activeTab = activeTab;
     }
 }
