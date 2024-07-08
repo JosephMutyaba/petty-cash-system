@@ -29,6 +29,11 @@ public class UserService {
         return userDAO.getUserById(userId);
     }
 
+    // Read operation: Get user by username
+    public User getUserUsernameAndRole(String username, String role) {
+        return userDAO.getUserUsernameAndRole(username, role);
+    }
+
     // Read operation: Get all users
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
@@ -42,6 +47,10 @@ public class UserService {
     // Delete operation
     public void deleteUser(int userId) {
         userDAO.deleteUser(userId);
+    }
+
+    public List<User> findByRoleName(String role_name) {
+        return userDAO.findByRoleName(role_name);
     }
 }
 

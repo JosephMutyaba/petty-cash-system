@@ -38,4 +38,8 @@ public class RoleService {
     public void deleteRole(Long id) {
         roleDAO.deleteRole(id);
     }
+
+    public Role findByName(String role_name) {
+        return roleDAO.findByName(role_name);
+    }
 }

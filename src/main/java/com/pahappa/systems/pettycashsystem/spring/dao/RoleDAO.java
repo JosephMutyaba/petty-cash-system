@@ -41,4 +41,9 @@ public class RoleDAO {
             sessionFactory.getCurrentSession().delete(role);
         }
     }
+
+    public Role findByName(String role_name) {
+        return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
+                .setParameter("role_name",role_name).uniqueResult();
+    }
 }
