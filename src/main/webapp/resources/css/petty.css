@@ -1,22 +1,19 @@
-* {box-sizing: border-box}
-body{
-    margin: 0;
-}
-
+* {box-sizing: border-box;margin: 0;padding: 0;}
 
 .container {
     display: grid;
     grid-template-columns: 250px 80%;
     grid-auto-flow: column;
+    z-index:-10;
 }
 
 .sidebar {
-    /*width: 20%;*/
-    background-color: #333;
     color: white;
     padding: 15px;
-    height: 100vh;
-    overflow: hidden;
+    height: 60vh;
+    position: sticky;
+    top: 0;
+    z-index: 5;
 }
 
 .sidebar h3 {
@@ -46,6 +43,6 @@ body{
     width: 48%;
     background-color: #fafafa;
     border-radius: 4px;
-    height: 400px;
+    height: 300px;
     /*box-shadow: 0 0 10px #ccc;*/
 }
