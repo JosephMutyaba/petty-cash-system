@@ -16,19 +16,20 @@
             <h:form styleClass="settings">
                 <p:panelGrid columns="2">
                     <span>First Name</span>
-                    <p:inputText placeholder="First Name"/>
+                    <p:inputText placeholder="First Name" value="#{loginBean.firstname}"/>
                     <span>Last Name</span>
-                    <p:inputText placeholder="Last Name"/>
+                    <p:inputText placeholder="Last Name" value="#{loginBean.lastname}"/>
                     <span>Username</span>
-                    <p:inputText placeholder="Username"/>
+                    <p:inputText placeholder="Username" readonly="true" value="#{loginBean.username}"/>
+                    <span>Email</span>
+                    <p:inputText placeholder="Username" value="#{loginBean.email}"/>
                     <span>Password</span>
-                    <p:password placeholder="Password"/>
+                    <p:password placeholder="Password" value="#{loginBean.userPassword}"/>
                     <span>Role</span>
-                    <p:inputText placeholder="Role" disabled="true" value="ADMIN"/>
-                    <span>Permissions</span>
-                    <p:inputTextarea placeholder="Permissions"/>
+                    <p:inputText placeholder="Role" readonly="true" disabled="true" value="#{loginBean.role.name}"/>
+
                 </p:panelGrid>
-                <p:commandButton value="Save" icon="pi pi-file-edit"/>
+                <p:commandButton value="Save" icon="pi pi-file-edit" action="#{loginBean.updateLoggedInUser}"/>
             </h:form>
         </div>
     </div>

@@ -16,7 +16,7 @@
                 <p:menuitem value="Categories" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-filter"/>
             </p:submenu>
             <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog"/>
-            <p:menuitem value="Logout" outcome="" icon="pi pi-sign-out"/>
+            <p:menuitem value="Logout" action="#{loginBean.logoutUser}" icon="pi pi-sign-out"/>
         </p:tieredMenu>
     </div>
 </ui:composition>
