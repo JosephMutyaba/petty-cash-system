@@ -8,7 +8,6 @@
 }
 
 .sidebar {
-    color: white;
     padding: 15px;
     height: 60vh;
     position: sticky;
@@ -17,7 +16,7 @@
 }
 
 .sidebar h3 {
-    color: white;
+    color: black;
 }
 
 .main-content {
@@ -25,6 +24,7 @@
     flex: 1;
     padding: 15px;
     overflow-y: auto;
+    background-color: #f4f4f4;
 }
 
 .stats {
