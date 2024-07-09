@@ -1,78 +1,67 @@
 <!-- admin.xhtml -->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Requisitions</title>
-    <h:outputStylesheet name="/css/petty.css"/>
-</h:head>
-<h:body>
-    <div class="container">
-        <ui:include src="/pages/adminpages/sidebar.xhtml"/>
-        <div class="main-content">
-            <div class="main-content">
-                <h2>Requisitions</h2>
-                <h4>Statistics</h4>
-                <div class="stats">
-                    <p:panelGrid columns="3" styleClass="stats-grid">
-                        <p:panel header="Pending" styleClass="stat-panel">
-                            <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
-                        </p:panel>
-                        <p:panel header="Approved" styleClass="stat-panel">
-                            <h:outputText value="#{allRequisitions.approvedRequisitions.size()}" styleClass="stat-value"/>
-                        </p:panel>
-                        <p:panel header="Rejected" styleClass="stat-panel">
-                            <h:outputText value="#{allRequisitions.rejectedRequisitions.size()}" styleClass="stat-value"/>
-                        </p:panel>
-                    </p:panelGrid>
-                </div>
-
-                <!-- Tabbed Section -->
-                <p:tabView id="tabView" activeIndex="#{allRequisitions.activeTab}">
-                    <p:ajax event="tabChange" listener="#{allRequisitions.onTabChange}" update="requisition_table"/>
-                    <p:tab id="pendingTab" title="Pending"/>
-                    <p:tab id="approvedTab" title="Approved"/>
-                    <p:tab id="rejectedTab" title="Rejected"/>
-                    <p:tab id="paid" title="paid"/>
-                </p:tabView>
-
-                <div class="actions">
-<!--                    <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>-->
-                    <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
-                </div>
-
-                <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
-                    <p:column headerText="No">
-                        <h:outputText value="#{allRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}"/>
-                    </p:column>
-                    <p:column headerText="Amount requested">
-                        <h:outputText value="#{requisition.estimatedAmount}"/>
-                    </p:column>
-                    <p:column headerText="Amount granted">
-                        <h:outputText value="#{requisition.amountGranted}"/>
-                    </p:column>
-                    <p:column headerText="Status">
-                        <h:outputText value="#{requisition.status}"/>
-                    </p:column>
-                    <p:column headerText="Actions">
-                        <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
-                        <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
-                    </p:column>
-                    <p:column headerText="Creation Date">
-                        <h:outputText value="#{requisition.dateCreated}"/>
-                    </p:column>
-                    <p:column headerText="Needed By">
-                        <h:outputText value="#{requisition.maxDateNeeded}"/>
-                    </p:column>
-                    <p:column headerText="Approval Date">
-                        <h:outputText value="#{requisition.dateApproved}"/>
-                    </p:column>
-                </p:dataTable>
-
-            </div>
+<ui:composition template="temp.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">Requisitions</ui:define>
+    <ui:define name="main-content">
+        <h2>Requisitions</h2>
+        <h4>Statistics</h4>
+        <div class="stats">
+            <p:panelGrid columns="3" styleClass="stats-grid">
+                <p:panel header="Pending" styleClass="stat-panel">
+                    <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
+                </p:panel>
+                <p:panel header="Approved" styleClass="stat-panel">
+                    <h:outputText value="#{allRequisitions.approvedRequisitions.size()}" styleClass="stat-value"/>
+                </p:panel>
+                <p:panel header="Rejected" styleClass="stat-panel">
+                    <h:outputText value="#{allRequisitions.rejectedRequisitions.size()}" styleClass="stat-value"/>
+                </p:panel>
+            </p:panelGrid>
         </div>
-    </div>
-</h:body>
-</html>
+
+        <!-- Tabbed Section -->
+        <p:tabView id="tabView" activeIndex="#{allRequisitions.activeTab}">
+            <p:ajax event="tabChange" listener="#{allRequisitions.onTabChange}" update="requisition_table"/>
+            <p:tab id="pendingTab" title="Pending"/>
+            <p:tab id="approvedTab" title="Approved"/>
+            <p:tab id="rejectedTab" title="Rejected"/>
+            <p:tab id="paid" title="paid"/>
+        </p:tabView>
+
+        <div class="actions">
+            <!--                    <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>-->
+            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+        </div>
+
+        <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
+            <p:column headerText="No">
+                <h:outputText value="#{allRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}"/>
+            </p:column>
+            <p:column headerText="Amount requested">
+                <h:outputText value="#{requisition.estimatedAmount}"/>
+            </p:column>
+            <p:column headerText="Amount granted">
+                <h:outputText value="#{requisition.amountGranted}"/>
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{requisition.status}"/>
+            </p:column>
+            <p:column headerText="Actions">
+                <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
+                <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
+            </p:column>
+            <p:column headerText="Creation Date">
+                <h:outputText value="#{requisition.dateCreated}"/>
+            </p:column>
+            <p:column headerText="Needed By">
+                <h:outputText value="#{requisition.maxDateNeeded}"/>
+            </p:column>
+            <p:column headerText="Approval Date">
+                <h:outputText value="#{requisition.dateApproved}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

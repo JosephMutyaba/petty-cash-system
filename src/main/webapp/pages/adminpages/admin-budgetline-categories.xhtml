@@ -1,26 +1,28 @@
 <!-- admin.xhtml -->
 <ui:composition template="temp.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
-    <ui:define name="title">Roles</ui:define>
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">Budget Line Categories</ui:define>
     <ui:define name="main-content">
-        <h2>Roles</h2>
+        <h2>BudgetLine Categories</h2>
+
         <div class="actions">
             <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
             <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
         </div>
 
-        <p:dataTable value="#{allRoles.roles}" var="role" paginator="true" rows="5">
+        <p:dataTable id="requisition_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
             <p:column headerText="No">
-                <h:outputText value="#{allRoles.roles.indexOf(role)+1}"/>
+                <h:outputText value="#{allBudgetLines.budgetLinesForActiveTab.indexOf(budgetLine) + 1}"/>
             </p:column>
-            <p:column headerText="Role name">
-                <h:outputText value="#{role.name}"/>
+            <p:column headerText="Name">
+                <h:outputText value="#{budgetLine.amount}"/>
             </p:column>
+
             <p:column headerText="Description">
-                <h:outputText value="#{role.description}"/>
+                <h:outputText value="abc"/>
             </p:column>
             <p:column headerText="Actions">
                 <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
