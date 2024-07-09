@@ -1,39 +1,31 @@
 <!-- admin.xhtml -->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Admin Dashboard</title>
-    <h:outputStylesheet name="/css/petty.css"/>
-</h:head>
-<h:body>
-    <div class="container">
-        <ui:include src="sidebar.xhtml"/>
-        <div class="main-content">
-            <h1>Dashboard</h1>
-            <div class="stats">
-                <p:panelGrid columns="3">
-                    <p:panel header="Users">
-                        <h:outputText value="27"/>
-                    </p:panel>
-                    <p:panel header="Employees">
-                        <h:outputText value="24"/>
-                    </p:panel>
-                    <p:panel header="Seniors">
-                        <h:outputText value="3"/>
-                    </p:panel>
-                </p:panelGrid>
+<ui:composition template="temp.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">Admin Dashboard</ui:define>
+    <ui:define name="main-content">
+        <h1>Dashboard</h1>
+        <div class="stats">
+            <p:panelGrid columns="3">
+                <p:panel header="Users">
+                    <h:outputText value="27"/>
+                </p:panel>
+                <p:panel header="Employees">
+                    <h:outputText value="24"/>
+                </p:panel>
+                <p:panel header="Seniors">
+                    <h:outputText value="3"/>
+                </p:panel>
+            </p:panelGrid>
+        </div>
+        <h3>Charts</h3>
+        <div class="charts">
+            <div class="bar-chart">
             </div>
-            <h3>Charts</h3>
-            <div class="charts">
-                <div class="bar-chart">
-                </div>
-                <div class="pie-chart">
-                </div>
+            <div class="pie-chart">
             </div>
         </div>
-    </div>
-</h:body>
-</html>
+    </ui:define>
+</ui:composition>
