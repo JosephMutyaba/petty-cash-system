@@ -14,7 +14,7 @@
                 <p:inputText id="username" value="#{loginBean.username}" required="true" label="Username"/>
 
                 <h:outputLabel for="password" value="Password:" />
-                <p:password id="password" value="#{loginBean.password}" required="true" label="Password"/>
+                <p:password id="password" value="#{loginBean.userPassword}" required="true" label="Password"/>
 
                 <h:outputText />
                 <p:commandButton value="Login" action="#{loginBean.loginUser}" icon="pi pi-check" />

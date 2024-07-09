@@ -1,10 +1,12 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.login;
 
+import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
@@ -14,14 +16,25 @@ import java.io.Serializable;
 @Component
 public class LoginBean implements Serializable {
     private final UserService userService;
+    private User loggedInUser;
 
     @Autowired
     public LoginBean(UserService userService) {
         this.userService = userService;
     }
 
+    @PostConstruct
+    public void init() {
+        loggedInUser=new User();
+    }
+
     private String username;
-    private String password;
+    private String userPassword;
+
+    private String firstname;
+    private String lastname;
+    private String email;
+    private Role role;
 
     public String getUsername() {
         return username;
@@ -31,26 +44,79 @@ public class LoginBean implements Serializable {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(String password) {
+        this.userPassword = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String loginUser(){
-        User user =userService.findUserByUsernameAndPassword(username, password);
+         loggedInUser =userService.findUserByUsernameAndPassword(username, userPassword);
 //        System.out.println("User: "+user);
-        if (user == null) {
+        if (loggedInUser == null) {
             System.out.println("user not found");
             return "/pages/auth/login.xhtml?faces-redirect=true";
         }else {
-            if (user.getRole().getName().equals("ADMIN")) {
+            this.firstname=loggedInUser.getFirstname();
+            this.lastname=loggedInUser.getLastname();
+            this.email=loggedInUser.getEmail();
+            this.role=loggedInUser.getRole();
+            this.username=loggedInUser.getUsername();
+            this.userPassword =loggedInUser.getPassword();
+
+            if (loggedInUser.getRole().getName().equals("ADMIN")) {
                 System.out.println("Redirect to admin page");
                 return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
             }
             else return null;
         }
+    }
+
+    public String logoutUser(){
+        return "/pages/auth/login.xhtml?faces-redirect=true";
+    }
+
+    public void updateLoggedInUser(){
+        loggedInUser.setFirstname(firstname);
+        loggedInUser.setLastname(lastname);
+        loggedInUser.setEmail(email);
+        loggedInUser.setRole(role);
+        loggedInUser.setUsername(username);
+        loggedInUser.setPassword(userPassword);
+        userService.updateUser(loggedInUser);
     }
 }

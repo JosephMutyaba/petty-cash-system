@@ -35,7 +35,7 @@
 
             <p:dataTable value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
                 <p:column headerText="No">
-                    <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee)}"/>
+                    <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee) + 1}"/>
                 </p:column>
                 <p:column headerText="Firstname">
                     <h:outputText value="#{employee.firstname}"/>
