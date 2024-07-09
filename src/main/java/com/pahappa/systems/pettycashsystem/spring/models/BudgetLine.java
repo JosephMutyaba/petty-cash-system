@@ -34,7 +34,7 @@ public class BudgetLine {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisitions;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "budgetLineCategory_id", nullable = false)
     private BudgetLineCategory budgetLineCategory;
 

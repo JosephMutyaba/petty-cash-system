@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.el.MethodExpression;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
@@ -30,15 +30,17 @@ public class CreateBudgetLine implements Serializable {
 
     private Date today = new Date();
 
-    public Date getToday() {
-        return today;
-    }
+
 
 
     @PostConstruct
     public void init() {
         budgetLineCategory = new BudgetLineCategory();
         budgetLine = new BudgetLine();
+    }
+
+    public Date getToday() {
+        return today;
     }
 
     public String getDescription() {
@@ -82,6 +84,7 @@ public class CreateBudgetLine implements Serializable {
     }
 
     public void saveBudgetLine() {
+        System.out.println("\nSaving budgetLine.........\n");
         budgetLine.setAmount(amount);
         budgetLine.setDescription(description);
         budgetLine.setStartDate(startDate);
@@ -89,6 +92,6 @@ public class CreateBudgetLine implements Serializable {
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 //        budgetLine.setStatus("Pending");
         budgetLineService.createBudgetLine(budgetLine);
-
+//        return "/pages/auth/login.xhtml?faces-redirect=true";
     }
 }

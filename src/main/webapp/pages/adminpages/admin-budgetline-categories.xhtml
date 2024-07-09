@@ -9,25 +9,34 @@
         <h2>BudgetLine Categories</h2>
 
         <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
+            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_category').show()" process="@this"/>
             <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
         </div>
 
-        <p:dataTable id="requisition_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
+        <p:dataTable id="budgetlines_categories__table" value="#{allBudgetLineCategories.categories}" var="category" paginator="true" rows="5">
             <p:column headerText="No">
-                <h:outputText value="#{allBudgetLines.budgetLinesForActiveTab.indexOf(budgetLine) + 1}"/>
+                <h:outputText value="#{allBudgetLineCategories.categories.indexOf(category) + 1}"/>
             </p:column>
             <p:column headerText="Name">
-                <h:outputText value="#{budgetLine.amount}"/>
-            </p:column>
-
-            <p:column headerText="Description">
-                <h:outputText value="abc"/>
+                <h:outputText value="#{category.name}"/>
             </p:column>
             <p:column headerText="Actions">
                 <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
                 <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
             </p:column>
         </p:dataTable>
+
+        <p:dialog widgetVar="new_budgetline_category" width="500px" header="Create New Budgetline" modal="true">
+            <h:form id="new_budgetline_form">
+                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                    <p:outputLabel for="name" value="Name:"/>
+                    <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
+                </p:panelGrid>
+                <p:commandButton value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton value="Cancel" onclick="PF('new_budgetline_category').hide(); return false;"/>
+            </h:form>
+        </p:dialog>
+
+
     </ui:define>
 </ui:composition>
