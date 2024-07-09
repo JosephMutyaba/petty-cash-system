@@ -5,15 +5,18 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <div class="sidebar">
-        <h3 style="color:#000">ADMIN</h3>
-        <p:menu>
+        <h3>ADMIN</h3>
+        <p:tieredMenu>
             <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home"/>
             <p:menuitem value="Employees" outcome="/pages/adminpages/admin-employees" icon="pi pi-users"/>
             <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase"/>
             <p:menuitem value="Requisitions" outcome="/pages/adminpages/admin-requisitions" icon="pi pi-file"/>
-            <p:menuitem value="Budgetlines" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-chart-bar"/>
+            <p:submenu label="Budgetlines" icon="pi pi-chart-bar">
+                <p:menuitem value="List" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-bars"/>
+                <p:menuitem value="Categories" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-filter"/>
+            </p:submenu>
             <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog"/>
             <p:menuitem value="Logout" outcome="" icon="pi pi-sign-out"/>
-        </p:menu>
+        </p:tieredMenu>
     </div>
 </ui:composition>
