@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
     <title>Requisitions</title>
     <h:outputStylesheet name="/admin/employees.css"/>
@@ -43,7 +43,7 @@
                 </p:tabView>
 
                 <div class="actions">
-                    <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
+                    <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()" process="@this"/>
                     <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
                 </div>
 
@@ -77,6 +77,33 @@
                         <h:outputText value="#{budgetLine.dateApproved}"/>
                     </p:column>
                 </p:dataTable>
+
+                <p:dialog widgetVar="new_budgetline_dialog" width="500px" header="Create New Budgetline" modal="true">
+                    <h:form id="new_budgetline_form">
+                        <p:panelGrid columns="2" styleClass="budgetline-grid">
+                            <p:outputLabel for="description" value="Description:"/>
+                            <p:inputText id="description" value="#{createBudgetLine.description}" required="true" />
+
+                            <p:outputLabel for="startdate" value="Start Date:"/>
+                            <p:calendar id="startdate" value="#{createBudgetLine.startDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
+
+                            <p:outputLabel for="enddate" value="End Date:"/>
+                            <p:calendar id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
+
+                            <p:outputLabel for="amount" value="Amount:"/>
+                            <p:inputText id="amount" value="#{createBudgetLine.amount}" required="true" />
+
+                            <p:outputLabel for="category" value="Category:"/>
+                            <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategory}" required="true">
+                                <f:selectItems value="#{allBudgetLineCategories.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+
+                        <p:commandButton value="Save" action="#{createBudgetLine.saveBudgetLine}" oncomplete="PF('new_budgetline_dialog').hide()" update="requisition_table"/>
+                        <p:commandButton value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
+                    </h:form>
+                </p:dialog>
+
 
             </div>
         </div>

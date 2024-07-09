@@ -24,12 +24,12 @@ public class BudgetLine {
     private Double amount;
 
 
-    private Double balance=amount;
+    private Double balance=amount; // initialised
 
     private Date dateApproved;
 
     @Column(nullable = false)
-    private String status="DRAFT";  // DRAFT/ APPROVED
+    private String status="Pending";  // DRAFT/ APPROVED
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisitions;
