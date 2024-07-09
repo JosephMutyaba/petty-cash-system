@@ -38,4 +38,8 @@ public class BudgetLineService {
     public void deleteBudgetLine(Long id) {
         budgetLineDAO.deleteBudgetLine(id);
     }
+
+    public List<BudgetLine> getAllBudgetlinesByStatus(String budgetLineStatus) {
+        return budgetLineDAO.getAllBudgetlinesByStatus(budgetLineStatus);
+    }
 }
