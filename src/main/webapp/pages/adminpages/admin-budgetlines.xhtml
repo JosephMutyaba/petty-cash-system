@@ -66,6 +66,7 @@
                 <h:form>
                     <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                     <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                    <p:commandButton value="Modify Status" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
             <p:column headerText="Category">
@@ -80,7 +81,10 @@
             <h:form id="new_budgetline_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="description" value="Description:"/>
-                    <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false"/>
+                    <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false">
+                        <f:validateRequired/>
+                        <f:validateLength minimum="5"/>
+                    </p:inputText>
 
                     <p:outputLabel for="startdate" value="Start Date:"/>
                     <p:calendar id="startdate" value="#{createBudgetLine.startDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
@@ -125,7 +129,7 @@
                     </p:selectOneMenu>
 
                     <p:commandButton value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}"
-                                     onclick="PF('edit_budgetline_dialog').hide()" update=":tabForm:tabView, budgetlines_table, :new_budgetline_form"/>
+                                     onsuccess="PF('edit_budgetline_dialog').hide()" update=":tabForm:tabView, budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </p:panelGrid>
             </h:form>
@@ -148,6 +152,39 @@
             update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
             <p:commandButton value="No" onclick="PF('confirmDeleteAllBasedOnStatusDialog').hide()" type="button" />
         </p:confirmDialog>
+
+
+
+
+
+
+
+
+
+
+        <p:dialog widgetVar="modify_status_dialog" width="500px" header="Modify status" modal="true">
+            <h:form id="modify_status_form">
+                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                    <p:outputLabel for="status" value="Status:"/>
+                    <p:selectOneMenu id="status" value="#{updateBudgetLine.status}">
+                        <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
+                        <f:selectItem itemLabel="Approve" itemValue="Approved"/>
+                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>
+                    </p:selectOneMenu>
+
+                    <p:commandButton value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
+                                     onclick="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+                    <p:commandButton value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+
+
+
+
+
 
 
     </ui:define>
