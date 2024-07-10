@@ -21,7 +21,7 @@
 }
 
 .main-content {
-    width: 80%;
+    /*width: 90%;*/
     flex: 1;
     padding: 15px;
     overflow-y: auto;

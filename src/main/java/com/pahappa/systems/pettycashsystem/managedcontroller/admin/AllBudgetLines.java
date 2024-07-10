@@ -99,6 +99,9 @@ public class AllBudgetLines implements Serializable {
                 break;
         }
     }
+    public void update() {
+        budgetlinesForActiveTab = getPendingBudgetLines();
+    }
 
     public List<BudgetLine> getBudgetLinesForActiveTab() {
         if (budgetlinesForActiveTab == null) {

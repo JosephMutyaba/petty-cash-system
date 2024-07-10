@@ -24,6 +24,8 @@ public class CreateBudgetLine implements Serializable {
     @Autowired
     BudgetLineCategoryService budgetLineCategoryService;
 
+    @Autowired
+    AllBudgetLines allBudgetLines;
 
     private String description;
     private Date startDate;
@@ -109,7 +111,12 @@ public class CreateBudgetLine implements Serializable {
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 
         budgetLineService.createBudgetLine(budgetLine);
+        allBudgetLines.update();
 //        return "/pages/auth/login.xhtml?faces-redirect=true";
+        setAmount(null);
+        setDescription(null);
+        setEndDate(null);
+        setStartDate(null);
     }
 
     public String getBudgetLineCategoryName() {
