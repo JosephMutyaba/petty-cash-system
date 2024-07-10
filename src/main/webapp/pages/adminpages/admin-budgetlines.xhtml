@@ -8,7 +8,7 @@
         <h2>BudgetLines</h2>
         <h4>Statistics</h4>
         <div class="stats">
-            <h:form>
+            <h:form id="statsForm">
                 <p:panelGrid columns="4" styleClass="stats-grid">
                     <p:panel header="Pending" styleClass="stat-panel">
                         <h:outputText value="#{allBudgetLines.pendingBudgetLines.size()}" styleClass="stat-value"/>
@@ -19,7 +19,6 @@
                     <p:panel header="Rejected" styleClass="stat-panel">
                         <h:outputText value="#{allBudgetLines.rejectedBudgetLines.size()}" styleClass="stat-value"/>
                     </p:panel>
-
                     <p:panel header="Edit Requested" styleClass="stat-panel">
                         <h:outputText value="#{allBudgetLines.paidBudgetLines.size()}" styleClass="stat-value"/>
                     </p:panel>
@@ -27,8 +26,7 @@
             </h:form>
         </div>
 
-        <!-- Tabbed Section -->
-        <h:form>
+        <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allBudgetLines.activeTab}">
                 <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budget_lines_tableForm:budgetlines_table"/>
                 <p:tab id="pendingTab" title="Pending"/>
@@ -40,7 +38,7 @@
 
         <div class="actions">
             <h:form>
-                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()"/>
+                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form"/>
                 <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
             </h:form>
         </div>
@@ -53,11 +51,9 @@
                 <p:column headerText="Amount">
                     <h:outputText value="#{budgetLine.amount}"/>
                 </p:column>
-
                 <p:column headerText="Balance">
                     <h:outputText value="#{budgetLine.balance}"/>
                 </p:column>
-
                 <p:column headerText="StartDate">
                     <h:outputText value="#{budgetLine.startDate}"/>
                 </p:column>
@@ -68,7 +64,6 @@
                     <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
                     <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
                 </p:column>
-
                 <p:column headerText="Category">
                     <h:outputText value="#{budgetLine.budgetLineCategory.name}"/>
                 </p:column>
@@ -94,15 +89,16 @@
                     <p:inputText id="amount" value="#{createBudgetLine.amount}" required="true" />
 
                     <p:outputLabel for="category" value="Category:"/>
-                    <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategory}" required="true" >
-                        <f:selectItems value="#{allBudgetLineCategories.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category}" />
+                    <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}">
+                        <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                     </p:selectOneMenu>
 
-                    <p:commandButton value="Save" action="#{createBudgetLine.saveBudgetLine}" onclick="PF('new_budgetline_dialog').hide()" update=":budget_lines_tableForm:budgetlines_table"/>
+                    <p:commandButton value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
+                                     onclick="PF('new_budgetline_dialog').hide()" update=":statsForm, :tabForm:tabView, :budget_lines_tableForm:budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </p:panelGrid>
-
             </h:form>
         </p:dialog>
+
     </ui:define>
 </ui:composition>

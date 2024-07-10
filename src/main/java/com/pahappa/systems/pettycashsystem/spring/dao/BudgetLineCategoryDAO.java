@@ -41,4 +41,10 @@ public class BudgetLineCategoryDAO {
             sessionFactory.getCurrentSession().delete(category);
         }
     }
+
+    public BudgetLineCategory getBudgetLineCategoryByName(String budgetLineCategoryName) {
+        return (BudgetLineCategory) sessionFactory.getCurrentSession().createQuery("FROM BudgetLineCategory WHERE name = :budgetLineCategoryName")
+                .setParameter("budgetLineCategoryName", budgetLineCategoryName)
+                .uniqueResult();
+    }
 }
