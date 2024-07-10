@@ -34,6 +34,8 @@ public class UpdateBudgetLine implements Serializable {
     private BudgetLineCategory budgetLineCategory;
     private BudgetLine budgetLine;
 
+    private String status;
+
     private String budgetLineCategoryName;
 
     private Date today = new Date();
@@ -83,6 +85,14 @@ public class UpdateBudgetLine implements Serializable {
         this.amount = amount;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public BudgetLineCategory getBudgetLineCategory() {
         return budgetLineCategory;
     }
@@ -110,6 +120,8 @@ public class UpdateBudgetLine implements Serializable {
         budgetLineCategory=budgetLineCategoryService.getBudgetLineCategoryByName(budgetLineCategoryName);
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 
+        budgetLine.setStatus(status);
+
         budgetLineService.updateBudgetLine(budgetLine);
         allBudgetLines.update();
 //        return "/pages/auth/login.xhtml?faces-redirect=true";
@@ -135,5 +147,6 @@ public class UpdateBudgetLine implements Serializable {
         this.amount=selectedBudgetLine.getAmount();
         this.budgetLineCategory=selectedBudgetLine.getBudgetLineCategory();
         this.budgetLineCategoryName=budgetLineCategory.getName();
+        this.status=selectedBudgetLine.getStatus();
     }
 }

@@ -47,4 +47,10 @@ public class BudgetLineDAO {
                 .setParameter("budgetlineStatus", budgetLineStatus)
                 .getResultList();
     }
+
+    public void deleteBudgetLinesByStatus(String status) {
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE status=:status")
+                .setParameter("status", status)
+                .executeUpdate();
+    }
 }
