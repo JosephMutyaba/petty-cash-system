@@ -42,4 +42,8 @@ public class BudgetLineService {
     public List<BudgetLine> getAllBudgetlinesByStatus(String budgetLineStatus) {
         return budgetLineDAO.getAllBudgetlinesByStatus(budgetLineStatus);
     }
+
+    public void deleteBudgetLinesByStatus(String status) {
+        budgetLineDAO.deleteBudgetLinesByStatus(status);
+    }
 }

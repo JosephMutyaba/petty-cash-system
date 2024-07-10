@@ -24,12 +24,15 @@ public class AllBudgetLines implements Serializable {
     private List<BudgetLine> rejectedBudgetLines;
     private List<BudgetLine> paidBudgetLines;
 
+    private String tabId;
+
     @PostConstruct
     public void init() {
-        paidBudgetLines=budgetLineService.getAllBudgetlinesByStatus("editLineTab");
-        pendingBudgetLines=budgetLineService.getAllBudgetlinesByStatus("Pending");
-        rejectedBudgetLines=budgetLineService.getAllBudgetlinesByStatus("Rejected");
-        approvedBudgetLines=budgetLineService.getAllBudgetlinesByStatus("Approved");
+        paidBudgetLines = budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
+        pendingBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Pending");
+        rejectedBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Rejected");
+        approvedBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Approved");
+        tabId = "pendingTab";
     }
 
     public List<BudgetLine> getPendingBudgetLines() {
@@ -57,29 +60,19 @@ public class AllBudgetLines implements Serializable {
     }
 
     public List<BudgetLine> getPaidBudgetLines() {
-        return budgetLineService.getAllBudgetlinesByStatus("EditRequest");
+        return budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
     }
 
     public void setPaidBudgetLines(List<BudgetLine> paidBudgetLines) {
         this.paidBudgetLines = paidBudgetLines;
     }
 
-
-
-
-
-
-
-
-
-
-
     private int activeTab = 0;
     private List<BudgetLine> budgetlinesForActiveTab;
 
 
     public void onTabChange(TabChangeEvent event) {
-        String tabId = event.getTab().getId();
+        tabId = event.getTab().getId();
         switch (tabId) {
             case "pendingTab":
                 activeTab = 0;
@@ -97,10 +90,30 @@ public class AllBudgetLines implements Serializable {
                 activeTab = 3;
                 budgetlinesForActiveTab = getPaidBudgetLines();
                 break;
+            default:
+                System.err.println("Error: Unknown tabId - " + tabId);
+                break;
         }
     }
+
     public void update() {
-        budgetlinesForActiveTab = getPendingBudgetLines();
+        switch (activeTab) {
+            case 0:
+                budgetlinesForActiveTab = getPendingBudgetLines();
+                break;
+            case 1:
+                budgetlinesForActiveTab = getApprovedBudgetLines();
+                break;
+            case 2:
+                budgetlinesForActiveTab = getRejectedBudgetLines();
+                break;
+            case 3:
+                budgetlinesForActiveTab = getPaidBudgetLines();
+                break;
+            default:
+                System.err.println("Error: Unknown activeTab - " + activeTab);
+                break;
+        }
     }
 
     public List<BudgetLine> getBudgetLinesForActiveTab() {
@@ -117,4 +130,150 @@ public class AllBudgetLines implements Serializable {
     public void setActiveTab(int activeTab) {
         this.activeTab = activeTab;
     }
+
+    public String getTabId() {
+        return tabId;
+    }
+
+    public void setTabId(String tabId) {
+        this.tabId = tabId;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//@Named
+//@ViewScoped
+//@Component
+//public class AllBudgetLines implements Serializable {
+//    @Autowired
+//    private BudgetLineService budgetLineService;
+//
+//    private List<BudgetLine> pendingBudgetLines;
+//    private List<BudgetLine> approvedBudgetLines;
+//    private List<BudgetLine> rejectedBudgetLines;
+//    private List<BudgetLine> paidBudgetLines;
+//
+//    public String tabId;
+//
+//
+//
+//    @PostConstruct
+//    public void init() {
+//        paidBudgetLines=budgetLineService.getAllBudgetlinesByStatus("editLineTab");
+//        pendingBudgetLines=budgetLineService.getAllBudgetlinesByStatus("Pending");
+//        rejectedBudgetLines=budgetLineService.getAllBudgetlinesByStatus("Rejected");
+//        approvedBudgetLines=budgetLineService.getAllBudgetlinesByStatus("Approved");
+//    }
+//
+//    public List<BudgetLine> getPendingBudgetLines() {
+//        return budgetLineService.getAllBudgetlinesByStatus("Pending");
+//    }
+//
+//    public void setPendingBudgetLines(List<BudgetLine> pendingRequisitions) {
+//        this.pendingBudgetLines = pendingRequisitions;
+//    }
+//
+//    public List<BudgetLine> getApprovedBudgetLines() {
+//        return budgetLineService.getAllBudgetlinesByStatus("Approved");
+//    }
+//
+//    public void setApprovedBudgetLines(List<BudgetLine> approvedBudgetLines) {
+//        this.approvedBudgetLines = approvedBudgetLines;
+//    }
+//
+//    public List<BudgetLine> getRejectedBudgetLines() {
+//        return budgetLineService.getAllBudgetlinesByStatus("Rejected");
+//    }
+//
+//    public void setRejectedBudgetLines(List<BudgetLine> rejectedBudgetLines) {
+//        this.rejectedBudgetLines = rejectedBudgetLines;
+//    }
+//
+//    public List<BudgetLine> getPaidBudgetLines() {
+//        return budgetLineService.getAllBudgetlinesByStatus("EditRequest");
+//    }
+//
+//    public void setPaidBudgetLines(List<BudgetLine> paidBudgetLines) {
+//        this.paidBudgetLines = paidBudgetLines;
+//    }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//    private int activeTab = 0;
+//    private List<BudgetLine> budgetlinesForActiveTab;
+//
+//
+//    public void onTabChange(TabChangeEvent event) {
+//        tabId = event.getTab().getId();
+//        switch (tabId) {
+//            case "pendingTab":
+//                activeTab = 0;
+//                budgetlinesForActiveTab = getPendingBudgetLines();
+//                break;
+//            case "approvedTab":
+//                activeTab = 1;
+//                budgetlinesForActiveTab = getApprovedBudgetLines();
+//                break;
+//            case "rejectedTab":
+//                activeTab = 2;
+//                budgetlinesForActiveTab = getRejectedBudgetLines();
+//                break;
+//            case "editLineTab":
+//                activeTab = 3;
+//                budgetlinesForActiveTab = getPaidBudgetLines();
+//                break;
+//        }
+//    }
+//    public void update() {
+//        budgetlinesForActiveTab = getPendingBudgetLines();
+//    }
+//
+//    public List<BudgetLine> getBudgetLinesForActiveTab() {
+//        if (budgetlinesForActiveTab == null) {
+//            budgetlinesForActiveTab = getPendingBudgetLines();
+//        }
+//        return budgetlinesForActiveTab;
+//    }
+//
+//    public int getActiveTab() {
+//        return activeTab;
+//    }
+//
+//    public void setActiveTab(int activeTab) {
+//        this.activeTab = activeTab;
+//    }
+//}

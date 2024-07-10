@@ -41,7 +41,7 @@
                 <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
                     <p:autoUpdate/>
                 </p:commandButton>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()"/>
             </h:form>
         </div>
 
@@ -64,7 +64,7 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
+                    <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                     <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                 </h:form>
             </p:column>
@@ -130,6 +130,25 @@
                 </p:panelGrid>
             </h:form>
         </p:dialog>
+
+
+
+        <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Budgetline?"
+                         header="Confirm" icon="pi pi-exclamation-triangle">
+            <p:commandButton value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
+                             actionListener="#{deleteBudgetlines.deleteSpecificBudgetLine}"
+                             update=":statsForm, :budgetlines_table, :new_budgetline_form" />
+            <p:commandButton value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
+        </p:confirmDialog>
+
+        <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Budgetlines?"
+                         header="Confirm" icon="pi pi-exclamation-triangle">
+            <p:commandButton value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
+                             actionListener="#{deleteBudgetlines.deleteAllBudgetLinesOfStatus}"
+            update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+            <p:commandButton value="No" onclick="PF('confirmDeleteAllBasedOnStatusDialog').hide()" type="button" />
+        </p:confirmDialog>
+
 
     </ui:define>
 </ui:composition>
