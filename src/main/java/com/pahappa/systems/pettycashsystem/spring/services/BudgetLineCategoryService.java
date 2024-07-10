@@ -38,4 +38,8 @@ public class BudgetLineCategoryService {
     public void deleteBudgetLineCategory(Long id) {
         budgetLineCategoryDAO.deleteBudgetLineCategory(id);
     }
+
+    public BudgetLineCategory getBudgetLineCategoryByName(String budgetLineCategoryName) {
+        return budgetLineCategoryDAO.getBudgetLineCategoryByName(budgetLineCategoryName);
+    }
 }

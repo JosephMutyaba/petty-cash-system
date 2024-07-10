@@ -34,7 +34,7 @@ public class BudgetLine {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisitions;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "budgetLineCategory_id", nullable = false)
     private BudgetLineCategory budgetLineCategory;
 
@@ -149,17 +149,6 @@ public class BudgetLine {
 
     @Override
     public String toString() {
-        return "BudgetLine{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", amount=" + amount +
-                ", balance=" + balance +
-                ", dateApproved=" + dateApproved +
-                ", status='" + status + '\'' +
-                ", requisitions=" + requisitions +
-                ", budgetLineCategory=" + budgetLineCategory +
-                '}';
+        return "BudgetLine:"+ description;
     }
 }

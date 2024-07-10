@@ -14,7 +14,7 @@ public class BudgetLineCategory {
     private String name;
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BudgetLine> budgetLines;
 
     public BudgetLineCategory() {
@@ -67,10 +67,6 @@ public class BudgetLineCategory {
 
     @Override
     public String toString() {
-        return "BudgetLineCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", budgetLines=" + budgetLines +
-                '}';
+        return "Category" +name;
     }
 }

@@ -1,35 +1,34 @@
-<!-- admin.xhtml -->
 <ui:composition template="temp.xhtml"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Budget Lines</ui:define>
     <ui:define name="main-content">
         <h2>BudgetLines</h2>
         <h4>Statistics</h4>
         <div class="stats">
-            <p:panelGrid columns="4" styleClass="stats-grid">
-                <p:panel header="Pending" styleClass="stat-panel">
-                    <h:outputText value="#{allBudgetLines.pendingBudgetLines.size()}" styleClass="stat-value"/>
-                </p:panel>
-                <p:panel header="Approved" styleClass="stat-panel">
-                    <h:outputText value="#{allBudgetLines.approvedBudgetLines.size()}" styleClass="stat-value"/>
-                </p:panel>
-                <p:panel header="Rejected" styleClass="stat-panel">
-                    <h:outputText value="#{allBudgetLines.rejectedBudgetLines.size()}" styleClass="stat-value"/>
-                </p:panel>
-
-                <p:panel header="Edit Requested" styleClass="stat-panel">
-                    <h:outputText value="#{allBudgetLines.paidBudgetLines.size()}" styleClass="stat-value"/>
-                </p:panel>
-            </p:panelGrid>
+            <h:form id="statsForm">
+                <p:panelGrid columns="4" styleClass="stats-grid">
+                    <p:panel header="Pending" styleClass="stat-panel">
+                        <h:outputText value="#{allBudgetLines.pendingBudgetLines.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel header="Approved" styleClass="stat-panel">
+                        <h:outputText value="#{allBudgetLines.approvedBudgetLines.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel header="Rejected" styleClass="stat-panel">
+                        <h:outputText value="#{allBudgetLines.rejectedBudgetLines.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel header="Edit Requested" styleClass="stat-panel">
+                        <h:outputText value="#{allBudgetLines.paidBudgetLines.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                </p:panelGrid>
+            </h:form>
         </div>
 
-        <!-- Tabbed Section -->
-        <h:form>
+        <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allBudgetLines.activeTab}">
-                <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update="requisition_table"/>
+                <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budgetlines_table"/>
                 <p:tab id="pendingTab" title="Pending"/>
                 <p:tab id="approvedTab" title="Approved"/>
                 <p:tab id="rejectedTab" title="Rejected"/>
@@ -38,22 +37,25 @@
         </h:form>
 
         <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+            <h:form>
+                <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
+                    <p:autoUpdate/>
+                </p:commandButton>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+            </h:form>
         </div>
 
-        <p:dataTable id="requisition_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
+        <p:dataTable id="budgetlines_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
+            <p:autoUpdate/>
             <p:column headerText="No">
                 <h:outputText value="#{allBudgetLines.budgetLinesForActiveTab.indexOf(budgetLine) + 1}"/>
             </p:column>
             <p:column headerText="Amount">
                 <h:outputText value="#{budgetLine.amount}"/>
             </p:column>
-
             <p:column headerText="Balance">
                 <h:outputText value="#{budgetLine.balance}"/>
             </p:column>
-
             <p:column headerText="StartDate">
                 <h:outputText value="#{budgetLine.startDate}"/>
             </p:column>
@@ -61,10 +63,11 @@
                 <h:outputText value="#{budgetLine.endDate}"/>
             </p:column>
             <p:column headerText="Actions">
-                <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
-                <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
+                <h:form>
+                    <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
+                    <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                </h:form>
             </p:column>
-
             <p:column headerText="Category">
                 <h:outputText value="#{budgetLine.budgetLineCategory.name}"/>
             </p:column>
@@ -77,7 +80,7 @@
             <h:form id="new_budgetline_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="description" value="Description:"/>
-                    <p:inputText id="description" value="#{createBudgetLine.description}" required="true" />
+                    <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false"/>
 
                     <p:outputLabel for="startdate" value="Start Date:"/>
                     <p:calendar id="startdate" value="#{createBudgetLine.startDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
@@ -89,13 +92,44 @@
                     <p:inputText id="amount" value="#{createBudgetLine.amount}" required="true" />
 
                     <p:outputLabel for="category" value="Category:"/>
-                    <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategory}" required="true">
-                        <f:selectItems value="#{allBudgetLineCategories.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category}" />
+                    <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}">
+                        <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                     </p:selectOneMenu>
+
+                    <p:commandButton value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
+                                     onclick="PF('new_budgetline_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+                    <p:commandButton value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </p:panelGrid>
-                <p:commandButton value="Save" action="#{createBudgetLine.saveBudgetLine}" oncomplete="PF('new_budgetline_dialog').hide()" update="requisition_table"/>
-                <p:commandButton value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
             </h:form>
         </p:dialog>
+
+
+        <p:dialog id="edit_budgetline_dialog" widgetVar="edit_budgetline_dialog" width="500px" header="Edit Budgetline" modal="true">
+            <h:form id="edit_budgetline_form">
+                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                    <p:outputLabel for="desc" value="Description:"/>
+                    <p:inputText id="desc" value="#{updateBudgetLine.description}" required="true" autocomplete="false"/>
+
+                    <p:outputLabel for="startdte" value="Start Date:"/>
+                    <p:calendar id="startdte" value="#{updateBudgetLine.startDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+
+                    <p:outputLabel for="end_date" value="End Date:"/>
+                    <p:calendar id="end_date" value="#{updateBudgetLine.endDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+
+                    <p:outputLabel for="am_ount" value="Amount:"/>
+                    <p:inputText id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
+
+                    <p:outputLabel for="categor_y" value="Category:"/>
+                    <p:selectOneMenu id="categor_y" value="#{updateBudgetLine.budgetLineCategoryName}">
+                        <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
+                    </p:selectOneMenu>
+
+                    <p:commandButton value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}"
+                                     onclick="PF('edit_budgetline_dialog').hide()" update=":tabForm:tabView, budgetlines_table, :new_budgetline_form"/>
+                    <p:commandButton value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
     </ui:define>
 </ui:composition>

@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Named
-@RequestScoped
+@ViewScoped
 @Component
-public class CreateBudgetLine implements Serializable {
+public class UpdateBudgetLine implements Serializable {
     @Autowired
     private BudgetLineService budgetLineService;
 
@@ -100,8 +100,8 @@ public class CreateBudgetLine implements Serializable {
         this.budgetLineCategories = budgetLineCategories;
     }
 
-    public void saveBudgetLine() {
-        System.out.println("\nSaving budgetLine.........\n");
+    public void updateBudgetLine() {
+        System.out.println("\nUpdating budgetLine.........\n");
         budgetLine.setAmount(amount);
         budgetLine.setDescription(description);
         budgetLine.setStartDate(startDate);
@@ -110,7 +110,7 @@ public class CreateBudgetLine implements Serializable {
         budgetLineCategory=budgetLineCategoryService.getBudgetLineCategoryByName(budgetLineCategoryName);
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 
-        budgetLineService.createBudgetLine(budgetLine);
+        budgetLineService.updateBudgetLine(budgetLine);
         allBudgetLines.update();
 //        return "/pages/auth/login.xhtml?faces-redirect=true";
         setAmount(null);
@@ -125,5 +125,15 @@ public class CreateBudgetLine implements Serializable {
 
     public void setBudgetLineCategoryName(String budgetLineCategoryName) {
         this.budgetLineCategoryName = budgetLineCategoryName;
+    }
+
+    public void selectedBudgetLine(BudgetLine selectedBudgetLine) {
+        budgetLine = selectedBudgetLine;
+        this.description=selectedBudgetLine.getDescription();
+        this.startDate=selectedBudgetLine.getStartDate();
+        this.endDate=selectedBudgetLine.getEndDate();
+        this.amount=selectedBudgetLine.getAmount();
+        this.budgetLineCategory=selectedBudgetLine.getBudgetLineCategory();
+        this.budgetLineCategoryName=budgetLineCategory.getName();
     }
 }
