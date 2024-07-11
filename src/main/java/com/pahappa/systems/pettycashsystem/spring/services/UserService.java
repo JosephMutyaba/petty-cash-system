@@ -45,7 +45,7 @@ public class UserService {
     }
 
     // Delete operation
-    public void deleteUser(int userId) {
+    public void deleteUser(Long userId) {
         userDAO.deleteUser(userId);
     }
 
@@ -55,6 +55,10 @@ public class UserService {
 
     public User findUserByUsernameAndPassword(String username, String password) {
         return userDAO.findUserByUsernameAndPassword(username, password);
+    }
+
+    public boolean deleteAllUsers() {
+        return userDAO.deleteAllUsers();
     }
 }
 

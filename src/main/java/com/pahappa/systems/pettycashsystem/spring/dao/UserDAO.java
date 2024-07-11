@@ -42,7 +42,7 @@ public class UserDAO {
     }
 
     // Delete operation
-    public void deleteUser(int userId) {
+    public void deleteUser(Long userId) {
         User user = getCurrentSession().load(User.class, userId);
         if (user != null) {
             getCurrentSession().delete(user);
@@ -82,5 +82,14 @@ public class UserDAO {
                 .setParameter("username", username)
                 .setParameter("password", password)
                 .uniqueResult();
+    }
+
+    public boolean deleteAllUsers() {
+        try {
+            getCurrentSession().createQuery("delete from User").executeUpdate();
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
     }
 }
