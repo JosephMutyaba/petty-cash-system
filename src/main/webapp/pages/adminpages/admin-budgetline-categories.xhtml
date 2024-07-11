@@ -9,8 +9,10 @@
         <h2>BudgetLine Categories</h2>
 
         <div class="mt mb">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('new_budgetline_category').show()" process="@this"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r"/>
+            <h:form>
+                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('new_budgetline_category').show()" process="@this"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r"/>
+            </h:form>
         </div>
 
         <p:dataTable id="budgetlines_categories__table" value="#{allBudgetLineCategories.categories}" var="category" paginator="true" rows="5">
