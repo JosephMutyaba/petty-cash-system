@@ -42,4 +42,8 @@ public class BudgetLineCategoryService {
     public BudgetLineCategory getBudgetLineCategoryByName(String budgetLineCategoryName) {
         return budgetLineCategoryDAO.getBudgetLineCategoryByName(budgetLineCategoryName);
     }
+
+    public void deleteAllCategories() {
+        budgetLineCategoryDAO.deleteAllCategories();
+    }
 }
