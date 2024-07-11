@@ -59,18 +59,22 @@
         </p:dialog>
 
         <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
-            <h:form id="confirm_dialog_form">
+            <h:form id="confirm_dialog_form" styleClass="flex column">
                 <p:outputLabel value="Do you wish to delete this role?"/>
-                <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
-                <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_dialog').hide()"/>
+                <div class="row mt">
+                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
+                    <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_dialog').hide()"/>
+                </div>
             </h:form>
         </p:dialog>
 
         <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
-            <h:form id="confirm_all_form">
+            <h:form id="confirm_all_form" styleClass="flex column">
                 <p:outputLabel value="Do you wish to delete all roles?"/>
-                <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="role_table"/>
-                <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_all_dialog').hide()"/>
+                <div class="row mt">
+                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="role_table"/>
+                    <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_all_dialog').hide()"/>
+                </div>
             </h:form>
         </p:dialog>
 

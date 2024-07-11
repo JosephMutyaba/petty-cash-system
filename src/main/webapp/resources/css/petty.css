@@ -56,5 +56,7 @@
 .text-r {color:var(--red)!important} .text-g {color:var(--grn)!important}
 
 .fillW {width:-webkit-fill-available!important}  .fillH {height:-webkit-fill-available!important}
+.flex {display:flex}
+.row {flex-direction:row} .column {flex-direction:column}
 
 #_ {}
