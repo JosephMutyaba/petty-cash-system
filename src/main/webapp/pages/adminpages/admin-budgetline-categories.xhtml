@@ -21,8 +21,10 @@
                 <h:outputText value="#{category.name}"/>
             </p:column>
             <p:column headerText="Actions">
-                <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr"/>
-                <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r"/>
+                <h:form>
+                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr"/>
+                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r"/>
+                </h:form>
             </p:column>
         </p:dataTable>
 
