@@ -24,8 +24,8 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr" onclick="PF('edit_category').show()"/>
-                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r" onclick="PF('confirm_dialog').show()"/>
+                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
+                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -45,30 +45,28 @@
             <h:form id="edit_category_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="cat_name" value="Name:"/>
-                    <p:inputText id="cat_name" value="#{createBudgetLineCategory.cat_name}" required="true" />
+                    <p:inputText id="cat_name" value="#{updateBudgetLineCategory.cat_name}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-pencil" title="Save" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{updateBudgetLineCategory.updateCategory}" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('edit_category').hide()"/>
             </h:form>
         </p:dialog>
 
         <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
-            <h:form id="confirm_dialog_form" styleClass="flex column">
-                <p:outputLabel value="Do you wish to delete this category?"/>
-                <div class="row mt">
-                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="budgetlines_categories__table"/>
-                    <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_dialog').hide()"/>
-                </div>
+            <h:form id="confirm_dialog_form">
+                <h2 style="color: red; ">Warning! Deleting this will delete all associated Budgetlines!</h2>
+                <p:outputLabel value="Delete this category?"/>
+                <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" action="#{deleteBudgetLineCategory.deleteBudgetLineCategory}" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_dialog').hide()"/>
             </h:form>
         </p:dialog>
 
         <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
-            <h:form id="confirm_all_form" styleClass="flex column">
+            <h:form id="confirm_all_form">
+                <h2 style="color: red; ">Warning! Deleting categories will delete all associated Budgetlines!</h2>
                 <p:outputLabel value="Do you wish to delete all categories?"/>
-                <div class="row mt">
-                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="budgetlines_categories__table"/>
-                    <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_all_dialog').hide()"/>
-                </div>
+                <p:commandButton icon="pi pi-trash" action="#{deleteBudgetLineCategory.deleteAllBudgetLineCategories}" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_all_dialog').hide()"/>
             </h:form>
         </p:dialog>
 

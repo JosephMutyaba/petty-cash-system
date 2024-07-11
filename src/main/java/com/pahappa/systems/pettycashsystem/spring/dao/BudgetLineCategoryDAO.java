@@ -35,16 +35,50 @@ public class BudgetLineCategoryDAO {
         sessionFactory.getCurrentSession().update(category);
     }
 
+
+
+
     public void deleteBudgetLineCategory(Long id) {
-        BudgetLineCategory category = sessionFactory.getCurrentSession().load(BudgetLineCategory.class, id);
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE budgetLineCategory.id = :categoryId")
+                .setParameter("categoryId", id)
+                .executeUpdate();
+        // Then, delete the BudgetLineCategory
+        BudgetLineCategory category = sessionFactory.getCurrentSession().get(BudgetLineCategory.class, id);
         if (category != null) {
             sessionFactory.getCurrentSession().delete(category);
         }
     }
+
+
+
+
+//    public void deleteBudgetLineCategory(Long id) {
+//        BudgetLineCategory category = sessionFactory.getCurrentSession().load(BudgetLineCategory.class, id);
+//        if (category != null) {
+//            sessionFactory.getCurrentSession().delete(category);
+//        }
+//    }
 
     public BudgetLineCategory getBudgetLineCategoryByName(String budgetLineCategoryName) {
         return (BudgetLineCategory) sessionFactory.getCurrentSession().createQuery("FROM BudgetLineCategory WHERE name = :budgetLineCategoryName")
                 .setParameter("budgetLineCategoryName", budgetLineCategoryName)
                 .uniqueResult();
     }
+
+
+
+    public void deleteAllCategories() {
+
+        // First, delete all associated BudgetLines
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE budgetLineCategory.id IN (SELECT id FROM BudgetLineCategory)").executeUpdate();
+        // Then, delete all BudgetLineCategory
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLineCategory").executeUpdate();
+    }
+
+
+
+
+//    public void deleteAllCategories() {
+//        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLineCategory").executeUpdate();
+//    }
 }
