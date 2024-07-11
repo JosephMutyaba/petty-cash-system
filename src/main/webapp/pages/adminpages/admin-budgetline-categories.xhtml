@@ -17,7 +17,7 @@
 
         <p:dataTable id="budgetlines_categories__table" value="#{allBudgetLineCategories.categories}" var="category" paginator="true" rows="5">
             <p:column headerText="No">
-                <h:outputText value="#{allBudgetLineCategories.categories.lastIndexOf(category) + 1}"/>
+                <h:outputText value="#{allBudgetLineCategories.categories.indexOf(category) + 1}"/>
             </p:column>
             <p:column headerText="Name">
                 <h:outputText value="#{category.name}"/>
