@@ -25,7 +25,7 @@ public class AllBudgetLineCategories implements Serializable {
     }
 
     public List<BudgetLineCategory> getCategories() {
-        return budgetLineCategoryService.getAllBudgetLineCategories();
+        return categories;
     }
 
     public void setCategories(List<BudgetLineCategory> categories) {

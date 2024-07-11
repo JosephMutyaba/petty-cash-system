@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Playwrite+NG+Modern:wght@100..400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 * {box-sizing: border-box;margin: 0;padding: 0;}
-
+:root {
+    --mar: 4px;
+    --red: #f35;
+    --grn: #9f5;
+}
 .container {
     display: grid;
-    grid-template-columns: 250px 80%;
+    grid-template-columns: 250px auto;
     grid-auto-flow: column;
     z-index:-10;
 }
-
 .sidebar {
     padding: 15px;
     height: 60vh;
@@ -15,11 +18,9 @@
     top: 0;
     z-index: 5;
 }
-
 .sidebar h3 {
     color: black;
 }
-
 .main-content {
     /*width: 90%;*/
     flex: 1;
@@ -27,19 +28,16 @@
     overflow-y: auto;
     background-color: #f4f4f4;
 }
-
 .stats {
     /*display: flex;*/
     /*justify-content: space-between;*/
     /*margin-bottom: 20px;*/
 }
-
 .charts {
     display: flex;
     justify-content: space-evenly;
     padding: 15px;
 }
-
 .bar-chart, .pie-chart {
     width: 48%;
     background-color: #fafafa;
@@ -47,3 +45,16 @@
     height: 300px;
     /*box-shadow: 0 0 10px #ccc;*/
 }
+
+/*Styles*/
+.mr {margin-right:var(--mar)!important} .ml {margin-left:var(--mar)!important}
+.mt {margin-top:var(--mar)!important} .mb {margin-bottom:var(--mar)!important}
+.m {margin:var(--mar)!important} .m-none {margin:0!important}
+.ui-button {border:none!important}
+
+.bg-r {background-color:var(--red)!important} .bg-g {background-color:var(--grn)!important}
+.text-r {color:var(--red)!important} .text-g {color:var(--grn)!important}
+
+.fillW {width:-webkit-fill-available!important}  .fillH {height:-webkit-fill-available!important}
+
+#_ {}

@@ -17,6 +17,9 @@ public class CreateBudgetLineCategory implements Serializable {
     @Autowired
     private BudgetLineCategoryService budgetLineCategoryService;
 
+    @Autowired
+    private AllBudgetLineCategories allCategories;
+
     private BudgetLineCategory budgetLineCategory;
     private String cat_name;
 
@@ -36,5 +39,6 @@ public class CreateBudgetLineCategory implements Serializable {
     public void createCategory(){
         budgetLineCategory.setName(cat_name);
         budgetLineCategoryService.createBudgetLineCategory(budgetLineCategory);
+        allCategories.init();
     }
 }

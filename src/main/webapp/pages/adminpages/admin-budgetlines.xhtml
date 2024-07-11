@@ -28,7 +28,7 @@
 
         <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allBudgetLines.activeTab}">
-                <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budgetlines_table"/>
+                <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budgetlines_table :add_delete_buttons"/>
                 <p:tab id="pendingTab" title="Pending"/>
                 <p:tab id="approvedTab" title="Approved"/>
                 <p:tab id="rejectedTab" title="Rejected"/>
@@ -37,11 +37,11 @@
         </h:form>
 
         <div class="actions">
-            <h:form>
-                <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
+            <h:form id="add_delete_buttons">
+                <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
                     <p:autoUpdate/>
                 </p:commandButton>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()"/>
             </h:form>
         </div>
 
@@ -50,6 +50,9 @@
             <p:column headerText="No">
                 <h:outputText value="#{allBudgetLines.budgetLinesForActiveTab.indexOf(budgetLine) + 1}"/>
             </p:column>
+            <p:column headerText="Description">
+                <h:outputText value="#{budgetLine.description}"/>
+            </p:column>
             <p:column headerText="Amount">
                 <h:outputText value="#{budgetLine.amount}"/>
             </p:column>
@@ -57,23 +60,30 @@
                 <h:outputText value="#{budgetLine.balance}"/>
             </p:column>
             <p:column headerText="StartDate">
-                <h:outputText value="#{budgetLine.startDate}"/>
+                <h:outputText value="#{budgetLine.startDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
             </p:column>
             <p:column headerText="End date">
-                <h:outputText value="#{budgetLine.endDate}"/>
+                <h:outputText value="#{budgetLine.endDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
-                    <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
-                    <p:commandButton value="Modify Status" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
+                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-file-edit" styleClass="bg-g mr mb" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
+                </h:form>
+            </p:column>
+            <p:column rendered="#{allBudgetLines.activeTab == 0||allBudgetLines.activeTab == 3}" headerText="Status">
+                <h:form>
+                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
             <p:column headerText="Category">
                 <h:outputText value="#{budgetLine.budgetLineCategory.name}"/>
             </p:column>
-            <p:column headerText="Approval Date">
-                <h:outputText value="#{budgetLine.dateApproved}"/>
+            <p:column headerText="Date Created">
+                <h:outputText value="#{budgetLine.dateApproved}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
+            </p:column>
+            <p:column headerText="Date Approved">
+                <h:outputText value="#{budgetLine.dateApproved}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
             </p:column>
         </p:dataTable>
 
