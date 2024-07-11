@@ -73,7 +73,7 @@
             </p:column>
             <p:column rendered="#{allBudgetLines.activeTab == 0||allBudgetLines.activeTab == 3}" headerText="Status">
                 <h:form>
-                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="edit-action" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
+                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="bg-g" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
             <p:column headerText="Category">
