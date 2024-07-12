@@ -3,6 +3,7 @@ package com.pahappa.systems.pettycashsystem.spring.models;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Role {
@@ -19,13 +20,19 @@ public class Role {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> user;
 
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private Set<Permission> permissions;
+
     public Role() {}
 
-    private Role(Long id, String name, String description, List<User> user) {
+    public Role(Long id, String name, String description, List<User> user, Set<Permission> permissions) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.user = user;
+        this.permissions = permissions;
     }
 
     public Long getId() {
@@ -58,6 +65,14 @@ public class Role {
 
     public void setUser(List<User> user) {
         this.user = user;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     @Override

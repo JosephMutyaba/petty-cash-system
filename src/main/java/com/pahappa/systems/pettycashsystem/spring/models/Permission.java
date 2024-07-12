@@ -1,30 +1,40 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class Permission {
+
     @Id
-    private String name;
-//    Perm perm;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private Perm name;
 
-//    private List<Role> role;
+    // Getters and Setters
+    public Permission() {}
 
-
-    public Permission() {
-    }
-    private Permission(String name) {
+    public Permission(Perm name) {
         this.name = name;
     }
 
-    public String getName() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Perm getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Perm name) {
         this.name = name;
     }
 
@@ -33,17 +43,16 @@ public class Permission {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Permission that = (Permission) o;
-        return Objects.equals(getName(), that.getName());
+        return Objects.equals(getId(), that.getId()) && getName() == that.getName();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getName());
+        return Objects.hash(getId(), getName());
     }
 
     @Override
     public String toString() {
-//        System.out.println(perm.toString());
-        return "Permission: " +name;
+        return "Permission ";
     }
 }
