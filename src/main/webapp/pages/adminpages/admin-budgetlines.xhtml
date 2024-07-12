@@ -145,8 +145,6 @@
             </h:form>
         </p:dialog>
 
-
-
         <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Budgetline?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
             <p:commandButton value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
@@ -162,15 +160,6 @@
             update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
             <p:commandButton value="No" onclick="PF('confirmDeleteAllBasedOnStatusDialog').hide()" type="button" />
         </p:confirmDialog>
-
-
-
-
-
-
-
-
-
 
         <p:dialog widgetVar="modify_status_dialog" width="500px" header="Modify status" modal="true">
             <h:form id="modify_status_form">
@@ -188,14 +177,6 @@
                 </p:panelGrid>
             </h:form>
         </p:dialog>
-
-
-
-
-
-
-
-
 
     </ui:define>
 </ui:composition>
