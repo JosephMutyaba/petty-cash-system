@@ -24,6 +24,8 @@ public class CreateEmployee implements Serializable {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private GetEmployees getEmployees;
 
     private String firstName;
     private String lastName;
@@ -128,6 +130,7 @@ public class CreateEmployee implements Serializable {
         user.setEmail(email);
 
         userService.createUser(user);
+        getEmployees.init();
 
         //clear the fields
         this.role=null;

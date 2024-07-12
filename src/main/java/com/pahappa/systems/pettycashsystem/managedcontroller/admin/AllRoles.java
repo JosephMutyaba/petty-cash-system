@@ -27,7 +27,7 @@ public class AllRoles implements Serializable {
     }
 
     public List<Role> getRoles() {
-        return roleService.getAllRoles();
+        return roles;
     }
 
     public void setRoles(List<Role> roles) {

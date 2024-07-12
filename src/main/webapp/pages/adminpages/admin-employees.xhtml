@@ -23,14 +23,14 @@
         </div>
 
         <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('addUserDialog').show()"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button" onclick="PF('deleteAllUsersDialog').show()"/>
+            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('addUserDialog').show()"/>
+            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r" onclick="PF('deleteAllUsersDialog').show()"/>
         </div>
 
         <h:form id="usersDataTableForm">
-            <p:dataTable id="usersTable" value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
+            <p:dataTable id="usersTable" value="#{getEmployees.allEmployees}" var="employee" paginator="true" rows="5">
                 <p:column headerText="No">
-                    <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee) + 1}"/>
+                    <h:outputText value="#{getEmployees.allEmployees.indexOf(employee) + 1}"/>
                 </p:column>
                 <p:column headerText="Firstname">
                     <h:outputText value="#{employee.firstname}"/>
@@ -45,16 +45,15 @@
                     <h:outputText value="#{employee.role.name}"/>
                 </p:column>
                 <p:column headerText="Actions">
-                    <p:commandButton value="Delete" action="#{deleteUser.selectedUser(employee)}" icon="pi pi-times" styleClass="delete-action" onclick="PF('deleteUserDialog').show()"/>
-                    <p:commandButton value="Edit" action="#{updateEmployee.selectedUser(employee)}" icon="pi pi-pencil" styleClass="edit-action" update="updateUserForm" onclick="PF('updateUserDialog').show()"/>
+                    <p:commandButton title="Edit" action="#{updateEmployee.selectedUser(employee)}" icon="pi pi-pencil" styleClass="bg-g" update="updateUserForm" onclick="PF('updateUserDialog').show()"/>
+                    <p:commandButton title="Delete" action="#{deleteUser.selectedUser(employee)}" icon="pi pi-times" styleClass="bg-r" onclick="PF('deleteUserDialog').show()"/>
                 </p:column>
             </p:dataTable>
 
         </h:form>
 
 
-        <p:dialog header="New User" widgetVar="addUserDialog" modal="true" resizable="false" width="500"
-        >
+        <p:dialog header="New User" widgetVar="addUserDialog" modal="true" resizable="false">
             <h:form id="addUserForm" styleClass="form">
                 <h:panelGrid columns="3" styleClass="borderless-grid">
 

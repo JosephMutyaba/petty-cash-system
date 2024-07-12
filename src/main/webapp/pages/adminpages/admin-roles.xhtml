@@ -9,8 +9,8 @@
         <h2>Roles</h2>
         <div class="actions mt mb">
             <h:form>
-                <p:commandButton value="Add New" onclick="PF('new_role').show()" update="new_role_form" icon="pi pi-plus" styleClass="add-button right-margin"/>
-                <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="delete-button"/>
+                <p:commandButton value="Add New" onclick="PF('new_role').show()" update="new_role_form" icon="pi pi-plus" styleClass="mr"/>
+                <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r"/>
             </h:form>
         </div>
 
@@ -26,8 +26,8 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
+                    <p:commandButton title="Edit" action="#{updateRole.selectRole(role)}" onclick="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g mr"/>
                     <p:commandButton title="Delete" action="#{deleteRole.selectRole(role)}" onclick="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r"/>
-                    <p:commandButton title="Edit" action="#{updateRole.selectRole(role)}" onclick="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -62,8 +62,8 @@
             <h:form id="confirm_dialog_form" styleClass="flex column">
                 <p:outputLabel value="Do you wish to delete this role?"/>
                 <div class="row mt">
-                    <h4 style="color: red">
-                        WARNING! This will delete all users attached to this role
+                    <h4 class="text-r">
+                        WARNING! This will also delete all users attached to this role
                     </h4>
                     <p:commandButton icon="pi pi-trash" action="#{deleteRole.deleteARole}" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
                     <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_dialog').hide()"/>
@@ -73,8 +73,8 @@
 
         <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
             <h:form id="confirm_all_form" styleClass="flex column">
-                <h4 style="color: red">
-                    WARNING! This will delete all users attached to these roles
+                <h4 class="text-r">
+                    WARNING! This will also delete all users attached to these roles
                 </h4>
                 <p:outputLabel value="Do you wish to delete all roles?"/>
                 <div class="row mt">
