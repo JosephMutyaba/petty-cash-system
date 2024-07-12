@@ -37,7 +37,13 @@ public class RoleDAO {
 
     public void deleteRole(Long id) {
         Role role = sessionFactory.getCurrentSession().load(Role.class, id);
+
         if (role != null) {
+            sessionFactory.getCurrentSession().createQuery("DELETE FROM User WHERE role_id = :id")
+                            .setParameter("id", role.getId())
+                            .executeUpdate();
+
+            ////////////////////////////////
             sessionFactory.getCurrentSession().delete(role);
         }
     }
@@ -45,5 +51,11 @@ public class RoleDAO {
     public Role findByName(String role_name) {
         return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
                 .setParameter("role_name",role_name).uniqueResult();
+    }
+
+    public void deleteAllRoles() {
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM User").executeUpdate();
+
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM Role").executeUpdate();
     }
 }

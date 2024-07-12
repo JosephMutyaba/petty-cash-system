@@ -83,7 +83,7 @@ public class UpdateEmployee implements Serializable {
     }
 
     public List<Role> getRoles() {
-        return roles;
+        return roleService.getAllRoles();
     }
 
     public void setRoles(List<Role> roles) {
