@@ -1,6 +1,6 @@
 package com.pahappa.systems.pettycashsystem.spring.enums;
 
-public enum Perm {
+public enum Permission {
 
 
     add_employee("Add Employee"),
@@ -33,7 +33,7 @@ public enum Perm {
 
     public final String definition;
 
-    Perm(String definition) {
+    Permission(String definition) {
         this.definition = definition;
     }
 

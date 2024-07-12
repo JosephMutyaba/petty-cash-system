@@ -1,12 +1,16 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
-import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
+import com.pahappa.systems.pettycashsystem.spring.enums.Permission;
 
-import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Testing {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(Perm.values()));
-//        System.out.println(Perm.mut);
+
+        Set<Permission> permissions = new HashSet<>(EnumSet.allOf(Permission.class));
+        permissions.remove(Permission.make_requisition);
+        System.out.println(permissions);
     }
 }

@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.listener;
 
+import com.pahappa.systems.pettycashsystem.managedcontroller.admin.AllPermissions;
+import com.pahappa.systems.pettycashsystem.spring.enums.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.RoleService;
@@ -8,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Component
@@ -40,6 +42,10 @@ public class AdminInit {
             adminRole = new Role();
             adminRole.setName("ADMIN");
             adminRole.setDescription("Admin role");
+//            Permissions
+            Set<Permission> adminPermissions = AllPermissions.PERMISSIONS;
+            adminPermissions.remove(Permission.make_requisition);
+            adminRole.setPerms(adminPermissions);
             roleService.createRole(adminRole);
         }
 
