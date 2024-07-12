@@ -9,8 +9,8 @@
         <h2>Roles</h2>
         <div class="actions mt mb">
             <h:form>
-                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+                <p:commandButton value="Add New" onclick="PF('new_role').show()" update="new_role_form" icon="pi pi-plus" styleClass="add-button right-margin"/>
+                <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="delete-button"/>
             </h:form>
         </div>
 
@@ -26,8 +26,8 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r"/>
-                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="bg-g"/>
+                    <p:commandButton title="Delete" action="#{deleteRole.selectRole(role)}" onclick="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r"/>
+                    <p:commandButton title="Edit" action="#{updateRole.selectRole(role)}" onclick="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -36,11 +36,11 @@
             <h:form id="new_role_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="name" value="Name:"/>
-                    <p:inputText id="name" value="dummy" required="true" />
+                    <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
                     <p:outputLabel for="description" value="Description:"/>
-                    <p:inputText id="description" value="dummy" required="true" />
+                    <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" oncomplete="PF('new_role').hide()" update="role_table"/>
+                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="role_table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('new_role').hide()"/>
             </h:form>
         </p:dialog>
@@ -49,11 +49,11 @@
             <h:form id="edit_role_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="role_name" value="Name:"/>
-                    <p:inputText id="role_name" value="dummy" required="true" />
+                    <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" />
                     <p:outputLabel for="role_description" value="Description:"/>
-                    <p:inputText id="role_description" value="dummy" required="true" />
+                    <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" oncomplete="PF('edit_role').hide()" update="role_table"/>
+                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('edit_role').hide()"/>
             </h:form>
         </p:dialog>
@@ -62,7 +62,10 @@
             <h:form id="confirm_dialog_form" styleClass="flex column">
                 <p:outputLabel value="Do you wish to delete this role?"/>
                 <div class="row mt">
-                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
+                    <h4 style="color: red">
+                        WARNING! This will delete all users attached to this role
+                    </h4>
+                    <p:commandButton icon="pi pi-trash" action="#{deleteRole.deleteARole}" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
                     <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_dialog').hide()"/>
                 </div>
             </h:form>
@@ -70,9 +73,12 @@
 
         <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
             <h:form id="confirm_all_form" styleClass="flex column">
+                <h4 style="color: red">
+                    WARNING! This will delete all users attached to these roles
+                </h4>
                 <p:outputLabel value="Do you wish to delete all roles?"/>
                 <div class="row mt">
-                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" title="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="role_table"/>
+                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr" action="#{deleteRole.deleteAllRoles}" title="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="role_table"/>
                     <p:commandButton icon="pi pi-times" styleClass="bg-g" title="Cancel" onclick="PF('confirm_all_dialog').hide()"/>
                 </div>
             </h:form>

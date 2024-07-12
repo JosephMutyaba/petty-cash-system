@@ -42,4 +42,8 @@ public class RoleService {
     public Role findByName(String role_name) {
         return roleDAO.findByName(role_name);
     }
+
+    public void deleteAllRoles() {
+        roleDAO.deleteAllRoles();
+    }
 }
