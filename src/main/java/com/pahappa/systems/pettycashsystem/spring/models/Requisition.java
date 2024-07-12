@@ -29,10 +29,10 @@ public class Requisition {
     private String ceo_review;
 
     @Column(nullable = false)
-    private Long estimatedAmount;
+    private Double estimatedAmount;
 
 
-    private Long amountGranted = estimatedAmount; // amount granted is by default equal to estimated amount
+    private Double amountGranted = estimatedAmount; // amount granted is by default equal to estimated amount
 
     @Column(nullable = false)
     private String status="NEW";
@@ -48,7 +48,7 @@ public class Requisition {
     public Requisition() {
     }
 
-    private Requisition(Long id, String justification, User user, Accountability accountability, BudgetLine budgetline, String ops_man_review, String ceo_review, Long estimatedAmount, Long amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
+    private Requisition(Long id, String justification, User user, Accountability accountability, BudgetLine budgetline, String ops_man_review, String ceo_review, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
         this.id = id;
         this.justification = justification;
         this.user = user;
@@ -120,19 +120,19 @@ public class Requisition {
         this.ceo_review = ceo_review;
     }
 
-    public Long getEstimatedAmount() {
+    public Double getEstimatedAmount() {
         return estimatedAmount;
     }
 
-    public void setEstimatedAmount(Long estimatedAmount) {
+    public void setEstimatedAmount(Double estimatedAmount) {
         this.estimatedAmount = estimatedAmount;
     }
 
-    public Long getAmountGranted() {
+    public Double getAmountGranted() {
         return amountGranted;
     }
 
-    public void setAmountGranted(Long amountGranted) {
+    public void setAmountGranted(Double amountGranted) {
         this.amountGranted = amountGranted;
     }
 

@@ -84,6 +84,14 @@ public class LoginBean implements Serializable {
         this.role = role;
     }
 
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
     public String loginUser(){
          loggedInUser =userService.findUserByUsernameAndPassword(username, userPassword);
 //        System.out.println("User: "+user);

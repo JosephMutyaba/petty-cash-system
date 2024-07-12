@@ -42,4 +42,8 @@ public class RequisitionService {
     public List<Requisition> getAllRequisitionsByStatus(String reqStatus) {
         return requisitionDAO.getAllRequisitionsByStatus(reqStatus);
     }
+
+    public void deleteRequisitionsByStatus(String status) {
+        requisitionDAO.deleteRequisitionsByStatus(status);
+    }
 }

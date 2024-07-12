@@ -32,36 +32,38 @@
         </p:tabView>
 
         <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r"/>
+            <p:commandButton value="Add New" onclick="PF('new_requisition_dialog').show()" update="new_requisition_form" icon="pi pi-plus" styleClass="mr"/>
+            <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r"/>
         </div>
 
         <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
-            <p:column headerText="No">
-                <h:outputText value="#{allRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}"/>
-            </p:column>
-            <p:column headerText="Amount requested">
-                <h:outputText value="#{requisition.estimatedAmount}"/>
-            </p:column>
-            <p:column headerText="Amount granted">
-                <h:outputText value="#{requisition.amountGranted}"/>
-            </p:column>
-            <p:column headerText="Status">
-                <h:outputText value="#{requisition.status}"/>
-            </p:column>
-            <p:column headerText="Actions">
-                <p:commandButton value="Delete" icon="pi pi-times" styleClass="bg-r"/>
-                <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="bg-g"/>
-            </p:column>
-            <p:column headerText="Creation Date">
-                <h:outputText value="#{requisition.dateCreated}"/>
-            </p:column>
-            <p:column headerText="Needed By">
-                <h:outputText value="#{requisition.maxDateNeeded}"/>
-            </p:column>
-            <p:column headerText="Approval Date">
-                <h:outputText value="#{requisition.dateApproved}"/>
-            </p:column>
+            <h:form id="requisitions_table_form">
+                <p:column headerText="No">a
+                    <h:outputText value="#{allRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}"/>
+                </p:column>
+                <p:column headerText="Amount requested">
+                    <h:outputText value="#{requisition.estimatedAmount}"/>
+                </p:column>
+                <p:column headerText="Amount granted">
+                    <h:outputText value="#{requisition.amountGranted}"/>
+                </p:column>
+                <p:column headerText="Edit Status">
+                    <p:commandButton icon="pi pi-pencil" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
+                </p:column>
+                <p:column headerText="Actions">
+                    <p:commandButton value="Delete" onclick="PF('confirmDeleteDialog').show()" action="" icon="pi pi-times" styleClass="bg-r"/>
+                    <p:commandButton value="Edit" icon="pi pi-pencil" onclick="PF('edit_requisition_dialog').show()" update="edit_requisition_form" styleClass="bg-g"/>
+                </p:column>
+                <p:column headerText="Creation Date">
+                    <h:outputText value="#{requisition.dateCreated}"/>
+                </p:column>
+                <p:column headerText="Needed By">
+                    <h:outputText value="#{requisition.maxDateNeeded}"/>
+                </p:column>
+                <p:column headerText="Approval Date">
+                    <h:outputText value="#{requisition.dateApproved}"/>
+                </p:column>
+            </h:form>
         </p:dataTable>
     </ui:define>
 
