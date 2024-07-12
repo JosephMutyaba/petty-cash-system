@@ -40,7 +40,7 @@ public class Requisition {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
-
+    @Column(nullable = false)
     private Date maxDateNeeded;
 
     private Date dateApproved;

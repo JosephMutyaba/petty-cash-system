@@ -34,12 +34,14 @@ public class AdminInit {
     private void initializeAdminUser() {
         LOGGER.info("Checking for existing admin role...");
         Role adminRole = roleService.findByName("ADMIN");
+//        List<Perm> perms = List.of(Perm.values());
 
         if (adminRole == null) {
             LOGGER.info("Admin role not found. Creating admin role...");
             adminRole = new Role();
             adminRole.setName("ADMIN");
             adminRole.setDescription("Admin role");
+
             roleService.createRole(adminRole);
         }
 

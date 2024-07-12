@@ -141,7 +141,6 @@ public class UpdateRequisition implements Serializable {
     }
 
 
-
     public void createRequisition() {
         requisition.setJustification(justification);
         requisition.setUser(loginBean.getLoggedInUser());
