@@ -48,4 +48,9 @@ public class RequisitionDAO {
                 .getResultList();
     }
 
+    public void deleteRequisitionsByStatus(String status) {
+        sessionFactory.getCurrentSession().createQuery("DELETE FROM Requisition WHERE status=:status")
+                .setParameter("status", status)
+                .executeUpdate();
+    }
 }

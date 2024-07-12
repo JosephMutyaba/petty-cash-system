@@ -19,6 +19,8 @@ public class AllRequisitions implements Serializable {
     @Autowired
     private RequisitionService requisitionService;
 
+    private String tabId;
+
     private List<Requisition> pendingRequisitions;
     private List<Requisition> approvedRequisitions;
     private List<Requisition> rejectedRequisitions;
@@ -30,6 +32,15 @@ public class AllRequisitions implements Serializable {
         pendingRequisitions=requisitionService.getAllRequisitionsByStatus("Pending");
         rejectedRequisitions=requisitionService.getAllRequisitionsByStatus("Rejected");
         approvedRequisitions=requisitionService.getAllRequisitionsByStatus("Approved");
+        tabId="Pending";
+    }
+
+    public String getTabId() {
+        return tabId;
+    }
+
+    public void setTabId(String tabId) {
+        this.tabId = tabId;
     }
 
     public List<Requisition> getPendingRequisitions() {
@@ -79,7 +90,7 @@ public class AllRequisitions implements Serializable {
 
 
     public void onTabChange(TabChangeEvent event) {
-        String tabId = event.getTab().getId();
+        tabId = event.getTab().getId();
         switch (tabId) {
             case "pendingTab":
                 activeTab = 0;
@@ -99,6 +110,30 @@ public class AllRequisitions implements Serializable {
                 break;
         }
     }
+
+
+
+    public void update() {
+        switch (activeTab) {
+            case 0:
+                requisitionsForActiveTab = getPendingRequisitions();
+                break;
+            case 1:
+                requisitionsForActiveTab = getApprovedRequisitions();
+                break;
+            case 2:
+                requisitionsForActiveTab = getRejectedRequisitions();
+                break;
+            case 3:
+                requisitionsForActiveTab = getPaidRequisitions();
+                break;
+            default:
+                System.err.println("Error: Unknown activeTab - " + activeTab);
+                break;
+        }
+    }
+
+
 
     public List<Requisition> getRequisitionsForActiveTab() {
         if (requisitionsForActiveTab == null) {
