@@ -1,8 +1,12 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
+import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Role {
@@ -18,6 +22,16 @@ public class Role {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> user;
+
+
+    @OneToMany
+
+    private List<Permission> permissions;
+
+    @ElementCollection
+    @Enumerated(EnumType.ORDINAL)
+    @CollectionTable(name = "permissions", joinColumns = @JoinColumn(name = "role_id"))
+    private List<Perm> perms;
 
     public Role() {}
 
