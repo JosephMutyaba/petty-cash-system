@@ -18,7 +18,7 @@ public class Permission {
     // Getters and Setters
     public Permission() {}
 
-    public Permission(Perm name) {
+    private Permission(Perm name) {
         this.name = name;
     }
 

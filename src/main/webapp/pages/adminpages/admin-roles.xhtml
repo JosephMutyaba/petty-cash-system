@@ -1,9 +1,8 @@
-<!-- admin.xhtml -->
 <ui:composition template="temp.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Roles</ui:define>
     <ui:define name="main-content">
         <h2>Roles</h2>
@@ -39,6 +38,31 @@
                     <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
                     <p:outputLabel for="description" value="Description:"/>
                     <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
+
+                    <p:outputLabel for="viewEmployees" value="View Employees:"/>
+                    <p:selectCheckboxMenu id="viewEmployees" value="#{createUserRole.viewEmployeesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewRoles" value="View Roles:"/>
+                    <p:selectCheckboxMenu id="viewRoles" value="#{createUserRole.viewRolesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewRequisitions" value="View Requisitions:"/>
+                    <p:selectCheckboxMenu id="viewRequisitions" value="#{createUserRole.viewRequisitionsPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewBudgetLines" value="View BudgetLines:"/>
+                    <p:selectCheckboxMenu id="viewBudgetLines" value="#{createUserRole.viewBudgetLinesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewPermissions" value="View Permissions:"/>
+                    <p:selectCheckboxMenu id="viewPermissions" value="#{createUserRole.viewPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
                 </p:panelGrid>
                 <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="role_table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('new_role').hide()"/>
@@ -52,6 +76,31 @@
                     <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" />
                     <p:outputLabel for="role_description" value="Description:"/>
                     <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
+
+                    <p:outputLabel for="edit_viewEmployees" value="View Employees:"/>
+                    <p:selectCheckboxMenu id="edit_viewEmployees" value="#{updateRole.viewEmployeesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewRoles" value="View Roles:"/>
+                    <p:selectCheckboxMenu id="edit_viewRoles" value="#{updateRole.viewRolesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewRequisitions" value="View Requisitions:"/>
+                    <p:selectCheckboxMenu id="edit_viewRequisitions" value="#{updateRole.viewRequisitionsPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewBudgetLines" value="View BudgetLines:"/>
+                    <p:selectCheckboxMenu id="edit_viewBudgetLines" value="#{updateRole.viewBudgetLinesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewPermissions" value="View Permissions:"/>
+                    <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.viewPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
                 </p:panelGrid>
                 <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('edit_role').hide()"/>
@@ -83,7 +132,5 @@
                 </div>
             </h:form>
         </p:dialog>
-
-
     </ui:define>
 </ui:composition>

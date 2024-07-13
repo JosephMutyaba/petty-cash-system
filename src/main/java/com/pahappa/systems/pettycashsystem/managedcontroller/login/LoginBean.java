@@ -106,11 +106,7 @@ public class LoginBean implements Serializable {
             this.username=loggedInUser.getUsername();
             this.userPassword =loggedInUser.getPassword();
 
-            if (loggedInUser.getRole().getName().equals("ADMIN")) {
-                System.out.println("Redirect to admin page");
-                return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
-            }
-            else return null;
+            return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
         }
     }
 

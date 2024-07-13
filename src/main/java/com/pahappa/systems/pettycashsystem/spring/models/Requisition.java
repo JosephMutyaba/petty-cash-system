@@ -2,7 +2,6 @@ package com.pahappa.systems.pettycashsystem.spring.models;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -183,20 +182,6 @@ public class Requisition {
 
     @Override
     public String toString() {
-        return "Requisition{" +
-                "id=" + id +
-                ", justification='" + justification + '\'' +
-                ", user=" + user +
-                ", accountability=" + accountability +
-                ", budgetline=" + budgetline +
-                ", ops_man_review='" + ops_man_review + '\'' +
-                ", ceo_review='" + ceo_review + '\'' +
-                ", estimatedAmount=" + estimatedAmount +
-                ", amountGranted=" + amountGranted +
-                ", status='" + status + '\'' +
-                ", dateCreated=" + dateCreated +
-                ", maxDateNeeded=" + maxDateNeeded +
-                ", dateApproved=" + dateApproved +
-                '}';
+        return "Requisition" + justification;
     }
 }
