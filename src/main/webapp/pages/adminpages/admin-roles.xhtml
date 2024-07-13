@@ -102,8 +102,8 @@
                         <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table"/>
-                <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('edit_role').hide()"/>
+                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table edit_role_form"/>
+                <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" action="#{updateRole.clearVals}" update="edit_role_form" onclick="PF('edit_role').hide()"/>
             </h:form>
         </p:dialog>
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @Named
-@ViewScoped
+@RequestScoped
 @Component
 public class UpdateRole implements Serializable {
     @Autowired
@@ -152,12 +153,14 @@ public class UpdateRole implements Serializable {
     }
 
     public Set<Permission> getViewPermissions() {
+        initialiseSets();
         return viewPermissions;
     }
 
     public void setViewPermissions(Set<Perm> viewPermissions) {
 
         if(viewPermissions != null && !viewPermissions.isEmpty()) {
+
             this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
             for (Perm perm: viewPermissions) {
                 this.viewPermissions.add(permissionService.findByName(perm));
@@ -172,6 +175,8 @@ public class UpdateRole implements Serializable {
 
 
     public List<Perm> getRolePermissions() {
+
+        initialiseSets();
         return rolePermissions;
     }
 
@@ -181,10 +186,13 @@ public class UpdateRole implements Serializable {
             for (Perm perm: rolePermissions) {
                 this.viewRolesPermissions.add(permissionService.findByName(perm));
             }
+        }else {
+            this.viewRolesPermissions = new HashSet<>();
         }
     }
 
     public List<Perm> getEmployeePermissions() {
+        initialiseSets();
         return employeePermissions;
     }
 
@@ -194,10 +202,13 @@ public class UpdateRole implements Serializable {
             for (Perm perm: employeePermissions) {
                 this.viewEmployeesPermissions.add(permissionService.findByName(perm));
             }
+        }else {
+            this.viewEmployeesPermissions=new HashSet<>();
         }
     }
 
     public List<Perm> getRequisitionPermissions() {
+        initialiseSets();
         return requisitionPermissions;
     }
 
@@ -207,10 +218,13 @@ public class UpdateRole implements Serializable {
             for (Perm perm: requisitionPermissions) {
                 this.viewRequisitionsPermissions.add(permissionService.findByName(perm));
             }
+        }else {
+            this.viewRequisitionsPermissions=new HashSet<>();
         }
     }
 
     public List<Perm> getPermissionsPermissions() {
+        initialiseSets();
         return permissionsPermissions;
     }
 
@@ -220,10 +234,13 @@ public class UpdateRole implements Serializable {
             for (Perm perm: permissionsPermissions) {
                 this.viewPermissions.add(permissionService.findByName(perm));
             }
+        }else {
+            this.viewPermissions=new HashSet<>();
         }
     }
 
     public List<Perm> getBudgetLinePermissions() {
+        initialiseSets();
         return budgetLinePermissions;
     }
 
@@ -233,6 +250,8 @@ public class UpdateRole implements Serializable {
             for (Perm perm: budgetLinePermissions) {
                 this.viewBudgetLinesPermissions.add(permissionService.findByName(perm));
             }
+        }else{
+            this.viewBudgetLinesPermissions=new HashSet<>();
         }
     }
 
@@ -247,6 +266,13 @@ public class UpdateRole implements Serializable {
     }
 
     private void initialiseSets(){
+        permissionsPermissions.clear();
+        budgetLinePermissions.clear();
+        rolePermissions.clear();
+        requisitionPermissions.clear();
+        employeePermissions.clear();
+
+
         for (Permission perm: allPermissions) {
 
             //EMPLOYEE PERMS
@@ -366,6 +392,10 @@ public class UpdateRole implements Serializable {
 
         roleService.updateRole(role);
 
+        clearVals();
+    }
+
+    public void clearVals(){
         allRoles.init();
 
         this.role = new Role();
@@ -376,82 +406,11 @@ public class UpdateRole implements Serializable {
         this.viewRequisitionsPermissions.clear();
         this.viewBudgetLinesPermissions.clear();
         this.viewPermissions.clear();
+
+        this.permissionsPermissions.clear();
+        this.rolePermissions.clear();
+        this.requisitionPermissions.clear();
+        this.employeePermissions.clear();
+        this.budgetLinePermissions.clear();
     }
 }
-
-
-
-
-
-
-
-
-
-
-//package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
-//
-//import com.pahappa.systems.pettycashsystem.spring.models.Role;
-//import com.pahappa.systems.pettycashsystem.spring.services.RoleService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Component;
-//
-//import javax.annotation.PostConstruct;
-//import javax.faces.view.ViewScoped;
-//import javax.inject.Named;
-//import java.io.Serializable;
-//
-//@Named
-//@ViewScoped
-//@Component
-//public class UpdateRole implements Serializable {
-//    @Autowired
-//    private RoleService roleService;
-//
-//    @Autowired
-//    private AllRoles allRoles;
-//
-//    private String roleName;
-//    private String roleDescription;
-//
-//    private Role role;
-//    @PostConstruct
-//    public void init() {
-//        role=new Role();
-//    }
-//
-//    public String getRoleName() {
-//        return roleName;
-//    }
-//
-//    public void setRoleName(String roleName) {
-//        this.roleName = roleName;
-//    }
-//
-//    public String getRoleDescription() {
-//        return roleDescription;
-//    }
-//
-//    public void setRoleDescription(String roleDescription) {
-//        this.roleDescription = roleDescription;
-//    }
-//
-//    public void selectRole(Role selectedRole) {
-//        role = selectedRole;
-//        this.roleName = role.getName();
-//        this.roleDescription = role.getDescription();
-//
-//    }
-//
-//    public void updateRole() {
-//        role.setName(roleName);
-//        role.setDescription(roleDescription);
-//        roleService.updateRole(role);
-//
-//        allRoles.init();
-//
-//        this.role=null;
-//        this.roleName=null;
-//        this.roleDescription=null;
-//
-//    }
-//}
