@@ -31,7 +31,7 @@
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_role" width="500px" header="Create New Role" modal="true">
+        <p:dialog widgetVar="new_role" width="500px" height="400px" header="Create New Role" modal="true">
             <h:form id="new_role_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="name" value="Name:"/>
@@ -69,7 +69,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog widgetVar="edit_role" header="Edit Role" modal="true">
+        <p:dialog widgetVar="edit_role" width="500px" height="400px" header="Edit Role" modal="true">
             <h:form id="edit_role_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="role_name" value="Name:"/>
@@ -78,27 +78,27 @@
                     <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
 
                     <p:outputLabel for="edit_viewEmployees" value="View Employees:"/>
-                    <p:selectCheckboxMenu id="edit_viewEmployees" value="#{updateRole.viewEmployeesPermissions}" label="Select Permissions">
+                    <p:selectCheckboxMenu id="edit_viewEmployees" value="#{updateRole.employeePermissions}" label="Select Permissions">
                         <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
 
                     <p:outputLabel for="edit_viewRoles" value="View Roles:"/>
-                    <p:selectCheckboxMenu id="edit_viewRoles" value="#{updateRole.viewRolesPermissions}" label="Select Permissions">
+                    <p:selectCheckboxMenu id="edit_viewRoles" value="#{updateRole.rolePermissions}" label="Select Permissions">
                         <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
 
                     <p:outputLabel for="edit_viewRequisitions" value="View Requisitions:"/>
-                    <p:selectCheckboxMenu id="edit_viewRequisitions" value="#{updateRole.viewRequisitionsPermissions}" label="Select Permissions">
+                    <p:selectCheckboxMenu id="edit_viewRequisitions" value="#{updateRole.requisitionPermissions}" label="Select Permissions">
                         <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
 
                     <p:outputLabel for="edit_viewBudgetLines" value="View BudgetLines:"/>
-                    <p:selectCheckboxMenu id="edit_viewBudgetLines" value="#{updateRole.viewBudgetLinesPermissions}" label="Select Permissions">
+                    <p:selectCheckboxMenu id="edit_viewBudgetLines" value="#{updateRole.budgetLinePermissions}" label="Select Permissions">
                         <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
 
                     <p:outputLabel for="edit_viewPermissions" value="View Permissions:"/>
-                    <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.viewPermissions}" label="Select Permissions">
+                    <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.permissionsPermissions}" label="Select Permissions">
                         <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
                 </p:panelGrid>
