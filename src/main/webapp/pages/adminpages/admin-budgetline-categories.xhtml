@@ -30,13 +30,13 @@
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_budgetline_category" width="500px" header="Create New Category" modal="true">
+        <p:dialog widgetVar="new_budgetline_category" header="Create New Category" modal="true">
             <h:form id="new_budgetline_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="mr bg-g" icon="pi pi-plus" title="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('new_budgetline_category').hide()"/>
             </h:form>
         </p:dialog>

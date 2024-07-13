@@ -87,7 +87,7 @@
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_budgetline_dialog" width="500px" header="Create New Budgetline" modal="true">
+        <p:dialog widgetVar="new_budgetline_dialog" header="Create New Budgetline" modal="true">
             <h:form id="new_budgetline_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="description" value="Description:"/>
@@ -118,7 +118,7 @@
         </p:dialog>
 
 
-        <p:dialog id="edit_budgetline_dialog" widgetVar="edit_budgetline_dialog" width="500px" header="Edit Budgetline" modal="true">
+        <p:dialog id="edit_budgetline_dialog" widgetVar="edit_budgetline_dialog" header="Edit Budgetline" modal="true">
             <h:form id="edit_budgetline_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="desc" value="Description:"/>
@@ -161,7 +161,7 @@
             <p:commandButton value="No" onclick="PF('confirmDeleteAllBasedOnStatusDialog').hide()" type="button" />
         </p:confirmDialog>
 
-        <p:dialog widgetVar="modify_status_dialog" width="500px" header="Modify status" modal="true">
+        <p:dialog widgetVar="modify_status_dialog" header="Modify status" modal="true">
             <h:form id="modify_status_form">
                 <p:panelGrid columns="2" styleClass="budgetline-grid">
                     <p:outputLabel for="status" value="Status:"/>

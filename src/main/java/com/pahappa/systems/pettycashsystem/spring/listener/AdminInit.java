@@ -45,7 +45,7 @@ public class AdminInit {
 //            Permissions
             Set<Permission> adminPermissions = AllPermissions.PERMISSIONS;
             adminPermissions.remove(Permission.make_requisition);
-            adminRole.setPerms(adminPermissions);
+            adminRole.setPermissions(adminPermissions);
             roleService.createRole(adminRole);
         }
 

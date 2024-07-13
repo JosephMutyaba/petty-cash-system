@@ -32,6 +32,9 @@ public enum Permission {
     request_changes("Request Changes");
 
     public final String definition;
+    public String getDefinition() {
+        return definition;
+    }
 
     Permission(String definition) {
         this.definition = definition;

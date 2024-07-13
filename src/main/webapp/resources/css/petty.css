@@ -59,4 +59,6 @@
 .flex {display:flex}
 .row {flex-direction:row} .column {flex-direction:column}
 
+#new_role_form > div:nth-child(3) > div {width:100%}
+
 #_ {}

@@ -9,8 +9,8 @@
         <h2>Roles</h2>
         <div class="actions mt mb">
             <h:form>
-                <p:commandButton value="Add New" onclick="PF('new_role').show()" update="new_role_form" icon="pi pi-plus" styleClass="mr"/>
-                <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r"/>
+                <p:commandButton value="Add New" onclick="PF('new_role').show()" update="new_role_form" icon="pi pi-plus" styleClass="add-button right-margin"/>
+                <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="delete-button"/>
             </h:form>
         </div>
 
@@ -28,19 +28,26 @@
                 <h:form>
                     <p:commandButton title="Edit" action="#{updateRole.selectRole(role)}" onclick="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g mr"/>
                     <p:commandButton title="Delete" action="#{deleteRole.selectRole(role)}" onclick="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r"/>
+                    <p:commandButton title="Edit" action="#{updateRole.selectRole(role)}" onclick="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g"/>
                 </h:form>
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_role" width="500px" header="Create New Role" modal="true">
+        <p:dialog widgetVar="new_role" header="Create New Role" modal="true" responsive="true">
             <h:form id="new_role_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <p:panelGrid columns="4">
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
                     <p:outputLabel for="description" value="Description:"/>
                     <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
+                    <p:selectManyCheckbox styleClass="par100" columns="4" required="true" hideNoSelectionOption="true" label="Permissions" value="#{createUserRole.rolePermissions}">
+                        <f:selectItems value="#{allPermissions.permissionsList}" var="permisison" itemLabel="#{permisison.definition}" itemValue="#{permisison}"/>
+                    </p:selectManyCheckbox>
+                    <h:outputScript>
+                        document.querySelector(".par100").parentElement.className = "ui-panelgrid-cell ui-g-12 ui-md-12"
+                    </h:outputScript>
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="role_table"/>
+                <p:commandButton styleClass="mr bg-g" icon="pi pi-plus" value="Create" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="role_table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('new_role').hide()"/>
             </h:form>
         </p:dialog>
@@ -53,7 +60,7 @@
                     <p:outputLabel for="role_description" value="Description:"/>
                     <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table"/>
+                <p:commandButton styleClass="mr bg-g" icon="pi pi-plus" title="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table"/>
                 <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('edit_role').hide()"/>
             </h:form>
         </p:dialog>

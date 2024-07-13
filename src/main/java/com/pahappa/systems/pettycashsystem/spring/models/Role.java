@@ -25,7 +25,7 @@ public class Role {
     @ElementCollection
     @Enumerated(EnumType.ORDINAL)
     @CollectionTable(name = "permissions", joinColumns = @JoinColumn(name = "role_id"))
-    private Set<Permission> perms;
+    private Set<Permission> permissions;
 
     public Role() {}
 
@@ -68,12 +68,12 @@ public class Role {
         this.user = user;
     }
 
-    public Set<Permission> getPerms() {
-        return perms;
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void setPerms(Set<Permission> permissions) {
-        this.perms = permissions;
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     @Override

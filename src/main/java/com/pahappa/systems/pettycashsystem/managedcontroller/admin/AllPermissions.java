@@ -14,5 +14,9 @@ import java.util.Set;
 @Component
 public class AllPermissions {
     public static final Set<Permission> PERMISSIONS = new HashSet<>(EnumSet.allOf(Permission.class));
-    Set<Permission> selectedPermissions = EnumSet.noneOf(Permission.class);
+
+    public Permission[] getPermissionsList() {
+        return Permission.values();
+    }
+
 }
