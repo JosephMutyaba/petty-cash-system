@@ -24,8 +24,7 @@ public class Requisition {
     @JoinColumn(name = "budgetline_id", nullable = false)
     private BudgetLine budgetline;
 
-    private String ops_man_review;
-    private String ceo_review;
+    private String review_comments;
 
     @Column(nullable = false)
     private Double estimatedAmount;
@@ -47,16 +46,15 @@ public class Requisition {
     public Requisition() {
     }
 
-    private Requisition(Long id, String justification, User user, Accountability accountability, BudgetLine budgetline, String ops_man_review, String ceo_review, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
+    private Requisition(Long id, String justification, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
         this.id = id;
         this.justification = justification;
         this.user = user;
         this.accountability = accountability;
         this.budgetline = budgetline;
-        this.ops_man_review = ops_man_review;
-        this.ceo_review = ceo_review;
         this.estimatedAmount = estimatedAmount;
         this.amountGranted = amountGranted;
+        this.review_comments=review_comments;
         this.status = status;
         this.dateCreated = dateCreated;
         this.maxDateNeeded = maxDateNeeded;
@@ -103,20 +101,12 @@ public class Requisition {
         this.budgetline = budgetline;
     }
 
-    public String getOps_man_review() {
-        return ops_man_review;
+    public String getReview_comments() {
+        return review_comments;
     }
 
-    public void setOps_man_review(String ops_man_review) {
-        this.ops_man_review = ops_man_review;
-    }
-
-    public String getCeo_review() {
-        return ceo_review;
-    }
-
-    public void setCeo_review(String ceo_review) {
-        this.ceo_review = ceo_review;
+    public void setReview_comments(String review_comments) {
+        this.review_comments = review_comments;
     }
 
     public Double getEstimatedAmount() {
@@ -172,12 +162,12 @@ public class Requisition {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Requisition that = (Requisition) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getJustification(), that.getJustification()) && Objects.equals(getUser(), that.getUser()) && Objects.equals(getAccountability(), that.getAccountability()) && Objects.equals(getBudgetline(), that.getBudgetline()) && Objects.equals(getOps_man_review(), that.getOps_man_review()) && Objects.equals(getCeo_review(), that.getCeo_review()) && Objects.equals(getEstimatedAmount(), that.getEstimatedAmount()) && Objects.equals(getAmountGranted(), that.getAmountGranted()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getDateCreated(), that.getDateCreated()) && Objects.equals(getMaxDateNeeded(), that.getMaxDateNeeded()) && Objects.equals(getDateApproved(), that.getDateApproved());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getJustification(), that.getJustification()) && Objects.equals(getUser(), that.getUser()) && Objects.equals(getAccountability(), that.getAccountability()) && Objects.equals(getBudgetline(), that.getBudgetline()) && Objects.equals(getReview_comments(), that.getReview_comments()) && Objects.equals(getEstimatedAmount(), that.getEstimatedAmount()) && Objects.equals(getAmountGranted(), that.getAmountGranted()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getDateCreated(), that.getDateCreated()) && Objects.equals(getMaxDateNeeded(), that.getMaxDateNeeded()) && Objects.equals(getDateApproved(), that.getDateApproved());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getJustification(), getUser(), getAccountability(), getBudgetline(), getOps_man_review(), getCeo_review(), getEstimatedAmount(), getAmountGranted(), getStatus(), getDateCreated(), getMaxDateNeeded(), getDateApproved());
+        return Objects.hash(getId(), getJustification(), getUser(), getAccountability(), getBudgetline(), getReview_comments(), getEstimatedAmount(), getAmountGranted(), getStatus(), getDateCreated(), getMaxDateNeeded(), getDateApproved());
     }
 
     @Override

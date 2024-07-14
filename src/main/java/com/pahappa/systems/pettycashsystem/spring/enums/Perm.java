@@ -15,12 +15,14 @@ public enum Perm {
     REJECT_REQUISITION("Reject Requisition"),
     EDIT_REQUISITION("Edit Requisition"),
     DELETE_REQUISITION("Delete Requisition"),
+    CASHOUT_REQUISITION("Cash out Requisition"),
 
     MAKE_BUDGETLINE("Make BudgetLine"),
     APPROVE_BUDGETLINE("Approve BudgetLine"),
     REJECT_BUDGETLINE("Reject BudgetLine"),
     EDIT_BUDGETLINE("Edit BudgetLine"),
     DELETE_BUDGETLINE("Delete BudgetLine"),
+
 
     VIEW_EMPLOYEES("View Employees"),
     VIEW_ROLES("View Roles"),

@@ -15,6 +15,8 @@ public class User {
     private String Firstname;
     private String Lastname;
 
+    private Double accountBalance=0.0;
+
     @Column(unique = true)
     private String Email;
 
@@ -89,6 +91,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(Double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
     public String getUsername() {

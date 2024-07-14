@@ -67,7 +67,12 @@
                 <p:column headerText="Needed By">
                     <h:outputText value="#{requisition.maxDateNeeded}"/>
                 </p:column>
-                <p:column headerText="Approval Date">
+
+                <p:column headerText="Transact" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION') && requisition.status.equals('Approved')}">
+                    <p:commandButton action="" value="Disburse Money" onclick="PF('s').show()"/>
+                </p:column>
+
+                <p:column headerText="Approval Date" rendered="#{requisition.status.equals('Approved')}">
                     <h:outputText value="#{requisition.dateApproved}"/>
                 </p:column>
 
@@ -149,7 +154,14 @@
                         <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
                         <f:selectItem itemLabel="Approve" itemValue="Approved"/>
                         <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>
+                        <f:selectItem itemLabel="Disburse Cash" itemValue="Paid"/>
                     </p:selectOneMenu>
+
+                    <p:outputLabel value="Comment" for="comment"/>
+                    <p:inputTextarea id="comment" value="#{}" />
+
+                    <p:outputLabel value="granted_amount" for="comment"/>
+                    <p:inputTextarea id="granted_amount" value="#{}" />
 
                     <p:commandButton value="Modify" actionListener="#{updateRequisition.updateRequisition}"
                                      onclick="PF('modify_status_dialog').hide()" update="statsForm, :tabForm:tabView, :requisitions_table_form:requisition_table, :new_requisition_form"/>
