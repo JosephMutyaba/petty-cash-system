@@ -15,6 +15,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -53,8 +54,21 @@ public class UpdateRequisition implements Serializable {
     @PostConstruct
     public void init() {
         requisition = new Requisition();
-        budgetLines = budgetLineService.getAllBudgetLines();
+        initialiseBudgetLines();
         user = new User();
+    }
+
+    private void initialiseBudgetLines(){
+        // Fetch all approved budget lines
+        List<BudgetLine> allBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Approved");
+
+        // Get today's date
+        Date today = new Date();
+
+        // Filter budget lines with maxDate less than today
+        this.budgetLines = allBudgetLines.stream()
+                .filter(budgetLine -> budgetLine.getEndDate().after(today))
+                .collect(Collectors.toList());
     }
 
     public String getJustification() {
@@ -66,7 +80,8 @@ public class UpdateRequisition implements Serializable {
     }
 
     public List<BudgetLine> getBudgetLines() {
-        return budgetLineService.getAllBudgetLines();
+        initialiseBudgetLines();
+        return budgetLines;
     }
 
     public void setBudgetLines(List<BudgetLine> budgetLines) {
@@ -133,17 +148,19 @@ public class UpdateRequisition implements Serializable {
         this.requisition = selectedRequisition;
         this.budgetLineId = requisition.getId();
         this.justification=requisition.getJustification();
-        this.status=requisition.getStatus();
         this.maxDate=requisition.getMaxDateNeeded();
         this.budgetLine = requisition.getBudgetline();
         this.requestedAmount=requisition.getEstimatedAmount();
+        this.budgetLineId=requisition.getBudgetline().getId();
+
+        setBudgetLineId(requisition.getBudgetline().getId());
 
     }
 
 
-    public void createRequisition() {
+    public void updateRequisition() {
         requisition.setJustification(justification);
-        requisition.setUser(loginBean.getLoggedInUser());
+//        requisition.setUser(loginBean.getLoggedInUser());
 
         budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
 
@@ -151,13 +168,13 @@ public class UpdateRequisition implements Serializable {
 
         requisition.setEstimatedAmount(requestedAmount);
         requisition.setAmountGranted(requestedAmount);
-        requisition.setStatus("Pending");
+        requisition.setStatus(status);
         requisition.setMaxDateNeeded(maxDate);
 //        requisition.setDateCreated(new Date());
 
-        requisitionService.createRequisition(requisition);
+        requisitionService.updateRequisition(requisition);
 
-        allRequisitions.init();
+        allRequisitions.update();
         //////////
         this.justification = null;
         this.status = null;

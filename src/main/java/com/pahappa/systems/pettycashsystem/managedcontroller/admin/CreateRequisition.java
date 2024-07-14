@@ -13,9 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -54,8 +56,22 @@ public class CreateRequisition implements Serializable {
     @PostConstruct
     public void init() {
         requisition = new Requisition();
-        budgetLines = budgetLineService.getAllBudgetLines();
+        filterBudgetLines();
         user = new User();
+    }
+
+    private void filterBudgetLines(){
+        List<BudgetLine> allBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Approved");
+
+        // Get today's date
+        Date today = new Date();
+
+        // Filter budget lines with maxDate less than today
+        this.budgetLines = allBudgetLines.stream()
+                .filter(budgetLine -> budgetLine.getEndDate().after(today))
+                .collect(Collectors.toList());
+
+        System.out.println("Filtered budgetLines:"+budgetLines);
     }
 
     public String getJustification() {
@@ -67,6 +83,7 @@ public class CreateRequisition implements Serializable {
     }
 
     public List<BudgetLine> getBudgetLines() {
+        filterBudgetLines();
         return budgetLines;
     }
 
@@ -146,7 +163,7 @@ public class CreateRequisition implements Serializable {
 
         requisitionService.createRequisition(requisition);
 
-        allRequisitions.init();
+        allRequisitions.update();
         //////////
         this.justification = null;
         this.status = null;
