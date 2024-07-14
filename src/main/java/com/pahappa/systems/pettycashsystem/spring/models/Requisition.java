@@ -12,7 +12,7 @@ public class Requisition {
 
     private String justification;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -20,7 +20,7 @@ public class Requisition {
     private Accountability accountability;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "budgetline_id", nullable = false)
     private BudgetLine budgetline;
 

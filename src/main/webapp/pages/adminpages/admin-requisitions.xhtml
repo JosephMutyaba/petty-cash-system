@@ -54,12 +54,12 @@
                 <p:column headerText="Amount granted">
                     <h:outputText value="#{requisition.amountGranted}"/>
                 </p:column>
-                <p:column headerText="Edit Status">
+                <p:column headerText="Edit Status" rendered="#{requisition.status.equals('Pending')}">
                     <p:commandButton icon="pi pi-pencil" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
                 </p:column>
-                <p:column headerText="Actions">
-                    <p:commandButton value="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r"/>
-                    <p:commandButton value="Edit" icon="pi pi-pencil" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('edit_requisition_dialog').show()" update="edit_requisition_form" styleClass="bg-g"/>
+                <p:column headerText="Actions" rendered="#{requisition.status.equals('Pending')}">
+                    <p:commandButton value="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION')}"/>
+                    <p:commandButton value="Edit" icon="pi pi-pencil" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('edit_requisition_dialog').show()" update="edit_requisition_form" styleClass="bg-g" rendered="#{checkPermission.hasPermission('EDIT_REQUISITION')}"/>
                 </p:column>
                 <p:column headerText="Creation Date">
                     <h:outputText value="#{requisition.dateCreated}"/>
@@ -68,8 +68,12 @@
                     <h:outputText value="#{requisition.maxDateNeeded}"/>
                 </p:column>
 
-                <p:column headerText="Transact" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION') && requisition.status.equals('Approved')}">
-                    <p:commandButton action="" value="Disburse Money" onclick="PF('s').show()"/>
+                <p:column headerText="Review" rendered="#{requisition.status.equals('Approved') || requisition.status.equals('Rejected') || requisition.status.equals('Paid')}">
+                    <h:outputText value="#{requisition.review_comments}"/>
+                </p:column>
+
+                <p:column headerText="Transact" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION') and requisition.status.equals('Approved')}">
+                    <p:commandButton action="#{disburseCash.selectRequisition(requisition)}" value="Disburse Money" onclick="PF('disburse_money_dialog').show()"/>
                 </p:column>
 
                 <p:column headerText="Approval Date" rendered="#{requisition.status.equals('Approved')}">
@@ -138,6 +142,19 @@
             <p:commandButton value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
         </p:confirmDialog>
 
+
+
+        <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" message="Transfer funds from Budgetline Acoount?"
+                         header="Disburse" icon="pi pi-exclamation-triangle">
+
+            <p:commandButton value="Transact" oncomplete="PF('disburse_money_dialog').hide()"
+                             actionListener="#{disburseCash.disburseCash}"
+                             update="statsForm, :requisitions_table_form:requisition_table, :new_requisition_form" />
+            <p:commandButton value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
+        </p:confirmDialog>
+
+
+
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Budgetlines?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
             <p:commandButton value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
@@ -154,14 +171,13 @@
                         <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
                         <f:selectItem itemLabel="Approve" itemValue="Approved"/>
                         <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>
-                        <f:selectItem itemLabel="Disburse Cash" itemValue="Paid"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Comment" for="comment"/>
-                    <p:inputTextarea id="comment" value="#{}" />
+                    <p:inputTextarea id="comment" value="#{updateRequisition.reviewComments}" />
 
-                    <p:outputLabel value="granted_amount" for="comment"/>
-                    <p:inputTextarea id="granted_amount" value="#{}" />
+                    <p:outputLabel value="granted_amount" for="granted_amount"/>
+                    <p:inputTextarea id="granted_amount" value="#{updateRequisition.amountGranted}" />
 
                     <p:commandButton value="Modify" actionListener="#{updateRequisition.updateRequisition}"
                                      onclick="PF('modify_status_dialog').hide()" update="statsForm, :tabForm:tabView, :requisitions_table_form:requisition_table, :new_requisition_form"/>

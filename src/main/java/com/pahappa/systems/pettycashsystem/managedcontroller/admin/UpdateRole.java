@@ -307,6 +307,10 @@ public class UpdateRole implements Serializable {
                 this.requisitionPermissions.add(Perm.MAKE_REQUISITION);
             }
 
+            if (perm.getName().equals(Perm.CASHOUT_REQUISITION)) {
+                this.requisitionPermissions.add(Perm.CASHOUT_REQUISITION);
+            }
+
             if (perm.getName().equals(Perm.APPROVE_REQUISITION)) {
                 this.requisitionPermissions.add(Perm.APPROVE_REQUISITION);
             }

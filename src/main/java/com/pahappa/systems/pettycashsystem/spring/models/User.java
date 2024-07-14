@@ -29,7 +29,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisition;
 
     public User() {}

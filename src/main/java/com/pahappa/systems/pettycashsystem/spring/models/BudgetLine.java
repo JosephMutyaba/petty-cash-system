@@ -31,7 +31,7 @@ public class BudgetLine {
     @Column(nullable = false)
     private String status="Pending";  // DRAFT/ APPROVED
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisitions;
 
     @ManyToOne(fetch = FetchType.EAGER)

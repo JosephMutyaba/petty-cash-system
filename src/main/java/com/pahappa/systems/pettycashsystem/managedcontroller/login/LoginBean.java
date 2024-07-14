@@ -36,6 +36,8 @@ public class LoginBean implements Serializable {
     private String email;
     private Role role;
 
+    private Double acc_bal;
+
     public String getUsername() {
         return username;
     }
@@ -84,6 +86,16 @@ public class LoginBean implements Serializable {
         this.role = role;
     }
 
+
+    public Double getAcc_bal() {
+
+        return loggedInUser.getAccountBalance();
+    }
+
+    public void setAcc_bal(Double acc_bal) {
+        this.acc_bal = acc_bal;
+    }
+
     public User getLoggedInUser() {
         return loggedInUser;
     }
@@ -105,6 +117,7 @@ public class LoginBean implements Serializable {
             this.role=loggedInUser.getRole();
             this.username=loggedInUser.getUsername();
             this.userPassword =loggedInUser.getPassword();
+            this.acc_bal=loggedInUser.getAccountBalance();
 
             return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
         }

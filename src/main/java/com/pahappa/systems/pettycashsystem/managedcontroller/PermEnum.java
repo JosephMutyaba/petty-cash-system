@@ -34,6 +34,6 @@ public class PermEnum implements Serializable {
     }
 
     public List<Perm> getPermissions() {
-        return Arrays.asList(Perm.REQUEST_CHANGES, Perm.VIEW_EMPLOYEES, Perm.VIEW_ROLES, Perm.VIEW_REQUISITIONS, Perm.VIEW_BUDGETLINES, Perm.VIEW_PERMISSIONS);
+        return Arrays.asList(Perm.REQUEST_CHANGES,Perm.CASHOUT_REQUISITION, Perm.VIEW_EMPLOYEES, Perm.VIEW_ROLES, Perm.VIEW_REQUISITIONS, Perm.VIEW_BUDGETLINES, Perm.VIEW_PERMISSIONS);
     }
 }

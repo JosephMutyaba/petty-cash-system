@@ -14,21 +14,34 @@
         <div class="main-content">
             <h2>Settings</h2>
             <h:form styleClass="settings">
-                <p:panelGrid columns="2">
-                    <span>First Name</span>
-                    <p:inputText placeholder="First Name" value="#{loginBean.firstname}"/>
-                    <span>Last Name</span>
-                    <p:inputText placeholder="Last Name" value="#{loginBean.lastname}"/>
-                    <span>Username</span>
-                    <p:inputText placeholder="Username" readonly="true" value="#{loginBean.username}"/>
-                    <span>Email</span>
-                    <p:inputText placeholder="Username" value="#{loginBean.email}"/>
-                    <span>Password</span>
-                    <p:password placeholder="Password" value="#{loginBean.userPassword}"/>
-                    <span>Role</span>
-                    <p:inputText placeholder="Role" readonly="true" disabled="true" value="#{loginBean.role.name}"/>
+                <diV style="display: flex; flex-direction: row; justify-content: space-evenly">
+                    <div>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="f_name" value="First name"/>
+                            <p:inputText id="f_name" placeholder="First Name" value="#{loginBean.firstname}"/>
+                            <p:outputLabel for="l_name" value="Last name"/>
+                            <p:inputText id="l_name" placeholder="Last Name" value="#{loginBean.lastname}"/>
+                            <p:outputLabel for="username" value="Username"/>
+                            <p:inputText id="username" placeholder="Username" readonly="true" value="#{loginBean.username}"/>
+                            <p:outputLabel for="email" value="Email"/>
+                            <p:inputText id="email" placeholder="Username" value="#{loginBean.email}"/>
+                        </p:panelGrid>
+                    </div>
+                    <div>
+                        <p:panelGrid columns="2">
 
-                </p:panelGrid>
+                            <p:outputLabel for="password" value="Password"/>
+                            <p:password id="password" placeholder="Password" value="#{loginBean.userPassword}"/>
+                            <p:outputLabel for="role" value="Role"/>
+                            <p:inputText id="role" placeholder="Role" readonly="true" value="#{loginBean.role.name}"/>
+                            <p:outputLabel for="acc_bal" value="Account Bal."/>
+                            <p:inputText id="acc_bal" readonly="true" value="#{loginBean.acc_bal}"/>
+
+                        </p:panelGrid>
+                    </div>
+                </diV>
+
+
                 <p:commandButton value="Save" icon="pi pi-file-edit" action="#{loginBean.updateLoggedInUser}"/>
             </h:form>
         </div>

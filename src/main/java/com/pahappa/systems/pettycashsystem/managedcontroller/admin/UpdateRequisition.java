@@ -49,6 +49,10 @@ public class UpdateRequisition implements Serializable {
 
     private Long budgetLineId;
 
+    private Double amountGranted;
+
+    private String reviewComments;
+
     private Requisition requisition;
 
     @PostConstruct
@@ -94,6 +98,22 @@ public class UpdateRequisition implements Serializable {
 
     public void setBudgetLine(BudgetLine budgetLine) {
         this.budgetLine = budgetLine;
+    }
+
+    public Double getAmountGranted() {
+        return amountGranted;
+    }
+
+    public void setAmountGranted(Double amountGranted) {
+        this.amountGranted = amountGranted;
+    }
+
+    public String getReviewComments() {
+        return reviewComments;
+    }
+
+    public void setReviewComments(String reviewComments) {
+        this.reviewComments = reviewComments;
     }
 
     public Double getRequestedAmount() {
@@ -152,6 +172,7 @@ public class UpdateRequisition implements Serializable {
         this.budgetLine = requisition.getBudgetline();
         this.requestedAmount=requisition.getEstimatedAmount();
         this.budgetLineId=requisition.getBudgetline().getId();
+        this.amountGranted=requisition.getAmountGranted();
 
         setBudgetLineId(requisition.getBudgetline().getId());
 
@@ -168,6 +189,11 @@ public class UpdateRequisition implements Serializable {
 
         requisition.setEstimatedAmount(requestedAmount);
         requisition.setAmountGranted(requestedAmount);
+
+        requisition.setAmountGranted(amountGranted);
+
+        requisition.setReview_comments(reviewComments);
+
         requisition.setStatus(status);
         requisition.setMaxDateNeeded(maxDate);
 //        requisition.setDateCreated(new Date());
