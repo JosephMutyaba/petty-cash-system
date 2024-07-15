@@ -8,8 +8,8 @@
     <ui:define name="main-content">
         <div class="main-content">
             <h2>Settings</h2>
-            <h:form styleClass="bg-white">
-                <p:panelGrid columns="4">
+            <h:form styleClass="flex column">
+                <p:panelGrid columns="4" styleClass="bg-white">
                     <p:outputLabel for="f_name" value="First name"/>
                     <p:inputText id="f_name" placeholder="First Name" value="#{loginBean.firstname}"/>
                     <p:outputLabel for="l_name" value="Last name"/>
@@ -28,7 +28,7 @@
                 </p:panelGrid>
 
 
-                <p:commandButton value="Save" icon="pi pi-file-edit" action="#{loginBean.updateLoggedInUser}"/>
+                <p:commandButton value="Save" icon="pi pi-file-edit" action="#{loginBean.updateLoggedInUser}" styleClass="mt"/>
             </h:form>
         </div>
     </ui:define>
