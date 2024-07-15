@@ -79,7 +79,7 @@ public class CreateUserRole implements Serializable {
 
     public void setViewEmployeesPermissions(Set<Perm> viewEmployeesPermissions) {
         if (viewEmployeesPermissions != null && !viewEmployeesPermissions.isEmpty()) {
-            this.viewEmployeesPermissions.add(permissionService.findByName(Perm.VIEW_EMPLOYEES));
+//            this.viewEmployeesPermissions.add(permissionService.findByName(Perm.VIEW_EMPLOYEES));
             for (Perm perm: viewEmployeesPermissions) {
                 this.viewEmployeesPermissions.add(permissionService.findByName(perm));
             }
@@ -92,7 +92,7 @@ public class CreateUserRole implements Serializable {
 
     public void setViewRolesPermissions(Set<Perm> viewRolesPermissions) {
         if (viewRolesPermissions != null && !viewRolesPermissions.isEmpty()) {
-            this.viewRolesPermissions.add(permissionService.findByName(Perm.VIEW_ROLES));
+//            this.viewRolesPermissions.add(permissionService.findByName(Perm.VIEW_ROLES));
             for (Perm perm: viewRolesPermissions) {
                 this.viewRolesPermissions.add(permissionService.findByName(perm));
             }
@@ -106,7 +106,7 @@ public class CreateUserRole implements Serializable {
 
     public void setViewRequisitionsPermissions(Set<Perm> viewRequisitionsPermissions) {
         if (viewRequisitionsPermissions != null && !viewRequisitionsPermissions.isEmpty()) {
-            this.viewRequisitionsPermissions.add(permissionService.findByName(Perm.VIEW_REQUISITIONS));
+//            this.viewRequisitionsPermissions.add(permissionService.findByName(Perm.VIEW_REQUISITIONS));
             for (Perm perm: viewRequisitionsPermissions) {
                 this.viewRequisitionsPermissions.add(permissionService.findByName(perm));
             }
@@ -120,7 +120,7 @@ public class CreateUserRole implements Serializable {
 
     public void setViewBudgetLinesPermissions(Set<Perm> viewBudgetLinesPermissions) {
         if (viewBudgetLinesPermissions != null && !viewBudgetLinesPermissions.isEmpty()) {
-            this.viewBudgetLinesPermissions.add(permissionService.findByName(Perm.VIEW_BUDGETLINES));
+//            this.viewBudgetLinesPermissions.add(permissionService.findByName(Perm.VIEW_BUDGETLINES));
             for (Perm perm: viewBudgetLinesPermissions) {
                 this.viewBudgetLinesPermissions.add(permissionService.findByName(perm));
             }
@@ -135,7 +135,7 @@ public class CreateUserRole implements Serializable {
     public void setViewPermissions(Set<Perm> viewPermissions) {
 
         if(viewPermissions != null && !viewPermissions.isEmpty()) {
-            this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
+//            this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
             for (Perm perm: viewPermissions) {
                 this.viewPermissions.add(permissionService.findByName(perm));
             }

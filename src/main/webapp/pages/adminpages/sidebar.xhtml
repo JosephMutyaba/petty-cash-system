@@ -10,11 +10,12 @@
             <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home"/>
             <p:menuitem value="Employees" outcome="/pages/adminpages/admin-employees" icon="pi pi-users" rendered="#{checkPermission.hasPermission('VIEW_EMPLOYEES')}"/>
             <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase" rendered="#{checkPermission.hasPermission('VIEW_ROLES')}"/>
-            <p:menuitem value="Requisitions" outcome="/pages/adminpages/admin-requisitions" icon="pi pi-file" rendered="#{checkPermission.hasPermission('VIEW_REQUISITIONS')}"/>
             <p:submenu label="Budgetlines" icon="pi pi-chart-bar" rendered="#{checkPermission.hasPermission('VIEW_BUDGETLINES')}">
-                <p:menuitem value="List" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-bars"/>
                 <p:menuitem value="Categories" outcome="/pages/adminpages/admin-budgetline-categories" icon="pi pi-filter" rendered="#{checkPermission.hasPermission('VIEW_EMPLOYEES')}"/>
+                <p:menuitem value="List" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-bars"/>
             </p:submenu>
+            <p:menuitem value="My Requisitions" outcome="/pages/adminpages/admin-requisitions" icon="pi pi-plus-circle" rendered="#{checkPermission.hasPermission('MAKE_REQUISITION')}"/>
+            <p:menuitem value="Requisitions" outcome="/pages/adminpages/admin-requisitions" icon="pi pi-file" rendered="#{checkPermission.hasPermission('VIEW_REQUISITIONS')}"/>
             <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog"/>
             <p:menuitem value="Logout" action="#{loginBean.logoutUser}" icon="pi pi-sign-out"/>
         </p:tieredMenu>

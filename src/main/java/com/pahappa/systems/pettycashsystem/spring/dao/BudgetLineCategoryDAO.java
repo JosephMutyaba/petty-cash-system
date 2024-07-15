@@ -36,8 +36,6 @@ public class BudgetLineCategoryDAO {
     }
 
 
-
-
     public void deleteBudgetLineCategory(Long id) {
         sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE budgetLineCategory.id = :categoryId")
                 .setParameter("categoryId", id)

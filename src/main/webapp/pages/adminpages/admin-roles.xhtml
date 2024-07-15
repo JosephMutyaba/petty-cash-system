@@ -59,7 +59,7 @@
                         <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>
 
-                    <p:outputLabel for="viewPermissions" value="View Permissions:"/>
+                    <p:outputLabel for="viewPermissions" value="Miscellaneous:"/>
                     <p:selectCheckboxMenu id="viewPermissions" value="#{createUserRole.viewPermissions}" label="Select Permissions">
                         <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                     </p:selectCheckboxMenu>

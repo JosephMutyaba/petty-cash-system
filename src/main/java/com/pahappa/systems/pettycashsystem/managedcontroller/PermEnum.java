@@ -18,22 +18,22 @@ public class PermEnum implements Serializable {
     private PermissionService permissionService;
 
     public List<Perm> getEmployeePermissions() {
-        return Arrays.asList(Perm.ADD_EMPLOYEE, Perm.DELETE_EMPLOYEE, Perm.EDIT_EMPLOYEE);
+        return Arrays.asList(Perm.VIEW_EMPLOYEES,Perm.ADD_EMPLOYEE, Perm.DELETE_EMPLOYEE, Perm.EDIT_EMPLOYEE);
     }
 
     public List<Perm> getRolePermissions() {
-        return Arrays.asList(Perm.ADD_ROLE, Perm.DELETE_ROLE, Perm.EDIT_ROLE);
+        return Arrays.asList(Perm.VIEW_ROLES,Perm.ADD_ROLE, Perm.DELETE_ROLE, Perm.EDIT_ROLE);
     }
 
     public List<Perm> getRequisitionPermissions() {
-        return Arrays.asList(Perm.MAKE_REQUISITION, Perm.APPROVE_REQUISITION, Perm.REJECT_REQUISITION, Perm.EDIT_REQUISITION, Perm.DELETE_REQUISITION);
+        return Arrays.asList(Perm.VIEW_REQUISITIONS,Perm.MAKE_REQUISITION, Perm.APPROVE_REQUISITION, Perm.REJECT_REQUISITION, Perm.EDIT_REQUISITION, Perm.DELETE_REQUISITION,Perm.CASHOUT_REQUISITION);
     }
 
     public List<Perm> getBudgetLinePermissions() {
-        return Arrays.asList(Perm.MAKE_BUDGETLINE, Perm.APPROVE_BUDGETLINE, Perm.REJECT_BUDGETLINE, Perm.EDIT_BUDGETLINE, Perm.DELETE_BUDGETLINE);
+        return Arrays.asList(Perm.VIEW_BUDGETLINES,Perm.MAKE_BUDGETLINE, Perm.APPROVE_BUDGETLINE, Perm.REJECT_BUDGETLINE, Perm.EDIT_BUDGETLINE, Perm.DELETE_BUDGETLINE);
     }
 
     public List<Perm> getPermissions() {
-        return Arrays.asList(Perm.REQUEST_CHANGES,Perm.CASHOUT_REQUISITION, Perm.VIEW_EMPLOYEES, Perm.VIEW_ROLES, Perm.VIEW_REQUISITIONS, Perm.VIEW_BUDGETLINES, Perm.VIEW_PERMISSIONS);
+        return Arrays.asList(Perm.REQUEST_CHANGES);
     }
 }
