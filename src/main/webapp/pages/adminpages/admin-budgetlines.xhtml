@@ -36,12 +36,12 @@
             </p:tabView>
         </h:form>
 
-        <div class="actions">
+        <div class="bg-white pad1">
             <h:form id="add_delete_buttons">
-                <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
+                <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
                     <p:autoUpdate/>
                 </p:commandButton>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()"/>
             </h:form>
         </div>
 
@@ -103,7 +103,7 @@
                     <p:calendar id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
 
                     <p:outputLabel for="amount" value="Amount:"/>
-                    <p:inputText id="amount" value="#{createBudgetLine.amount}" required="true" />
+                    <p:inputNumber id="amount" value="#{createBudgetLine.amount}" required="true" />
 
                     <p:outputLabel for="category" value="Category:"/>
                     <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}">
@@ -131,7 +131,7 @@
                     <p:calendar id="end_date" value="#{updateBudgetLine.endDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
 
                     <p:outputLabel for="am_ount" value="Amount:"/>
-                    <p:inputText id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
+                    <p:inputNumber id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
 
                     <p:outputLabel for="categor_y" value="Category:"/>
                     <p:selectOneMenu id="categor_y" value="#{updateBudgetLine.budgetLineCategoryName}">

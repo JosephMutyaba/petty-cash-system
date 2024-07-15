@@ -2,18 +2,19 @@
 * {box-sizing: border-box;margin: 0;padding: 0;font-family:'Work Sans',Arsenal,sans-serif}
 :root {
     --mar: 4px;
+    --pad: 8px;
     --red: #f35;
     --grn: #9f5;
 }
 .container {
     display: grid;
-    grid-template-columns: 250px auto;
+    grid-template-columns: 280px auto;
     grid-auto-flow: column;
     z-index:-10;
 }
 .sidebar {
     padding: 15px;
-    height: 60vh;
+    height: 90vh;
     position: sticky;
     top: 0;
     z-index: 5;
@@ -46,18 +47,48 @@
     /*box-shadow: 0 0 10px #ccc;*/
 }
 
+.image {
+    border: dashed 1px #aaa;
+    display: grid;
+    grid-template-columns: auto 36px;
+    grid-auto-flow: row;
+}
+
+body .ui-panelgrid .ui-panelgrid-cell,
+.ui-button,
+.no-border
+{border: none!important}
+
 /*Styles*/
-.mr {margin-right:var(--mar)!important} .ml {margin-left:var(--mar)!important}
-.mt {margin-top:var(--mar)!important} .mb {margin-bottom:var(--mar)!important}
-.m {margin:var(--mar)!important} .m-none {margin:0!important}
-.ui-button {border:none!important}
+/*Margins*/
+.mr {margin-right:var(--mar)!important}
+.ml {margin-left:var(--mar)!important}
+.mt {margin-top:var(--mar)!important}
+.mb {margin-bottom:var(--mar)!important}
+.m {margin:var(--mar)!important}
+.m-none {margin:0!important}
+.m-auto {margin:auto}
 
-.bg-r {background-color:var(--red)!important} .bg-g {background-color:var(--grn)!important}
+/*Radii & Padding*/
+.pad1 {padding:var(--pad) !important}
+.pad2 {padding:calc(var(--pad)*2) !important}
+.pill {border-radius: 10000px!important}
+.rad1 {border-radius: 12px!important}
+.rad2 {border-radius: 24px!important}
+
+/*Colors for Background and text*/
+.bg-r {background-color:var(--red)!important}
+.bg-g {background-color:var(--grn)!important}
 .bg-white {background-color:#fff!important}
-.text-r {color:var(--red)!important} .text-g {color:var(--grn)!important}
+.bg-cream {background-color:mintcream!important}
+.bg-none {background-color:#0000!important}
+.text-r {color:var(--red)!important}
+.text-g {color:var(--grn)!important}
 
-.fillW {width:-webkit-fill-available!important}  .fillH {height:-webkit-fill-available!important}
+/*sizing and arrangement*/
+.fillW {width:-webkit-fill-available!important}
+.fillH {height:-webkit-fill-available!important}
 .flex {display:flex}
-.row {flex-direction:row} .column {flex-direction:column}
-
-#_ {}
+.row {flex-direction:row}
+.column {flex-direction:column}
+.square {width: 36px!important;height: 36px!important;}
