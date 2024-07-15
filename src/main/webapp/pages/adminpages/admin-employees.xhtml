@@ -125,7 +125,7 @@
                     <h:message for="emai_l" styleClass="error"/>
 
                     <h:outputLabel for="pass_word" value="Password:" styleClass="label"/>
-                    <p:password id="pass_word" value="#{updateEmployee.password}" required="true" styleClass="input">
+                    <p:password id="pass_word" redisplay="true" value="#{updateEmployee.password}" required="true" styleClass="input">
                         <f:validateLength minimum="6" maximum="20"/>
                     </p:password>
                     <h:message for="pass_word" styleClass="error"/>

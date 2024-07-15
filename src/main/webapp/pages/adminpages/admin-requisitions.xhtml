@@ -31,7 +31,7 @@
                 <p:tab id="pendingTab" title="Pending"/>
                 <p:tab id="approvedTab" title="Approved"/>
                 <p:tab id="rejectedTab" title="Rejected"/>
-                <p:tab id="paid" title="paid"/>
+                <p:tab id="paid" title="Paid"/>
             </p:tabView>
         </h:form>
 
@@ -176,8 +176,8 @@
                     <p:outputLabel value="Comment" for="comment"/>
                     <p:inputTextarea id="comment" value="#{updateRequisition.reviewComments}" />
 
-                    <p:outputLabel value="granted_amount" for="granted_amount"/>
-                    <p:inputTextarea id="granted_amount" value="#{updateRequisition.amountGranted}" />
+                    <p:outputLabel type="number" for="granted_amount" value="Granted Amount"/>
+                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" />
 
                     <p:commandButton value="Modify" actionListener="#{updateRequisition.updateRequisition}"
                                      onclick="PF('modify_status_dialog').hide()" update="statsForm, :tabForm:tabView, :requisitions_table_form:requisition_table, :new_requisition_form"/>

@@ -1,0 +1,14 @@
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="image"/>
+        <cc:attribute name="action" type="javax.el.MethodExpression"/>
+        <cc:attribute name="update" type="java.lang.String"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGroup class="pad1 flex row rad1">
+            <p:graphicImage value="#{cc.attrs.image}" styleClass="fillW"/>
+            <p:commandButton action="#{cc.attrs.action}" update="#{cc.attrs.update}" icon="pi pi-trash" styleClass="bg-none text-r pill square" style="position: relative;top:0;right:0;z-index:10"/>
+        </h:panelGroup>
+    </cc:implementation>
+</ui:component>
