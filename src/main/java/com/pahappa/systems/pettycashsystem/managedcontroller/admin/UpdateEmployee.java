@@ -1,5 +1,6 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.RoleService;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -33,8 +36,6 @@ public class UpdateEmployee implements Serializable {
     private List<Role> roles;
     private String username;
     private User user;
-
-
 
     @PostConstruct
     public void init() {
@@ -125,16 +126,20 @@ public class UpdateEmployee implements Serializable {
         user.setLastname(lastName);
         user.setEmail(email);
 
-        userService.updateUser(user);
+        try {
+            userService.updateUser(user);
 
-        //clear the fields
-        this.role=null;
-        this.roleName=null;
-        this.firstName=null;
-        this.lastName=null;
-        this.email=null;
-        this.password=null;
-        this.username=null;
+            //clear the fields
+            this.role=null;
+            this.roleName=null;
+            this.firstName=null;
+            this.lastName=null;
+            this.email=null;
+            this.password=null;
+            this.username=null;
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
+        }
     }
 
     public void selectedUser(User userSelected){

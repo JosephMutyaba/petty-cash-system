@@ -92,4 +92,11 @@ public class UserDAO {
             return false;
         }
     }
+
+    public User getUserByUsername(String username) {
+        return (User) getCurrentSession()
+                .createQuery("from User where username=:username")
+                .setParameter("username", username)
+                .uniqueResult();
+    }
 }

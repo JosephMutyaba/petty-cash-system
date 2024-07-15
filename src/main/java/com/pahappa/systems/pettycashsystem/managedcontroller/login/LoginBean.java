@@ -1,5 +1,6 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.login;
 
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 @ManagedBean
@@ -88,11 +91,13 @@ public class LoginBean implements Serializable {
 
 
     public Double getAcc_bal() {
+        this.acc_bal=userService.getUserById(loggedInUser.getId()).getAccountBalance();
         return userService.getUserById(loggedInUser.getId()).getAccountBalance();
         //        return loggedInUser.getAccountBalance();
     }
 
     public void setAcc_bal(Double acc_bal) {
+
         this.acc_bal = acc_bal;
     }
 
@@ -134,6 +139,10 @@ public class LoginBean implements Serializable {
         loggedInUser.setRole(role);
         loggedInUser.setUsername(username);
         loggedInUser.setPassword(userPassword);
-        userService.updateUser(loggedInUser);
+        try {
+            userService.updateUser(loggedInUser);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", e.getMessage()));
+        }
     }
 }

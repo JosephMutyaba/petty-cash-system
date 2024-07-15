@@ -1,11 +1,15 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
+import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.dao.RequisitionDAO;
+import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,7 +23,8 @@ public class RequisitionService {
         this.requisitionDAO = requisitionDAO;
     }
 
-    public void createRequisition(Requisition requisition) {
+    public void createRequisition(Requisition requisition) throws IncompatibleDatesException, NullFieldException {
+        validateRequisition(requisition);
         requisitionDAO.createRequisition(requisition);
     }
 
@@ -31,7 +36,8 @@ public class RequisitionService {
         return requisitionDAO.getAllRequisitions();
     }
 
-    public void updateRequisition(Requisition requisition) {
+    public void updateRequisition(Requisition requisition) throws IncompatibleDatesException, NullFieldException {
+        validateRequisition(requisition);
         requisitionDAO.updateRequisition(requisition);
     }
 
@@ -45,5 +51,36 @@ public class RequisitionService {
 
     public void deleteRequisitionsByStatus(String status) {
         requisitionDAO.deleteRequisitionsByStatus(status);
+    }
+
+    public void validateRequisition(Requisition requisition) throws NullFieldException, IncompatibleDatesException {
+        if (requisition.getJustification()==null || requisition.getJustification().trim().isEmpty()) {
+            throw new NullFieldException("Justification must be filled");
+        }
+
+        if (requisition.getMaxDateNeeded()==null) {
+            throw new NullFieldException("Date needed field cannot be empty");
+        }
+
+        if (requisition.getMaxDateNeeded().before(new Date())) {
+            throw new NullFieldException("Date needed cannot be in the past.");
+        }
+
+        if (requisition.getEstimatedAmount().isNaN()) {
+            throw new NullFieldException("Amount requested should be a number");
+        }
+
+        if (requisition.getEstimatedAmount()==null) {
+            throw new NullFieldException("Amount cannot be empty");
+        }
+
+        if (requisition.getEstimatedAmount()<1000.0) {
+            throw new NullFieldException("Amount cannot be less than 1,000");
+        }
+
+        if (requisition.getEstimatedAmount()>requisition.getBudgetline().getBalance()){
+            throw new NullFieldException("You cannot requisite more than"+requisition.getBudgetline().getBalance());
+        }
+
     }
 }

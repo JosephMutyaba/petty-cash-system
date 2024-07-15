@@ -19,4 +19,8 @@
             org.primefaces.application.DialogViewHandler
         </view-handler>
     </application>
+    <validator>
+        <validator-id>usernameVal</validator-id>
+        <validator-class>com.pahappa.systems.pettycashsystem.spring.validators.UsernameValidator</validator-class>
+    </validator>
 </faces-config>

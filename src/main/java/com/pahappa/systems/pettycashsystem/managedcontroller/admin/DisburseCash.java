@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -72,16 +76,23 @@ public class DisburseCash implements Serializable {
         // setting requisition status to paid
         requisition.setStatus("Paid");
 
-        //updating the db
-        requisitionService.updateRequisition(requisition);
-        userService.updateUser(user);
-        budgetLineService.updateBudgetLine(budgetLine);
 
-        //updating the requisitions table
-        allRequisitions.update();
+        try {
+            //updating the db
+            requisitionService.updateRequisition(requisition);
+            userService.updateUser(user);
+            budgetLineService.updateBudgetLine(budgetLine);
 
-        //updating budgetLines table
-        allBudgetLines.update();
+            //updating the requisitions table
+            allRequisitions.update();
+
+            //updating budgetLines table
+            allBudgetLines.update();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
+        }
+
+
 
         //clearing the requisition
         requisition=new Requisition();

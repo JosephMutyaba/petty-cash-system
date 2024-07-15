@@ -1,5 +1,8 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.MinimumLengthException;
+import com.pahappa.systems.pettycashsystem.exceptions.NameExistsException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -155,17 +160,23 @@ public class CreateUserRole implements Serializable {
 
         role.setPermissions(allPermissions);
 
-        roleService.createRole(role);
+        try {
+            roleService.createRole(role);
+            allRoles.init();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+        }finally {
+            this.role = new Role();
+            this.roleName = null;
+            this.roleDescription = null;
+            this.viewEmployeesPermissions.clear();
+            this.viewRolesPermissions.clear();
+            this.viewRequisitionsPermissions.clear();
+            this.viewBudgetLinesPermissions.clear();
+            this.viewPermissions.clear();
+        }
 
-        allRoles.init();
 
-        this.role = new Role();
-        this.roleName = null;
-        this.roleDescription = null;
-        this.viewEmployeesPermissions.clear();
-        this.viewRolesPermissions.clear();
-        this.viewRequisitionsPermissions.clear();
-        this.viewBudgetLinesPermissions.clear();
-        this.viewPermissions.clear();
+
     }
 }

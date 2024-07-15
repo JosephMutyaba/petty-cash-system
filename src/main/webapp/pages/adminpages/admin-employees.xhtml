@@ -94,7 +94,14 @@
                     </p:inputText>
                     <h:message for="username" styleClass="error"/>
                 </h:panelGrid>
-                <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="button" update="addUserForm globalMessages" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable()" />
+                <h:outputScript>
+                    function validateAndClose(a,b,c) {
+                        if (!c.validateFailed) {
+                            PF('addUserDialog').hide();
+                        }
+                    }
+                </h:outputScript>
+                <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="button" update="addUserForm:globalMessages" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable()" />
 
                 <h:messages globalOnly="true" styleClass="messages" id="globalMessages"/>
             </h:form>

@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.managedcontroller.login.LoginBean;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -198,7 +202,11 @@ public class UpdateRequisition implements Serializable {
         requisition.setMaxDateNeeded(maxDate);
 //        requisition.setDateCreated(new Date());
 
-        requisitionService.updateRequisition(requisition);
+        try {
+            requisitionService.updateRequisition(requisition);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+        }
 
         allRequisitions.update();
         //////////

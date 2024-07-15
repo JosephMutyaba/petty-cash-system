@@ -1,5 +1,8 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.MinimumLengthException;
+import com.pahappa.systems.pettycashsystem.exceptions.NameExistsException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -394,9 +399,15 @@ public class UpdateRole implements Serializable {
 
         role.setPermissions(allPermissions);
 
-        roleService.updateRole(role);
+        try {
+            roleService.updateRole(role);
 
-        clearVals();
+            clearVals();
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+        }
+
     }
 
     public void clearVals(){

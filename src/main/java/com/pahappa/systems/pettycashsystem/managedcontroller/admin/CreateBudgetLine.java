@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLineCategory;
 import com.pahappa.systems.pettycashsystem.spring.services.BudgetLineCategoryService;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
@@ -110,7 +114,11 @@ public class CreateBudgetLine implements Serializable {
         budgetLineCategory=budgetLineCategoryService.getBudgetLineCategoryByName(budgetLineCategoryName);
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 
-        budgetLineService.createBudgetLine(budgetLine);
+        try {
+            budgetLineService.createBudgetLine(budgetLine);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+        }
         allBudgetLines.update();
 //        return "/pages/auth/login.xhtml?faces-redirect=true";
         setAmount(null);

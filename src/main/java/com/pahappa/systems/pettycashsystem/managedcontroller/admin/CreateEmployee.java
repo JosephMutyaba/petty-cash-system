@@ -1,13 +1,17 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.RoleService;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
+import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -127,15 +131,24 @@ public class CreateEmployee implements Serializable {
         user.setLastname(lastName);
         user.setEmail(email);
 
-        userService.createUser(user);
+        try {
+            userService.createUser(user);
 
-        //clear the fields
-        this.role=null;
-        this.roleName=null;
-        this.firstName=null;
-        this.lastName=null;
-        this.email=null;
-        this.password=null;
-        this.username=null;
+            //clear the fields
+            this.role=null;
+            this.roleName=null;
+            this.firstName=null;
+            this.lastName=null;
+            this.email=null;
+            this.password=null;
+            this.username=null;
+
+            PrimeFaces.current().executeScript("PF('addUserDialog').hide()");
+            PrimeFaces.current().ajax().update("form:usersTable");
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage("addUserForm:messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            PrimeFaces.current().ajax().update("addUserForm:messages");
+        }
     }
 }
