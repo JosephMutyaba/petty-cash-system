@@ -25,7 +25,7 @@ public class UserService {
     }
 
     // Read operation: Get user by ID
-    public User getUserById(int userId) {
+    public User getUserById(Long userId) {
         return userDAO.getUserById(userId);
     }
 

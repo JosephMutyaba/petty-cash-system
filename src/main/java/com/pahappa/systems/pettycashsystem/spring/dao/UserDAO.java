@@ -27,7 +27,7 @@ public class UserDAO {
     }
 
     // Read operation: Get user by ID
-    public User getUserById(int userId) {
+    public User getUserById(Long userId) {
         return getCurrentSession().get(User.class, userId);
     }
 

@@ -88,8 +88,8 @@ public class LoginBean implements Serializable {
 
 
     public Double getAcc_bal() {
-
-        return loggedInUser.getAccountBalance();
+        return userService.getUserById(loggedInUser.getId()).getAccountBalance();
+        //        return loggedInUser.getAccountBalance();
     }
 
     public void setAcc_bal(Double acc_bal) {
