@@ -53,6 +53,7 @@
 .ui-button {border:none!important}
 
 .bg-r {background-color:var(--red)!important} .bg-g {background-color:var(--grn)!important}
+.bg-white {background-color:#fff!important}
 .text-r {color:var(--red)!important} .text-g {color:var(--grn)!important}
 
 .fillW {width:-webkit-fill-available!important}  .fillH {height:-webkit-fill-available!important}
