@@ -59,7 +59,7 @@
                     <p:outputLabel for="role_description" value="Description:"/>
                     <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
                     <p:selectManyCheckbox id="par100" columns="4" required="true" hideNoSelectionOption="true" label="Permissions" value="#{updateRole.rolePermissions}">
-                        <f:selectItems value="#{allPermissions.permissirole uionsList}" var="permisison" itemLabel="#{permisison.definition}" itemValue="#{permisison}"/>
+                        <f:selectItems value="#{allPermissions.permissionsList}" var="permisison" itemLabel="#{permisison.definition}" itemValue="#{permisison}"/>
                     </p:selectManyCheckbox>
                     <h:outputScript>
                         document.querySelector("#par100").parentElement.className = "ui-panelgrid-cell ui-g-12 ui-md-12"
