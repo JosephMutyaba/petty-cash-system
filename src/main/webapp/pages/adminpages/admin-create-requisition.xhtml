@@ -46,7 +46,7 @@
                         <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages requisition_from" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                                         update="globalMessages requisition_form" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                         <p:messages globalOnly="true" id="globalMessages"/>
                     </div>
                 </h:form>
@@ -56,26 +56,34 @@
                         <h:panelGroup styleClass="flex row pad1">
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="" required="true"/>
+                                <p:inputNumber id="ac_amt_used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
-                                <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value=""/>
+                                <p:inputTextarea id="ac_description" styleClass="mb mt" value="#{createAccountability.description}"/>
                             </h:panelGroup>
                         </h:panelGroup>
                         <div>
-                            <p:commandButton value="Add Image" icon="pi pi-plus" styleClass="mt pill"/>
+                            <p:panel header="Upload Image">
+                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" auto="true" update="imagePreview messages" />
+                                <p:messages globalOnly="true" id="messages" />
+                                <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
+                            </p:panel>
                         </div>
-                        <p:panelGrid columns="3" id="images" styleClass="pad1">
-                            <pcs:image id="image" image="https://imgs.search.brave.com/o3iyKswXLfPlG8mqK7Tn0p1bi4duwqxMoquE_PkfG_I/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNDgz/MzcxNjM3L3Bob3Rv/L3JlY2VpcHQuanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPXRP/RXUwR3FnR0pCV2Jx/QVpVb09iblNXSFZK/clRDNEtfN0NiZXVu/ZkRxQnM9"/>
-                        </p:panelGrid>
+
                         <div>
-                            <p:commandButton value="Submit Accountability" icon="pi pi-upload" styleClass="mt pill"/>
+                            <p:commandButton value="Submit Accountability" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
                         </div>
                     </h:form>
                 </h:panelGroup>
             </p:tab>
             <p:tab title="History">
+                <p:tabView>
+                    <p:ajax event="tabChange" />
+                    <p:tab id="completedTab" title="COMPLETED"/>
+                    <p:tab id="rejectedTab" title="REJECTED"/>
+                    <p:tab id="expiredTab" title="EXPIRED"/>
+                </p:tabView>
                 <h:form>
                     <p:dataTable paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{loginBean.loggedInUser.requisition}" var="requisition">
                         <p:column headerText="No." width="12px">
