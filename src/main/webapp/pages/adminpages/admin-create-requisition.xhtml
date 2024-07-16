@@ -9,7 +9,7 @@
     <ui:define name="main-content">
         <p:tabView>
             <p:tab title="Current">
-                <h2 class="mb">Create Requisition</h2>
+                <h2 class="mb">#{myRequisitionHandler.status.equals(null)?'Create':'Pending'} Requisition</h2>
                 <h:form id="requisition_form" styleClass="pad2 mb flex column">
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
