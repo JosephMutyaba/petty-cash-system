@@ -38,10 +38,10 @@
 
         <div class="bg-white pad1">
             <h:form id="add_delete_buttons">
-                <p:commandButton rendered="#{allBudgetLines.activeTab == 0}" value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
+                <p:commandButton rendered="#{allBudgetLines.activeTab == 0 and checkPermission.hasPermission('MAKE_BUDGETLINE')}" value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
                     <p:autoUpdate/>
                 </p:commandButton>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
 
