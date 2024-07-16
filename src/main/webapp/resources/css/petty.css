@@ -43,8 +43,7 @@
     width: 48%;
     background-color: #fafafa;
     border-radius: 4px;
-    height: 300px;
-    /*box-shadow: 0 0 10px #ccc;*/
+    box-shadow: 0 0 10px #ccc;
 }
 
 .image {
