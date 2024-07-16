@@ -83,4 +83,9 @@ public class RequisitionService {
         }
 
     }
+
+
+    public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
+        return requisitionDAO.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(userId);
+    }
 }

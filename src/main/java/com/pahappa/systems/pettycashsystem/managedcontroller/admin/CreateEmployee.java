@@ -120,6 +120,9 @@ public class CreateEmployee implements Serializable {
     }
 
     public void createEmployee() {
+
+        FacesContext context= FacesContext.getCurrentInstance();
+
         User user=new User();
         user.setUsername(username);
         user.setPassword(password);
@@ -143,12 +146,9 @@ public class CreateEmployee implements Serializable {
             this.password=null;
             this.username=null;
 
-            PrimeFaces.current().executeScript("PF('addUserDialog').hide()");
-            PrimeFaces.current().ajax().update("form:usersTable");
-
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage("addUserForm:messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
-            PrimeFaces.current().ajax().update("addUserForm:messages");
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            context.validationFailed();
         }
     }
 }

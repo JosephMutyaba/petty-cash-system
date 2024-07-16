@@ -1,10 +1,10 @@
-<!-- admin.xhtml -->
 <ui:composition template="temp.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:pcs="http://java.sun.com/jsf/composite/pcs">
+    <f:event type="preRenderView" listener="#{myRequisitionHandler.selectRequisition}"/>
     <ui:define name="title">My Requisitions</ui:define>
     <ui:define name="main-content">
         <p:tabView>
@@ -14,34 +14,39 @@
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="budgetline" value="Budget Line"/>
-                            <p:selectOneMenu id="budgetline" placeholder="Budgetline" value="#{createRequisition.budgetLineId}">
-                                <p:ajax event="change" update="requisition_form" listener="#{createRequisition.updateBudgetLine()}"/>
-                                <f:selectItem value="#{null}" itemLabel="Select One" itemDisabled="true"/>
-                                <f:selectItems value="#{createRequisition.budgetLines}" var="budgetline" itemValue="#{budgetline.id}" itemLabel="#{budgetline.description}"/>
+                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}">
+                                <f:selectItem value="#{null}" itemLabel="Choose Budgetline" />
+                                <f:selectItems value="#{myRequisitionHandler.budgetLines}" var="budgetline" itemValue="#{budgetline.id}" itemLabel="#{budgetline.description}"/>
                             </p:selectOneMenu>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber id="amount" disabled="#{createRequisition.budgetLine == null}" maxValue="#{createRequisition.budgetLine.balance}" placeholder="Amount" value="#{createRequisition.requestedAmount}"/>
+                            <p:inputNumber id="amount" maxValue="#{myRequisitionHandler.budgetLine.balance}" value="#{myRequisitionHandler.requestedAmount}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="status" value="Status"/>
-                            <p:inputText id="status" placeholder="Status" readonly="true" value="DRAFT"/>
+                            <p:inputText id="status" placeholder="Status" readonly="true" value="#{myRequisitionHandler.status}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="date_needed" value="Date Needed"/>
-                            <p:calendar id="date_needed" mindate="c" placeholder="Date Needed" value="#{createRequisition.maxDate}"/>
+                            <p:calendar id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="justification" value="Justification"/>
-                            <p:inputTextarea id="justification" placeholder="Description..." value="#{createRequisition.justification}"/>
+                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}"/>
+                        </h:panelGroup>
+                        <h:panelGroup class="flex column" rendered="#{myRequisitionHandler.status.equals('Approved') or myRequisitionHandler.status.equals('Paid')}">
+                            <p:outputLabel for="amountGranted" value="Amount Granted"/>
+                            <p:inputTextarea id="amountGranted" value="#{myRequisitionHandler.amountGranted}"/>
                         </h:panelGroup>
                     </p:panelGrid>
-                    <div><p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill"
-                                          actionListener="#{createRequisition.createRequisition}"
-                                          onclick="PF('new_requisition_dialog').hide()" update="requisition_form"/></div>
+                    <div>
+                        <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
+                                         update="requisition_form globalMessages" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                        <p:messages globalOnly="true" id="globalMessages"/>
+                    </div>
                 </h:form>
-                <h:panelGroup rendered="true" styleClass="mt pad2">
+                <h:panelGroup rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
                     <h3 class="mb">Accountability</h3>
                     <h:form styleClass="flex column">
                         <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
@@ -55,36 +60,39 @@
                         <div>
                             <p:commandButton value="Submit Accountability" icon="pi pi-upload" styleClass="mt pill"/>
                         </div>
-
                     </h:form>
                 </h:panelGroup>
             </p:tab>
             <p:tab title="History">
-                <p:dataTable paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{loginBean.loggedInUser.requisition}" var="requisition">
-                    <p:column headerText="No." width="12px">
-                        #{loginBean.loggedInUser.requisition.indexOf(requisition) + 1}
-                    </p:column>
-                    <p:column headerText="Description">
-                        #{requisition.justification}
-                    </p:column>
-                    <p:column headerText="Status">
-                        #{requisition.status}
-                    </p:column>
-                    <p:column headerText="Requested">
-                        #{requisition.estimatedAmount}
-                    </p:column>
-                    <p:column headerText="Granted">
-                        #{requisition.amountGranted}
-                    </p:column>
-                    <p:column headerText="Budget Line">
-                        #{requisition.budgetline.description}
-                    </p:column>
-                    <p:column headerText="Date Approved">
-                        #{requisition.dateApproved}
-                    </p:column>
-                </p:dataTable>
+                <h:form>
+                    <p:dataTable paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{loginBean.loggedInUser.requisition}" var="requisition">
+                        <p:column headerText="No." width="12px">
+                            #{loginBean.loggedInUser.requisition.indexOf(requisition) + 1}
+                        </p:column>
+                        <p:column headerText="Description">
+                            #{requisition.justification}
+                        </p:column>
+                        <p:column headerText="Status">
+                            #{requisition.status}
+                        </p:column>
+                        <p:column headerText="Requested">
+                            #{requisition.estimatedAmount}
+                        </p:column>
+                        <p:column headerText="Granted">
+                            #{requisition.amountGranted}
+                        </p:column>
+                        <p:column headerText="Budget Line">
+                            #{requisition.budgetline.description}
+                        </p:column>
+                        <p:column headerText="Date Approved">
+                            #{requisition.dateApproved}
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </p:tab>
         </p:tabView>
-
     </ui:define>
 </ui:composition>
+
+
+

@@ -66,13 +66,13 @@ public class UpdateRole implements Serializable {
     public void init() {
         role = new Role();
 
-        viewEmployeesPermissions = new HashSet<>();
-        viewRolesPermissions = new HashSet<>();
-        viewRequisitionsPermissions = new HashSet<>();
-        viewBudgetLinesPermissions = new HashSet<>();
-        viewPermissions = new HashSet<>();
+        viewEmployeesPermissions = new HashSet<Permission>();
+        viewRolesPermissions = new HashSet<Permission>();
+        viewRequisitionsPermissions = new HashSet<Permission>();
+        viewBudgetLinesPermissions = new HashSet<Permission>();
+        viewPermissions = new HashSet<Permission>();
 
-        allPermissions = new HashSet<>();
+        allPermissions = new HashSet<Permission>();
 
 
 

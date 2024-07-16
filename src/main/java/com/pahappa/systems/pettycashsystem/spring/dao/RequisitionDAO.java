@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -53,4 +54,13 @@ public class RequisitionDAO {
                 .setParameter("status", status)
                 .executeUpdate();
     }
+
+    public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
+        return (Requisition) sessionFactory.getCurrentSession()
+                .createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded > CURRENT_DATE ")
+                .setParameterList("statuses", Arrays.asList("Pending", "Approved", "Paid"))
+                .setParameter("userId", userId)
+                .uniqueResult();
+    }
+
 }

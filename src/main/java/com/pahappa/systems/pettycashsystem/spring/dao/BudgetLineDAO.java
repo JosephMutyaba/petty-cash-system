@@ -43,7 +43,7 @@ public class BudgetLineDAO {
     }
 
     public List<BudgetLine> getAllBudgetlinesByStatus(String budgetLineStatus) {
-        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status=:budgetlineStatus")
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status=:budgetlineStatus AND endDate>CURRENT_DATE ")
                 .setParameter("budgetlineStatus", budgetLineStatus)
                 .getResultList();
     }
