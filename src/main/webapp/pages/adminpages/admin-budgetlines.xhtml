@@ -67,13 +67,13 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-file-edit" styleClass="bg-g mr mb" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
-                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
+                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
             </p:column>
             <p:column rendered="#{allBudgetLines.activeTab == 0||allBudgetLines.activeTab == 3}" headerText="Status">
                 <h:form>
-                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="bg-g" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
+                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
             <p:column headerText="Category">
@@ -87,9 +87,9 @@
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_budgetline_dialog" width="500px" header="Create New Budgetline" modal="true">
+        <p:dialog widgetVar="new_budgetline_dialog" header="Create New Budgetline" modal="true">
             <h:form id="new_budgetline_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <p:panelGrid columns="2" layout="tabular">
                     <p:outputLabel for="description" value="Description:"/>
                     <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false">
                         <f:validateRequired/>
@@ -110,17 +110,17 @@
                         <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                     </p:selectOneMenu>
 
-                    <p:commandButton value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
                                      onclick="PF('new_budgetline_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
-                    <p:commandButton value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
 
 
-        <p:dialog id="edit_budgetline_dialog" widgetVar="edit_budgetline_dialog" width="500px" header="Edit Budgetline" modal="true">
+        <p:dialog id="edit_budgetline_dialog" widgetVar="edit_budgetline_dialog" header="Edit Budgetline" modal="true">
             <h:form id="edit_budgetline_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <p:panelGrid columns="2" layout="tabular">
                     <p:outputLabel for="desc" value="Description:"/>
                     <p:inputText id="desc" value="#{updateBudgetLine.description}" required="true" autocomplete="false"/>
 
@@ -138,32 +138,32 @@
                         <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                     </p:selectOneMenu>
 
-                    <p:commandButton value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}"
                                      onsuccess="PF('edit_budgetline_dialog').hide()" update=":tabForm:tabView, budgetlines_table, :new_budgetline_form"/>
-                    <p:commandButton value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
 
         <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Budgetline?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
-            <p:commandButton value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
+            <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
                              actionListener="#{deleteBudgetlines.deleteSpecificBudgetLine}"
                              update=":statsForm, :budgetlines_table, :new_budgetline_form" />
-            <p:commandButton value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
+            <p:commandButton icon="pi pi-save" styleClass="pill bg-g" value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
         </p:confirmDialog>
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Budgetlines?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
-            <p:commandButton value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
+            <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
                              actionListener="#{deleteBudgetlines.deleteAllBudgetLinesOfStatus}"
             update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
-            <p:commandButton value="No" onclick="PF('confirmDeleteAllBasedOnStatusDialog').hide()" type="button" />
+            <p:commandButton icon="pi pi-times" styleClass="pill bg-g" value="No" onclick="PF('confirmDeleteAllBasedOnStatusDialog').hide()" type="button" />
         </p:confirmDialog>
 
-        <p:dialog widgetVar="modify_status_dialog" width="500px" header="Modify status" modal="true">
+        <p:dialog widgetVar="modify_status_dialog" header="Modify status" modal="true">
             <h:form id="modify_status_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <p:panelGrid columns="2" layout="tabular">
                     <p:outputLabel for="status" value="Status:"/>
                     <p:selectOneMenu id="status" value="#{updateBudgetLine.status}">
                         <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
@@ -171,9 +171,9 @@
                         <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>
                     </p:selectOneMenu>
 
-                    <p:commandButton value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
                                      onclick="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
-                    <p:commandButton value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
