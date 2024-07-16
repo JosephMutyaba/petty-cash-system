@@ -1,8 +1,6 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller;
 
 import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
-import com.pahappa.systems.pettycashsystem.spring.services.PermissionService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -13,9 +11,6 @@ import java.util.List;
 @Named
 @SessionScoped
 public class PermEnum implements Serializable {
-
-    @Autowired
-    private PermissionService permissionService;
 
     public List<Perm> getEmployeePermissions() {
         return Arrays.asList(Perm.VIEW_EMPLOYEES,Perm.ADD_EMPLOYEE, Perm.DELETE_EMPLOYEE, Perm.EDIT_EMPLOYEE);

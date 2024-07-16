@@ -87,4 +87,12 @@ public class RequisitionService {
     public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
         return requisitionDAO.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(userId);
     }
+
+    public List<Requisition> getAllRequisitionsExpiredButNotRejectedAndNotCompleted(Long userId) {
+        return requisitionDAO.getAllRequisitionsExpiredButNotRejectedAndNotCompleted(userId);
+    }
+
+    public List<Requisition> getAllRequisitionsByStatusAndUserId(String status, Long userId) {
+        return requisitionDAO.getAllRequisitionsByStatusAndUserId(status, userId);
+    }
 }

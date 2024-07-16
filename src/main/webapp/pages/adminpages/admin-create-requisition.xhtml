@@ -78,14 +78,19 @@
                 </h:panelGroup>
             </p:tab>
             <p:tab title="History">
-                <p:tabView>
-                    <p:ajax event="tabChange" />
-                    <p:tab id="completedTab" title="COMPLETED"/>
-                    <p:tab id="rejectedTab" title="REJECTED"/>
-                    <p:tab id="expiredTab" title="EXPIRED"/>
-                </p:tabView>
+
                 <h:form>
-                    <p:dataTable paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{loginBean.loggedInUser.requisition}" var="requisition">
+                    <p:tabView id="mtabView" activeIndex="#{myRequisitions.activeTab}">
+                        <p:ajax event="tabChange" listener="#{myRequisitions.onTabChange}" update="j_idt24:history_form"/>
+                        <p:tab id="completedTab" title="COMPLETED"/>
+                        <p:tab id="rejectedTab" title="REJECTED"/>
+                        <p:tab id="expiredTab" title="EXPIRED"/>
+                    </p:tabView>
+                </h:form>
+
+
+                <h:form id="history_form">
+                    <p:dataTable id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
                         <p:column headerText="No." width="12px">
                             #{loginBean.loggedInUser.requisition.indexOf(requisition) + 1}
                         </p:column>
@@ -104,7 +109,7 @@
                         <p:column headerText="Budget Line">
                             #{requisition.budgetline.description}
                         </p:column>
-                        <p:column headerText="Date Approved">
+                        <p:column headerText="Date Approved" rendered="#{requisition.status.equals('Approved')}">
                             #{requisition.dateApproved}
                         </p:column>
                     </p:dataTable>

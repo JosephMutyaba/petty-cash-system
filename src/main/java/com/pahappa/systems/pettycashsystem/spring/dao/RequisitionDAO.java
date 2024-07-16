@@ -62,4 +62,17 @@ public class RequisitionDAO {
                 .uniqueResult();
     }
 
+    public List<Requisition> getAllRequisitionsExpiredButNotRejectedAndNotCompleted(Long userId) {
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND maxDateNeeded<CURRENT_DATE AND status IN (:statuses)")
+                .setParameter("userId",userId)
+                .setParameter("statuses", Arrays.asList("Pending", "Approved", "Paid"))
+                .getResultList();
+    }
+
+    public List<Requisition> getAllRequisitionsByStatusAndUserId(String status, Long userId) {
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND status=:reqStatus AND maxDateNeeded > CURRENT_DATE ")
+                .setParameter("userId", userId)
+                .setParameter("reqStatus",status)
+                .getResultList();
+    }
 }
