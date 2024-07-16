@@ -9,7 +9,7 @@
         <h4>Statistics</h4>
         <div class="stats">
             <h:form id="statsForm">
-                <p:panelGrid columns="3" styleClass="stats-grid">
+                <p:panelGrid columns="4" styleClass="stats-grid" layout="grid">
                     <p:panel header="Pending" styleClass="stat-panel">
                         <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
                     </p:panel>
@@ -18,6 +18,9 @@
                     </p:panel>
                     <p:panel header="Rejected" styleClass="stat-panel">
                         <h:outputText value="#{allRequisitions.rejectedRequisitions.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel header="Paid" styleClass="stat-panel">
+                        <h:outputText value="#{allRequisitions.paidRequisitions.size()}" styleClass="stat-value"/>
                     </p:panel>
                 </p:panelGrid>
             </h:form>
@@ -38,8 +41,8 @@
 
         <div class="bg-white pad1">
             <h:form id="action_buttons_button">
-                <p:commandButton value="Add New" onclick="PF('new_requisition_dialog').show()" update="new_requisition_form" icon="pi pi-plus" styleClass="mr pill"/>
-                <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
+                <p:commandButton value="Add New" onclick="PF('new_requisition_dialog').show()" update="new_requisition_form" icon="pi pi-plus" styleClass="mr pill" rendered="#{checkPermission.hasPermission('MAKE_REQUISITION')}"/>
+                <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r pill" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION')}"/>
             </h:form>
         </div>
 
@@ -179,7 +182,7 @@
                     <p:outputLabel value="Comment" for="comment"/>
                     <p:inputTextarea id="comment" value="#{updateRequisition.reviewComments}" />
 
-                    <p:outputLabel type="number" for="granted_amount" value="Granted Amount"/>
+                    <p:outputLabel for="granted_amount" value="Granted Amount"/>
                     <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" />
 
                     <p:commandButton value="Modify" actionListener="#{updateRequisition.updateRequisition}"

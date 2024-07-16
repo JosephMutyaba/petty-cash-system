@@ -3,19 +3,28 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
     <ui:define name="title">Admin Dashboard</ui:define>
     <ui:define name="main-content">
         <h1>Dashboard</h1>
-        <div class="stats">
-            <p:panelGrid columns="3">
-                <p:panel header="Users">
-                    <h:outputText value="27"/>
+        <div class="fillW">
+            <p:panelGrid columns="3" layout="grid">
+                <p:panel>
+                    <f:facet name="header">
+                        <i class="pi pi-money-bill"></i>
+                        <h:outputText value="Pending Requisitions"/>
+                    </f:facet>
+                    <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
                 </p:panel>
-                <p:panel header="Employees">
-                    <h:outputText value="24"/>
+                <p:panel>
+                    <f:facet name="header">
+                        <i class="pi pi-briefcase"></i>
+                        <h:outputText value="Active BudgetLines"/>
+                    </f:facet>
+                    <h:outputText value="#{allBudgetLines.approvedBudgetLines.size()}" styleClass="stat-value"/>
                 </p:panel>
-                <p:panel header="Seniors">
+                <p:panel header="Balance" styleClass="fillW">
                     <h:outputText value="3"/>
                 </p:panel>
             </p:panelGrid>
@@ -23,8 +32,10 @@
         <h3>Charts</h3>
         <div class="charts">
             <div class="bar-chart">
+                <p:pieChart type="pie" model="#{adminChart.pieChart}" styleClass="custom-chart"/>
             </div>
             <div class="pie-chart">
+                <p:pieChart type="pie" model="#{budgetLineChart.pieModel}" styleClass="custom-chart"/>
             </div>
         </div>
     </ui:define>
