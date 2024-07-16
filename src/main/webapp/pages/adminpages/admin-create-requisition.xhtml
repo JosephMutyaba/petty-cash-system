@@ -9,7 +9,7 @@
     <ui:define name="main-content">
         <p:tabView>
             <p:tab title="Current">
-                <h2 class="mb">#{myRequisitionHandler.status.equals("")?'Create':myRequisitionHandler.status} Requisition</h2>
+                <h2 id="titles" class="mb">#{myRequisitionHandler.status.equals("")?'Create':myRequisitionHandler.status} Requisition</h2>
                 <h:form id="requisition_form" styleClass="pad2 mb flex column">
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
@@ -46,7 +46,7 @@
                         <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                                         update="globalMessages @form titles" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                         <p:messages globalOnly="true" id="globalMessages"/>
                     </div>
                 </h:form>
