@@ -21,7 +21,7 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber id="amount" maxValue="#{myRequisitionHandler.budgetLine.balance}" value="#{myRequisitionHandler.requestedAmount}"/>
+                            <p:inputNumber id="amount" value="#{myRequisitionHandler.requestedAmount}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="status" value="Status"/>
@@ -42,7 +42,7 @@
                     </p:panelGrid>
                     <div>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="requisition_form globalMessages" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                                         update="globalMessages" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                         <p:messages globalOnly="true" id="globalMessages"/>
                     </div>
                 </h:form>

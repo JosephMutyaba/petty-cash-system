@@ -66,9 +66,9 @@ public class RequisitionService {
             throw new NullFieldException("Date needed cannot be in the past.");
         }
 
-        if (requisition.getEstimatedAmount().isNaN()) {
-            throw new NullFieldException("Amount requested should be a number");
-        }
+//        if (requisition.getEstimatedAmount().isNaN()) {
+//            throw new NullFieldException("Amount requested should be a number");
+//        }
 
         if (requisition.getEstimatedAmount()==null) {
             throw new NullFieldException("Amount cannot be empty");
@@ -81,7 +81,6 @@ public class RequisitionService {
         if (requisition.getEstimatedAmount()>requisition.getBudgetline().getBalance()){
             throw new NullFieldException("You cannot requisite more than"+requisition.getBudgetline().getBalance());
         }
-
     }
 
 

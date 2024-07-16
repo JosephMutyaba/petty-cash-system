@@ -56,8 +56,7 @@ public class RequisitionDAO {
     }
 
     public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
-        return (Requisition) sessionFactory.getCurrentSession()
-                .createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded > CURRENT_DATE ")
+        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded > CURRENT_DATE ")
                 .setParameterList("statuses", Arrays.asList("Pending", "Approved", "Paid"))
                 .setParameter("userId", userId)
                 .uniqueResult();

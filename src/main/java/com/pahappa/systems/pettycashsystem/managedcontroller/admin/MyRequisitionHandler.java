@@ -201,7 +201,7 @@ public class MyRequisitionHandler implements Serializable {
             this.justification = "";
             this.maxDate = null;
             this.budgetLine = new BudgetLine();
-            this.requestedAmount = null;
+            this.requestedAmount = 0.0;
             this.amountGranted = null;
             requisition=new Requisition();
         }
