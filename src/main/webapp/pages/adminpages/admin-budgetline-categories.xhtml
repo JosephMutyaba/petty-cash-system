@@ -24,8 +24,8 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
-                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
+                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr pill" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
+                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -36,8 +36,8 @@
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-file-plus" title="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
-                <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('new_budgetline_category').hide()"/>
+                <p:commandButton styleClass="mr pill" icon="pi pi-file-plus" title="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="bg-r pill" icon="pi pi-times" title="Cancel" onclick="PF('new_budgetline_category').hide()"/>
             </h:form>
         </p:dialog>
 
@@ -47,8 +47,8 @@
                     <p:outputLabel for="cat_name" value="Name:"/>
                     <p:inputText id="cat_name" value="#{updateBudgetLineCategory.cat_name}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr" icon="pi pi-pencil" title="Save" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
-                <p:commandButton styleClass="bg-r" icon="pi pi-times" title="Cancel" onclick="PF('edit_category').hide()"/>
+                <p:commandButton styleClass="mr pill" icon="pi pi-pencil" title="Save" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="bg-r pill" icon="pi pi-times" title="Cancel" onclick="PF('edit_category').hide()"/>
             </h:form>
         </p:dialog>
 

@@ -9,7 +9,7 @@
     <ui:define name="main-content">
         <p:tabView>
             <p:tab title="Current">
-                <h2 class="mb">#{myRequisitionHandler.status.equals(null)?'Create':'Pending'} Requisition</h2>
+                <h2 class="mb">#{myRequisitionHandler.status.equals("")?'Create':myRequisitionHandler.status} Requisition</h2>
                 <h:form id="requisition_form" styleClass="pad2 mb flex column">
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
@@ -20,12 +20,12 @@
                             </p:selectOneMenu>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
-                            <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber id="amount" value="#{myRequisitionHandler.requestedAmount}"/>
-                        </h:panelGroup>
-                        <h:panelGroup class="flex column">
                             <p:outputLabel for="status" value="Status"/>
                             <p:inputText id="status" placeholder="Status" readonly="true" value="#{myRequisitionHandler.status}"/>
+                        </h:panelGroup>
+                        <h:panelGroup class="flex column">
+                            <p:outputLabel for="amount" value="Amount"/>
+                            <p:inputNumber id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{createRequisition.budgetLine ne null}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="date_needed" value="Date Needed"/>
@@ -46,7 +46,7 @@
                         <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages requisition_form" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                         <p:messages globalOnly="true" id="globalMessages"/>
                     </div>
                 </h:form>
@@ -56,11 +56,11 @@
                         <h:panelGroup styleClass="flex row pad1">
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="ac_amt_used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
+                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
-                                <p:inputTextarea id="ac_description" styleClass="mb mt" value="#{createAccountability.description}"/>
+                                <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
                             </h:panelGroup>
                         </h:panelGroup>
                         <div>
@@ -80,15 +80,13 @@
             <p:tab title="History">
 
                 <h:form>
-                    <p:tabView id="mtabView" activeIndex="#{myRequisitions.activeTab}">
+                    <p:tabView activeIndex="#{myRequisitions.activeTab}">
                         <p:ajax event="tabChange" listener="#{myRequisitions.onTabChange}" update="j_idt24:history_form"/>
                         <p:tab id="completedTab" title="COMPLETED"/>
                         <p:tab id="rejectedTab" title="REJECTED"/>
                         <p:tab id="expiredTab" title="EXPIRED"/>
                     </p:tabView>
                 </h:form>
-
-
                 <h:form id="history_form">
                     <p:dataTable id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
                         <p:column headerText="No." width="12px">

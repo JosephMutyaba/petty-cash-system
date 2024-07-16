@@ -26,6 +26,9 @@ public class DeleteUser implements Serializable {
     public void deleteUser() {
         userService.deleteUser(user.getId());
     }
+    public User getUser() {
+        return user;
+    }
 
     public void selectedUser(User userSelected) {
         user=userSelected;
