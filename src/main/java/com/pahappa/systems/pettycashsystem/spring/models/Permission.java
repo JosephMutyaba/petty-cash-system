@@ -53,6 +53,6 @@ public class Permission {
 
     @Override
     public String toString() {
-        return "Permission ";
+        return name.toString();
     }
 }

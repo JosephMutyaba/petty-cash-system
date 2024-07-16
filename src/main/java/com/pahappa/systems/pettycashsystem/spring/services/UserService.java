@@ -93,7 +93,7 @@ public class UserService {
             throw new NullPointerException("Email is not valid");
         }
 
-        if (!Pattern.matches( "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",user.getPassword())) {
+        if (!Pattern.matches( "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_><])[A-Za-z\\d@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_>< ]{8,}$",user.getPassword())) {
             throw new NullPointerException("Password should contain at least contain a number, upper, lowercase and special characters. Minimum length of 8");
         }
 

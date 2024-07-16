@@ -100,6 +100,7 @@ public class CreateRequisition implements Serializable {
     }
 
     public void updateBudgetLine() {
+        System.out.println(budgetLineId);
         budgetLine = budgetLineService.getBudgetLineById(budgetLineId);
     }
 

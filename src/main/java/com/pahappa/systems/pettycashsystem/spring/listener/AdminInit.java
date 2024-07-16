@@ -75,7 +75,7 @@ public class AdminInit {
             LOGGER.info("No admin users found. Creating admin user...");
             User adminUser = new User();
             adminUser.setUsername("admin");
-            adminUser.setPassword("adminPassword"); // Encrypt password in a real application
+            adminUser.setPassword("adminPass#1"); // Encrypt password in a real application
             adminUser.setEmail("admin@example.com");
             adminUser.setRole(adminRole);
             adminUser.setFirstname("Bob");
@@ -83,7 +83,8 @@ public class AdminInit {
             try {
                 userService.createUser(adminUser);
             } catch (Exception e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+                System.out.println(e.getMessage());
             }
         } else {
             LOGGER.info("Admin user(s) already exist.");
