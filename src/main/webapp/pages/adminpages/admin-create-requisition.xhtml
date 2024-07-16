@@ -66,13 +66,14 @@
                         <div>
                             <p:panel header="Upload Image">
                                 <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" auto="true" update="imagePreview messages" />
-                                <p:messages globalOnly="true" id="messages" />
+
                                 <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
                             </p:panel>
                         </div>
 
                         <div>
-                            <p:commandButton value="Submit Accountability" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
+                            <p:commandButton value="Submit Accountability" update="messages" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
+                            <p:messages globalOnly="true" id="messages" />
                         </div>
                     </h:form>
                 </h:panelGroup>

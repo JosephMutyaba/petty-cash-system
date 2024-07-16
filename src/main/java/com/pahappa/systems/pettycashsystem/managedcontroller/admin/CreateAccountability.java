@@ -1,16 +1,20 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.managedcontroller.login.LoginBean;
 import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
+import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
+import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.AccountabilityService;
+import com.pahappa.systems.pettycashsystem.spring.services.BudgetLineService;
 import com.pahappa.systems.pettycashsystem.spring.services.RequisitionService;
+import com.pahappa.systems.pettycashsystem.spring.services.UserService;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -23,13 +27,19 @@ import java.util.Date;
 @Component
 public class CreateAccountability implements Serializable {
     @Autowired
-    private AccountabilityService accountabilityService;
+    private UserService userService;
+
+    @Autowired
+    private BudgetLineService budgetLineService;
 
     @Autowired
     private MyRequisitionHandler myRequisitionHandler;
 
     @Autowired
     private RequisitionService requisitionService;
+
+    @Autowired
+    private LoginBean loginBean;
 
     private String description;
 
@@ -140,13 +150,36 @@ public class CreateAccountability implements Serializable {
 
             //setting status to completed
             requisition.setStatus("Completed");
-            requisition.setAccountability(accountability);
+            requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
+
+            //balancing books
+            User user=loginBean.getLoggedInUser();
+
+            BudgetLine budgetLine=requisition.getBudgetline();
+
+            Double budgetlineBal=budgetLine.getBalance();
+
+            Double requisitionAmountGranted = requisition.getAmountGranted();
+
+            Double userAccBal = user.getAccountBalance();
+
+            Double expenditureBalance = requisitionAmountGranted-amountSpent;
+
+            Double newUserAccBal=userAccBal-expenditureBalance;
+
+            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
+
+            user.setAccountBalance(newUserAccBal);
+            budgetLine.setBalance(newBudgetLineBal);
 
             //accountabilityService.createAccountability(accountability);
+            userService.updateUser(user);
 
-            requisitionService.updateRequisition(requisition);
+            budgetLineService.updateBudgetLine(budgetLine);
 
-            FacesMessage message = new FacesMessage("Success", "accountability saved successfully.");
+            requisitionService.updateRequisition(requisition);  // this automatically creates
+
+            FacesMessage message = new FacesMessage("Success", "accountability saved successfully. Your account has been debited with shs."+expenditureBalance);
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),null));
