@@ -10,8 +10,8 @@
 
         <div class="mt mb">
             <h:form>
-                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('new_budgetline_category').show()" process="@this"/>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r" onclick="PF('confirm_all_dialog').show()"/>
+                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr" onclick="PF('new_budgetline_category').show()" process="@this" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE')}"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r" onclick="PF('confirm_all_dialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
 

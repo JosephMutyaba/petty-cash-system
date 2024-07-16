@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -29,6 +31,10 @@ public class DeleteBudgetLineCategory implements Serializable {
 
     public void selectBudgetLineCategory(BudgetLineCategory selectedBudgetLineCategory) {
         this.budgetLineCategory = selectedBudgetLineCategory;
+
+        // Add a success message
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Deleted Successfully");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void deleteBudgetLineCategory() {

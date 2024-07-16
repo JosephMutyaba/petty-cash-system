@@ -38,8 +38,8 @@
 
         <div class="actions">
             <h:form id="action_buttons_button">
-                <p:commandButton value="Add New" onclick="PF('new_requisition_dialog').show()" update="new_requisition_form" icon="pi pi-plus" styleClass="mr"/>
-                <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r"/>
+                <p:commandButton value="Add New" onclick="PF('new_requisition_dialog').show()" update="new_requisition_form" icon="pi pi-plus" styleClass="mr" rendered="#{checkPermission.hasPermission('MAKE_REQUISITION')}"/>
+                <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION')}"/>
             </h:form>
         </div>
 

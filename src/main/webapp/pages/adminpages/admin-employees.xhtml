@@ -21,10 +21,9 @@
                 </p:panel>
             </p:panelGrid>
         </div>
-
         <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('addUserDialog').show()"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button" onclick="PF('deleteAllUsersDialog').show()"/>
+            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('addUserDialog').show()" rendered="#{checkPermission.hasPermission('ADD_EMPLOYEE')}"/>
+            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button" onclick="PF('deleteAllUsersDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_EMPLOYEE')}"/>
         </div>
 
         <h:form id="usersDataTableForm">
