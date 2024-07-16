@@ -15,7 +15,7 @@
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="budgetline" value="Budget Line"/>
                             <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}">
-                                <f:selectItem value="#{null}" itemLabel="Choose Budgetline" />
+                                <f:selectItem value="#{null}" itemDisabled="true" itemLabel="Choose Budgetline" />
                                 <f:selectItems value="#{myRequisitionHandler.budgetLines}" var="budgetline" itemValue="#{budgetline.id}" itemLabel="#{budgetline.description}"/>
                             </p:selectOneMenu>
                         </h:panelGroup>
@@ -41,16 +41,28 @@
                         </h:panelGroup>
                     </p:panelGrid>
                     <div>
+                        <h:outputText value="Your Requisition is currently in review. Please check back later."
+                                      rendered="#{myRequisitionHandler.status.equals('Pending')}"/>
+                        <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
+                                      rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                                         update="globalMessages requisition_from" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                         <p:messages globalOnly="true" id="globalMessages"/>
                     </div>
                 </h:form>
                 <h:panelGroup rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
                     <h3 class="mb">Accountability</h3>
-                    <h:form styleClass="flex column">
-                        <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
-                        <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb" value="For Tee Pee"/>
+                    <h:form styleClass="flex column pad2">
+                        <h:panelGroup styleClass="flex row pad1">
+                            <h:panelGroup styleClass="flex column fillW">
+                                <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
+                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="" required="true"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="flex column fillW">
+                                <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
+                                <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value=""/>
+                            </h:panelGroup>
+                        </h:panelGroup>
                         <div>
                             <p:commandButton value="Add Image" icon="pi pi-plus" styleClass="mt pill"/>
                         </div>

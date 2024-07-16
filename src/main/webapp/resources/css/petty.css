@@ -59,6 +59,16 @@ body .ui-panelgrid .ui-panelgrid-cell,
 .no-border
 {border: none!important}
 
+body .ui-inputfield {
+    padding: 0.5rem 1rem!important;
+}
+
+.login {
+    position: absolute;
+    top:50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /*Styles*/
 /*Margins*/
 .mr {margin-right:var(--mar)!important}
@@ -72,7 +82,7 @@ body .ui-panelgrid .ui-panelgrid-cell,
 /*Radii & Padding*/
 .pad1 {padding:var(--pad) !important}
 .pad2 {padding:calc(var(--pad)*2) !important}
-.pill {border-radius: 10000px!important}
+.pill, body .ui-inputfield:not(.ui-inputtextarea) {border-radius: 10000px!important}
 .rad1 {border-radius: 12px!important}
 .rad2 {border-radius: 24px!important}
 
@@ -86,8 +96,8 @@ body .ui-panelgrid .ui-panelgrid-cell,
 .text-g {color:var(--grn)!important}
 
 /*sizing and arrangement*/
-.fillW {width:-webkit-fill-available!important}
-.fillH {height:-webkit-fill-available!important}
+.fillW {width:-webkit-fill-available!important;flex:1!important;}
+.fillH {height:-webkit-fill-available!important;flex:1!important;}
 .flex {display:flex}
 .row {flex-direction:row}
 .column {flex-direction:column}
