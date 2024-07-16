@@ -75,7 +75,9 @@ public class AllRequisitions implements Serializable {
         this.paidRequisitions = paidRequisitions;
     }
 
-
+    public boolean isStatus(String status, String compareTo) {
+        return compareTo.equals(status);
+    }
 
 
 

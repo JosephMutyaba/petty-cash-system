@@ -9,7 +9,7 @@
         <h4>Statistics</h4>
         <div class="stats">
             <h:form id="statsForm">
-                <p:panelGrid columns="3" styleClass="stats-grid">
+                <p:panelGrid columns="4" styleClass="stats-grid" layout="grid">
                     <p:panel header="Pending" styleClass="stat-panel">
                         <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
                     </p:panel>
@@ -18,6 +18,9 @@
                     </p:panel>
                     <p:panel header="Rejected" styleClass="stat-panel">
                         <h:outputText value="#{allRequisitions.rejectedRequisitions.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel header="Paid" styleClass="stat-panel">
+                        <h:outputText value="#{allRequisitions.paidRequisitions.size()}" styleClass="stat-value"/>
                     </p:panel>
                 </p:panelGrid>
             </h:form>
@@ -44,7 +47,7 @@
         </div>
 
         <h:form id="requisitions_table_form">
-            <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
+            <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5" scrollable="false">
                 <p:column headerText="No">
                     <h:outputText value="#{allRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}"/>
                 </p:column>
@@ -57,7 +60,7 @@
                 <p:column headerText="Edit Status" rendered="#{requisition.status.equals('Pending')}">
                     <p:commandButton icon="pi pi-pencil" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
                 </p:column>
-                <p:column headerText="Actions" rendered="#{requisition.status.equals('Pending')}">
+                <p:column headerText="Actions" rendered="#{allRequisitions.isStatus('Pending',requisition.status)}">
                     <p:commandButton value="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION')}"/>
                     <p:commandButton value="Edit" icon="pi pi-pencil" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('edit_requisition_dialog').show()" update="edit_requisition_form" styleClass="bg-g" rendered="#{checkPermission.hasPermission('EDIT_REQUISITION')}"/>
                 </p:column>
