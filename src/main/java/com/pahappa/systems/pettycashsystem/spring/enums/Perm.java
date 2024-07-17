@@ -30,7 +30,9 @@ public enum Perm {
     VIEW_BUDGETLINES("View BudgetLines"),
     VIEW_PERMISSIONS("View Permissions"),
 
-    REQUEST_CHANGES("Request Changes");
+    REQUEST_CHANGES("Request Changes"),
+
+    ACCEPT_REQUISITION("Accept Requisition");
 
     private final String definition;
 

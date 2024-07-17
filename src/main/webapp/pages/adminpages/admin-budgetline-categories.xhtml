@@ -14,6 +14,13 @@
                 <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirm_all_dialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
+        <h:form>
+            <div class="bg-white pad1">
+                <p:inputText styleClass="pill fillW" value="" placeholder="Search">
+                    <p:ajax event="keyup" delay="200" update="budgetlines_categories__table"/>
+                </p:inputText>
+            </div>
+        </h:form>
 
         <p:dataTable id="budgetlines_categories__table" value="#{allBudgetLineCategories.categories}" var="category" paginator="true" rows="5">
             <p:column headerText="No">
@@ -36,7 +43,7 @@
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
                 </p:panelGrid>
-                <p:commandButton styleClass="mr pill" icon="pi pi-file-plus" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_budgetline_category').hide()"/>
             </h:form>
         </p:dialog>

@@ -53,6 +53,11 @@
                 <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r pill" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION')}"/>
             </h:form>
         </div>
+        <h:form class="bg-white pad1">
+            <p:inputText styleClass="pill fillW" value="" placeholder="Search">
+                <p:ajax event="keyup" delay="200" update="requisition_table"/>
+            </p:inputText>
+        </h:form>
 
         <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
             <p:column headerText="No" width="12px">
@@ -189,8 +194,9 @@
                     <p:outputLabel for="status" value="Status:"/>
                     <p:selectOneMenu id="status" value="#{updateRequisition.status}">
                         <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
-                        <f:selectItem itemLabel="Approve" itemValue="Approved"/>
-                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>
+                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_REQUISITION')}" itemLabel="Approve" itemValue="Approved"/>
+                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accept"/>
+<!--                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>-->
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Comment" for="comment"/>

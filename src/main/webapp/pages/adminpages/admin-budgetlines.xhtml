@@ -48,6 +48,11 @@
                 <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
+        <h:form class="bg-white pad1">
+            <p:inputText styleClass="pill fillW" value="" placeholder="Search">
+                <p:ajax event="keyup" delay="200" update="budgetlines_table"/>
+            </p:inputText>
+        </h:form>
 
         <p:dataTable id="budgetlines_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
             <p:autoUpdate/>

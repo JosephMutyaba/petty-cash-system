@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -90,7 +91,7 @@ public class UserService {
         }
 
         if (!Pattern.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]+$",user.getEmail())) {
-            throw new NullPointerException("Email is not valid");
+            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
         }
 
         if (!Pattern.matches( "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_><])[A-Za-z\\d@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_>< ]{8,}$",user.getPassword())) {

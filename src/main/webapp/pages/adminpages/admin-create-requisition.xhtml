@@ -49,7 +49,7 @@
                         <p:messages globalOnly="true" id="globalMessages"/>
                     </div>
                 </h:form>
-                <h:panelGroup rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
+                <h:panelGroup id="accountability_section" rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
                     <h3 class="mb">Accountability</h3>
                     <h:form styleClass="flex column pad2">
                         <h:panelGroup styleClass="flex row pad1">
@@ -88,6 +88,11 @@
                     </p:tabView>
                 </h:form>
                 <h:form id="history_form">
+                    <div class="bg-white pad1">
+                        <p:inputText styleClass="pill fillW" value="" placeholder="Search">
+                            <p:ajax event="keyup" delay="200" update="usersTable"/>
+                        </p:inputText>
+                    </div>
                     <p:dataTable id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
                         <p:column headerText="No." width="12px">
                             #{loginBean.loggedInUser.requisition.indexOf(requisition) + 1}

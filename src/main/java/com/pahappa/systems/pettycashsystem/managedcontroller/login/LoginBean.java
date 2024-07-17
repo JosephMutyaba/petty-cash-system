@@ -12,7 +12,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 
 @ManagedBean
 @SessionScoped
@@ -116,8 +118,6 @@ public class LoginBean implements Serializable {
             System.out.println("user not found");
             return "/pages/auth/login.xhtml?faces-redirect=true";
         }else {
-            this.firstname=loggedInUser.getFirstname();
-            this.lastname=loggedInUser.getLastname();
             this.email=loggedInUser.getEmail();
             this.role=loggedInUser.getRole();
             this.username=loggedInUser.getUsername();
@@ -128,7 +128,8 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public String logoutUser(){
+    public String logoutUser()/* throws IOException*/{
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("/pages/auth/login.xhtml");
         return "/pages/auth/login.xhtml?faces-redirect=true";
     }
 

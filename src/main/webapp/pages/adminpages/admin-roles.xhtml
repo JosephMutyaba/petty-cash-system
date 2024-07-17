@@ -6,14 +6,18 @@
     <ui:define name="title">Roles</ui:define>
     <ui:define name="main-content">
         <h2>Roles</h2>
-        <div class="pad1 bg-white mt mb">
-            <h:form>
+        <div class="pad1 bg-white mt">
+            <h:form class="mb mt">
                 <p:commandButton value="Add New" onclick="PF('new_role').show()" icon="pi pi-plus" styleClass="mr pill"/>
                 <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
             </h:form>
         </div>
         <p:messages globalOnly="true"/>
-
+        <h:form class="bg-white pad1">
+            <p:inputText styleClass="pill fillW mt" value="" placeholder="Search">
+                <p:ajax event="keyup" delay="200" update="role_table"/>
+            </p:inputText>
+        </h:form>
         <p:dataTable id="role_table" value="#{allRoles.roles}" var="role" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
             <p:column headerText="No">
                 <h:outputText value="#{allRoles.roles.indexOf(role)+1}"/>
