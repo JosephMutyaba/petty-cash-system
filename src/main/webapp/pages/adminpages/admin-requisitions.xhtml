@@ -54,8 +54,8 @@
             </h:form>
         </div>
         <h:form class="bg-white pad1">
-            <p:inputText styleClass="pill fillW" value="" placeholder="Search">
-                <p:ajax event="keyup" delay="200" update="requisition_table"/>
+            <p:inputText styleClass="pill fillW" value="#{allRequisitions.searchTerm}" placeholder="Search">
+                <p:ajax event="keyup" delay="200" update="requisition_table" listener="#{allRequisitions.filterRequisitionsForActiveTab}"/>
             </p:inputText>
         </h:form>
 

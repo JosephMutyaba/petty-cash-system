@@ -99,4 +99,11 @@ public class UserDAO {
                 .setParameter("username", username)
                 .uniqueResult();
     }
+
+    public User getUserByUserEmail(String email) {
+        return (User) getCurrentSession()
+                .createQuery("from User where Email=:userEmail")
+                .setParameter("userEmail", email)
+                .uniqueResult();
+    }
 }

@@ -11,6 +11,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -20,6 +21,8 @@ public class AllRequisitions implements Serializable {
     private RequisitionService requisitionService;
 
     private String tabId;
+
+    private String searchTerm;
 
     private List<Requisition> pendingRequisitions;
     private List<Requisition> approvedRequisitions;
@@ -46,6 +49,14 @@ public class AllRequisitions implements Serializable {
 
     public void setTabId(String tabId) {
         this.tabId = tabId;
+    }
+
+    public String getSearchTerm() {
+        return searchTerm;
+    }
+
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
     }
 
     public List<Requisition> getPendingRequisitions() {
@@ -133,6 +144,7 @@ public class AllRequisitions implements Serializable {
                 requisitionsForActiveTab = getCompletedRequisitions();
                 break;
         }
+        filterRequisitionsForActiveTab();
     }
 
 
@@ -161,6 +173,7 @@ public class AllRequisitions implements Serializable {
                 System.err.println("Error: Unknown activeTab - " + activeTab);
                 break;
         }
+        filterRequisitionsForActiveTab();
     }
 
 
@@ -179,4 +192,45 @@ public class AllRequisitions implements Serializable {
     public void setActiveTab(int activeTab) {
         this.activeTab = activeTab;
     }
+
+
+    public void filterRequisitionsForActiveTab() {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            switch (activeTab) {
+                case 0:
+                    requisitionsForActiveTab = getPendingRequisitions();
+                    break;
+                case 1:
+                    requisitionsForActiveTab = getApprovedRequisitions();
+                    break;
+                case 2:
+                    requisitionsForActiveTab = getRejectedRequisitions();
+                    break;
+                case 3:
+                    requisitionsForActiveTab = getPaidRequisitions();
+                    break;
+                case 4:
+                    requisitionsForActiveTab = getExpiredRequisitions();
+                    break;
+                case 5:
+                    requisitionsForActiveTab = getCompletedRequisitions();
+                    break;
+                default:
+                    System.err.println("Error: Unknown activeTab - " + activeTab);
+                    break;
+            }
+        } else {
+            requisitionsForActiveTab = requisitionsForActiveTab.stream()
+                    .filter(requisition ->
+                            requisition.getStatus().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getBudgetline().getDescription()).toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getMaxDateNeeded()).toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getUser().getUsername()).toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getJustification()).toLowerCase().contains(searchTerm.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+
+
 }

@@ -89,13 +89,13 @@
                 </h:form>
                 <h:form id="history_form">
                     <div class="bg-white pad1">
-                        <p:inputText styleClass="pill fillW" value="" placeholder="Search">
-                            <p:ajax event="keyup" delay="200" update="my_requisition_table"/>
+                        <p:inputText styleClass="pill fillW" value="#{myRequisitions.searchTerm}" placeholder="Search">
+                            <p:ajax event="keyup" delay="200" update="my_requisition_table" listener="#{myRequisitions.filterRequisitionsForActiveTab}"/>
                         </p:inputText>
                     </div>
                     <p:dataTable id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
                         <p:column headerText="No." width="12px">
-                            #{loginBean.loggedInUser.requisition.indexOf(requisition) + 1}
+                            #{myRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}
                         </p:column>
                         <p:column headerText="Description">
                             #{requisition.justification}

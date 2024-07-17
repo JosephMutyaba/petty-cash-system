@@ -98,6 +98,12 @@ public class UserService {
             throw new NullPointerException("Password should contain at least contain a number, upper, lowercase and special characters. Minimum length of 8");
         }
 
+        if (action.equals("create")) {
+            if (userDAO.getUserByUserEmail(user.getEmail())!=null) {
+                throw new NullFieldException("Email already exists, try a different one");
+            }
+        }
+
     }
 
     public User getByUsername(String username) {

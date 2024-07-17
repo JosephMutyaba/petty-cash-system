@@ -29,13 +29,13 @@
 
         <h:form id="usersDataTableForm">
             <div class="bg-white pad1">
-                <p:inputText styleClass="pill fillW" value="" placeholder="Search">
-                    <p:ajax event="keyup" delay="200" update="usersTable"/>
+                <p:inputText styleClass="pill fillW" value="#{getEmployees.searchTerm}" placeholder="Search">
+                    <p:ajax event="keyup" delay="200" update="usersTable" listener="#{getEmployees.filterUsers}"/>
                 </p:inputText>
             </div>
-            <p:dataTable id="usersTable" value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
+            <p:dataTable id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5">
                 <p:column headerText="No">
-                    <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee) + 1}"/>
+                    <h:outputText value="#{getEmployees.users.indexOf(employee) + 1}"/>
                 </p:column>
                 <p:column headerText="Firstname">
                     <h:outputText value="#{employee.firstname}"/>

@@ -16,8 +16,8 @@
         </div>
         <h:form>
             <div class="bg-white pad1">
-                <p:inputText styleClass="pill fillW" value="" placeholder="Search">
-                    <p:ajax event="keyup" delay="200" update="budgetlines_categories__table"/>
+                <p:inputText styleClass="pill fillW" value="#{allBudgetLineCategories.searchTerm}" placeholder="Search">
+                    <p:ajax event="keyup" delay="200" update="budgetlines_categories__table" listener="#{allBudgetLineCategories.filterCategories}"/>
                 </p:inputText>
             </div>
         </h:form>
