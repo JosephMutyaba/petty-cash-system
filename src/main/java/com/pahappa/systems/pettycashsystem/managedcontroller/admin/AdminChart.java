@@ -28,14 +28,14 @@ public class AdminChart implements Serializable {
         PieChartDataSet ds = new PieChartDataSet();
         PieChartModel pcm = new PieChartModel();
 
-        List<Number> values = List.of(allRequisitions.getPendingRequisitions().size(),allRequisitions.getApprovedRequisitions().size(),allRequisitions.getPaidRequisitions().size());
+        List<Number> values = List.of(allRequisitions.getPendingRequisitions().size(),allRequisitions.getApprovedRequisitions().size(),allRequisitions.getPaidRequisitions().size(), allRequisitions.getRejectedRequisitions().size());
         ds.setData(values);
 
-        List<String> colors = List.of("#faa","#aaf","#c7e");
+        List<String> colors = List.of("#faa","#aaf","#c7e", "#00FFFF");
         ds.setBackgroundColor(colors);
 
         cd.addChartDataSet(ds);
-        List<String> labels = List.of("Pending Requisitions","Approved Requisitions","Paid Out Requisitions");
+        List<String> labels = List.of("Pending Requisitions","Approved Requisitions","Paid Out Requisitions", "Rejected Requisitions");
         cd.setLabels(labels);
         pcm.setData(cd);
 
