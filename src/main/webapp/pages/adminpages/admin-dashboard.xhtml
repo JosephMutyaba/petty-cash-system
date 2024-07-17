@@ -12,14 +12,14 @@
             <p:panelGrid columns="3" layout="grid">
                 <p:panel>
                     <f:facet name="header">
-                        <i class="pi pi-money-bill"></i>
+                        <i class="pi pi-money-bill"/>
                         <h:outputText value="Pending Requisitions"/>
                     </f:facet>
                     <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
                 </p:panel>
                 <p:panel>
                     <f:facet name="header">
-                        <i class="pi pi-briefcase"></i>
+                        <i class="pi pi-briefcase"/>
                         <h:outputText value="Active BudgetLines"/>
                     </f:facet>
                     <h:outputText value="#{allBudgetLines.approvedBudgetLines.size()}" styleClass="stat-value"/>
@@ -31,11 +31,11 @@
         </div>
         <h3>Charts</h3>
         <div class="charts">
-            <div class="bar-chart">
-                <p:pieChart type="pie" model="#{adminChart.pieChart}" styleClass="custom-chart"/>
+            <div class="bar-chart pad1">
+                <p:pieChart model="#{adminChart.pieChart}" styleClass="custom-chart"/>
             </div>
-            <div class="pie-chart">
-                <p:pieChart type="pie" model="#{budgetLineChart.pieModel}" styleClass="custom-chart"/>
+            <div class="pie-chart pad1">
+                <p:pieChart model="#{budgetLineChart.pieModel}" styleClass="custom-chart"/>
             </div>
         </div>
     </ui:define>
