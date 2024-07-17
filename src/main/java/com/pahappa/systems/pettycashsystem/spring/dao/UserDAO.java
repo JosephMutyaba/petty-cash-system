@@ -33,7 +33,7 @@ public class UserDAO {
 
     // Read operation: Get all users
     public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("FROM User", User.class).list();
+        return getCurrentSession().createQuery("FROM User ORDER BY id DESC", User.class).list();
     }
 
     // Update operation

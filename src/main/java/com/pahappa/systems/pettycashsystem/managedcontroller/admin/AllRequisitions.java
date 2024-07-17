@@ -25,14 +25,19 @@ public class AllRequisitions implements Serializable {
     private List<Requisition> approvedRequisitions;
     private List<Requisition> rejectedRequisitions;
     private List<Requisition> paidRequisitions;
+    private List<Requisition> completedRequisitions;
+    private List<Requisition> expiredRequisitions;
+
 
     @PostConstruct
     public void init() {
-        paidRequisitions=requisitionService.getAllRequisitionsByStatus("Paid");
+        paidRequisitions=requisitionService.getAllPaidRequisitionsByStatus();
+        completedRequisitions=requisitionService.getAllCompletedRequisitionsByStatus();
         pendingRequisitions=requisitionService.getAllRequisitionsByStatus("Pending");
         rejectedRequisitions=requisitionService.getAllRequisitionsByStatus("Rejected");
         approvedRequisitions=requisitionService.getAllRequisitionsByStatus("Approved");
-        tabId="Pending";
+        expiredRequisitions=requisitionService.getAllExpiredRequisitions();
+        tabId="pendingTab";
     }
 
     public String getTabId() {
@@ -68,23 +73,32 @@ public class AllRequisitions implements Serializable {
     }
 
     public List<Requisition> getPaidRequisitions() {
-        return requisitionService.getAllRequisitionsByStatus("Paid");
+        return requisitionService.getAllPaidRequisitionsByStatus();
     }
 
     public void setPaidRequisitions(List<Requisition> paidRequisitions) {
-        this.paidRequisitions = paidRequisitions;
+        this.paidRequisitions = requisitionService.getAllPaidRequisitionsByStatus();;
+    }
+
+    public List<Requisition> getExpiredRequisitions() {
+        return requisitionService.getAllExpiredRequisitions();
+    }
+
+    public void setExpiredRequisitions(List<Requisition> expiredRequisitions) {
+        this.expiredRequisitions = requisitionService.getAllExpiredRequisitions();
+    }
+
+    public List<Requisition> getCompletedRequisitions() {
+        return requisitionService.getAllCompletedRequisitionsByStatus();
+    }
+
+    public void setCompletedRequisitions(List<Requisition> completedRequisitions) {
+        this.completedRequisitions = requisitionService.getAllCompletedRequisitionsByStatus();;
     }
 
     public boolean isStatus(String status, String compareTo) {
         return compareTo.equals(status);
     }
-
-
-
-
-
-
-
 
 
     private int activeTab = 0;
@@ -110,6 +124,14 @@ public class AllRequisitions implements Serializable {
                 activeTab = 3;
                 requisitionsForActiveTab = getPaidRequisitions();
                 break;
+            case "expired":
+                activeTab = 4;
+                requisitionsForActiveTab = getExpiredRequisitions();
+                break;
+            case "completed":
+                activeTab = 5;
+                requisitionsForActiveTab = getCompletedRequisitions();
+                break;
         }
     }
 
@@ -128,6 +150,12 @@ public class AllRequisitions implements Serializable {
                 break;
             case 3:
                 requisitionsForActiveTab = getPaidRequisitions();
+                break;
+            case 4:
+                requisitionsForActiveTab = getExpiredRequisitions();
+                break;
+            case 5:
+                requisitionsForActiveTab = getCompletedRequisitions();
                 break;
             default:
                 System.err.println("Error: Unknown activeTab - " + activeTab);

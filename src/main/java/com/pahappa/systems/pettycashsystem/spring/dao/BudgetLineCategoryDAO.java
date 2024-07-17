@@ -27,7 +27,7 @@ public class BudgetLineCategoryDAO {
 
     public List<BudgetLineCategory> getAllBudgetLineCategories() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM BudgetLineCategory", BudgetLineCategory.class)
+                .createQuery("FROM BudgetLineCategory ORDER BY id DESC", BudgetLineCategory.class)
                 .getResultList();
     }
 

@@ -84,4 +84,12 @@ public class BudgetLineService {
             throw new NullFieldException("Budget Line Category cannot be null");
         }
     }
+
+    public List<BudgetLine> getAllExpiredBudgetLines() {
+        return budgetLineDAO.getAllExpiredBudgetLines();
+    }
+
+    public List<BudgetLine> getAllBudgetlinesByStatusRejected() {
+        return budgetLineDAO.getAllBudgetlinesByStatusRejected();
+    }
 }

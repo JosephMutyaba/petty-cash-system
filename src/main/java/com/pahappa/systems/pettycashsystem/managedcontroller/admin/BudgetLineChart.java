@@ -31,7 +31,7 @@ public class BudgetLineChart implements Serializable {
         PieChartDataSet ds = new PieChartDataSet();
         PieChartModel pcm = new PieChartModel();
 
-        List<Number> values = List.of(budgetLines.getPendingBudgetLines().size(),budgetLines.getApprovedBudgetLines().size(),budgetLines.getPaidBudgetLines().size());
+        List<Number> values = List.of(budgetLines.getPendingBudgetLines().size(),budgetLines.getApprovedBudgetLines().size(),budgetLines.getEditRequestBudgetLines().size());
         ds.setData(values);
 
         List<String> colors = List.of("#faa","#aaf","#c7e");

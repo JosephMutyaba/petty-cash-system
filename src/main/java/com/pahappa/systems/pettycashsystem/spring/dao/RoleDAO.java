@@ -27,7 +27,7 @@ public class RoleDAO {
 
     public List<Role> getAllRoles() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Role", Role.class)
+                .createQuery("FROM Role ORDER BY id DESC", Role.class)
                 .getResultList();
     }
 

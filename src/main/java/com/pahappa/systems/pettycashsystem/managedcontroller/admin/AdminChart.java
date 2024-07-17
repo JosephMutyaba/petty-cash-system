@@ -1,9 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ComponentSystemEvent;
 
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.ChartData;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 @ManagedBean

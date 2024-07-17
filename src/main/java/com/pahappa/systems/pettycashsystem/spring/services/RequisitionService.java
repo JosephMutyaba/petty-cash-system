@@ -95,4 +95,16 @@ public class RequisitionService {
     public List<Requisition> getAllRequisitionsByStatusAndUserId(String status, Long userId) {
         return requisitionDAO.getAllRequisitionsByStatusAndUserId(status, userId);
     }
+
+    public List<Requisition> getAllExpiredRequisitions() {
+        return requisitionDAO.getAllExpiredRequisitions();
+    }
+
+    public List<Requisition> getAllPaidRequisitionsByStatus() {
+        return requisitionDAO.getAllPaidRequisitionsByStatus();
+    }
+
+    public List<Requisition> getAllCompletedRequisitionsByStatus() {
+        return requisitionDAO.getAllCompletedRequisitionsByStatus();
+    }
 }

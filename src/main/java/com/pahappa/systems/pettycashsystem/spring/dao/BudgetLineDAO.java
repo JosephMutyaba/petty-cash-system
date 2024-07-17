@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -27,7 +29,7 @@ public class BudgetLineDAO {
 
     public List<BudgetLine> getAllBudgetLines() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM BudgetLine", BudgetLine.class)
+                .createQuery("FROM BudgetLine ORDER BY id DESC", BudgetLine.class)
                 .getResultList();
     }
 
@@ -43,7 +45,7 @@ public class BudgetLineDAO {
     }
 
     public List<BudgetLine> getAllBudgetlinesByStatus(String budgetLineStatus) {
-        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status=:budgetlineStatus AND endDate>CURRENT_DATE ")
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status=:budgetlineStatus AND endDate>CURRENT_DATE ORDER BY id DESC")
                 .setParameter("budgetlineStatus", budgetLineStatus)
                 .getResultList();
     }
@@ -52,5 +54,15 @@ public class BudgetLineDAO {
         sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE status=:status")
                 .setParameter("status", status)
                 .executeUpdate();
+    }
+
+    public List<BudgetLine> getAllExpiredBudgetLines() {
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE endDate<CURRENT_DATE AND status IN (:statuses) ORDER BY id DESC")
+                .setParameter("statuses", Arrays.asList("Pending", "Approved", "RequestEdit"))
+                .getResultList();
+    }
+
+    public List<BudgetLine> getAllBudgetlinesByStatusRejected() {
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status='Rejected' ORDER BY id DESC").getResultList();
     }
 }

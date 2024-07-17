@@ -22,16 +22,18 @@ public class AllBudgetLines implements Serializable {
     private List<BudgetLine> pendingBudgetLines;
     private List<BudgetLine> approvedBudgetLines;
     private List<BudgetLine> rejectedBudgetLines;
-    private List<BudgetLine> paidBudgetLines;
+    private List<BudgetLine> editRequestBudgetLines;
+    private List<BudgetLine> expiredBudgetLines;
 
     private String tabId;
 
     @PostConstruct
     public void init() {
-        paidBudgetLines = budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
+        editRequestBudgetLines = budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
         pendingBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Pending");
-        rejectedBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Rejected");
+        rejectedBudgetLines = budgetLineService.getAllBudgetlinesByStatusRejected();
         approvedBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Approved");
+        expiredBudgetLines = budgetLineService.getAllExpiredBudgetLines();
         tabId = "pendingTab";
     }
 
@@ -52,19 +54,27 @@ public class AllBudgetLines implements Serializable {
     }
 
     public List<BudgetLine> getRejectedBudgetLines() {
-        return budgetLineService.getAllBudgetlinesByStatus("Rejected");
+        return budgetLineService.getAllBudgetlinesByStatusRejected();
     }
 
     public void setRejectedBudgetLines(List<BudgetLine> rejectedBudgetLines) {
-        this.rejectedBudgetLines = rejectedBudgetLines;
+        this.rejectedBudgetLines = budgetLineService.getAllBudgetlinesByStatusRejected();;
     }
 
-    public List<BudgetLine> getPaidBudgetLines() {
+    public List<BudgetLine> getEditRequestBudgetLines() {
         return budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
     }
 
-    public void setPaidBudgetLines(List<BudgetLine> paidBudgetLines) {
-        this.paidBudgetLines = paidBudgetLines;
+    public void setEditRequestBudgetLines(List<BudgetLine> editRequestBudgetLines) {
+        this.editRequestBudgetLines = budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
+    }
+
+    public List<BudgetLine> getExpiredBudgetLines() {
+        return budgetLineService.getAllExpiredBudgetLines();
+    }
+
+    public void setExpiredBudgetLines(List<BudgetLine> expiredBudgetLines) {
+        this.expiredBudgetLines = budgetLineService.getAllExpiredBudgetLines();
     }
 
     private int activeTab = 0;
@@ -88,7 +98,11 @@ public class AllBudgetLines implements Serializable {
                 break;
             case "editLineTab":
                 activeTab = 3;
-                budgetlinesForActiveTab = getPaidBudgetLines();
+                budgetlinesForActiveTab = getEditRequestBudgetLines();
+                break;
+            case "expiredTab":
+                activeTab = 4;
+                budgetlinesForActiveTab = getExpiredBudgetLines();
                 break;
             default:
                 System.err.println("Error: Unknown tabId - " + tabId);
@@ -108,7 +122,10 @@ public class AllBudgetLines implements Serializable {
                 budgetlinesForActiveTab = getRejectedBudgetLines();
                 break;
             case 3:
-                budgetlinesForActiveTab = getPaidBudgetLines();
+                budgetlinesForActiveTab = getEditRequestBudgetLines();
+                break;
+            case 4:
+                budgetlinesForActiveTab = getExpiredBudgetLines();
                 break;
             default:
                 System.err.println("Error: Unknown activeTab - " + activeTab);

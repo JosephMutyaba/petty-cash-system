@@ -44,7 +44,7 @@ public class RequisitionDAO {
     }
 
     public List<Requisition> getAllRequisitionsByStatus(String req_status) {
-        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status=:reqStatus")
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status=:reqStatus AND maxDateNeeded >CURRENT_TIMESTAMP ORDER BY maxDateNeeded ASC")
                 .setParameter("reqStatus", req_status)
                 .getResultList();
     }
@@ -56,23 +56,37 @@ public class RequisitionDAO {
     }
 
     public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
-        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded > CURRENT_DATE ")
+        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded > CURRENT_DATE ORDER BY maxDateNeeded ASC")
                 .setParameterList("statuses", Arrays.asList("Pending", "Approved", "Paid"))
                 .setParameter("userId", userId)
                 .uniqueResult();
     }
 
     public List<Requisition> getAllRequisitionsExpiredButNotRejectedAndNotCompleted(Long userId) {
-        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND maxDateNeeded<CURRENT_DATE AND status IN (:statuses)")
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND maxDateNeeded<CURRENT_DATE AND status IN (:statuses) ORDER BY maxDateNeeded ASC")
                 .setParameter("userId",userId)
                 .setParameter("statuses", Arrays.asList("Pending", "Approved", "Paid"))
                 .getResultList();
     }
 
     public List<Requisition> getAllRequisitionsByStatusAndUserId(String status, Long userId) {
-        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND status=:reqStatus AND maxDateNeeded > CURRENT_DATE ")
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND status=:reqStatus AND maxDateNeeded > CURRENT_DATE ORDER BY maxDateNeeded ASC")
                 .setParameter("userId", userId)
                 .setParameter("reqStatus",status)
                 .getResultList();
+    }
+
+    public List<Requisition> getAllExpiredRequisitions() {
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE maxDateNeeded<CURRENT_DATE AND status IN (:statuses) ORDER BY maxDateNeeded ASC")
+                .setParameter("statuses", Arrays.asList("Pending", "Approved"))
+                .getResultList();
+    }
+
+    public List<Requisition> getAllPaidRequisitionsByStatus() {
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status='Paid' ORDER BY maxDateNeeded ASC").getResultList();
+    }
+
+    public List<Requisition> getAllCompletedRequisitionsByStatus() {
+        return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status='Completed' ORDER BY maxDateNeeded ASC").getResultList();
     }
 }
