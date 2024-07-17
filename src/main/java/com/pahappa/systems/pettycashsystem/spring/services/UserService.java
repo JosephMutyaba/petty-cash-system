@@ -91,7 +91,7 @@ public class UserService {
         }
 
         if (!Pattern.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]+$",user.getEmail())) {
-            throw new NullPointerException("Email is not valid");
+            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
         }
 
         if (!Pattern.matches( "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_><])[A-Za-z\\d@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_>< ]{8,}$",user.getPassword())) {

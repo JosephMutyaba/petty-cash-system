@@ -6,6 +6,7 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Employees</ui:define>
     <ui:define name="main-content">
+        <p:growl id="globalMessages" life="3000" globalOnly="true" showDetail="true" showSummary="true" skipDetailIfEqualsSummary="true"/>
         <h2>Employees</h2>
         <h4>Statistics</h4>
         <div class="stats">
@@ -27,6 +28,11 @@
         </div>
 
         <h:form id="usersDataTableForm">
+            <div class="bg-white pad1">
+                <p:inputText styleClass="pill fillW" value="" placeholder="Search">
+                    <p:ajax event="keyup" delay="200" update="usersTable"/>
+                </p:inputText>
+            </div>
             <p:dataTable id="usersTable" value="#{getEmployees.retrieveAllEmployees()}" var="employee" paginator="true" rows="5">
                 <p:column headerText="No">
                     <h:outputText value="#{getEmployees.retrieveAllEmployees().indexOf(employee) + 1}"/>
@@ -75,7 +81,7 @@
                     <p:message for="email" styleClass="error"/>
 
                     <h:outputLabel for="password" value="Password:" styleClass="label"/>
-                    <p:password id="password" value="#{createEmployee.password}" required="true" styleClass="input">
+                    <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" styleClass="input">
                         <f:validateLength minimum="6" maximum="20"/>
                     </p:password>
                     <p:message for="password" styleClass="error"/>
@@ -95,7 +101,7 @@
 
                 <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="pill" update="addUserForm globalMessages" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable();" />
 
-                <p:messages globalOnly="true" id="globalMessages"/>
+<!--                <p:growl globalOnly="true" id="globalMessages"/>-->
             </h:form>
         </p:dialog>
 
@@ -143,7 +149,7 @@
                 </p:panelGrid>
                 <p:commandButton icon="pi pi-save" value="Update User" action="#{updateEmployee.updateEmployee}" styleClass="pill" update="updateUserForm global_Messages" oncomplete="if (!args.validationFailed) PF('updateUserDialog').hide(); updateUsersTable()" />
 
-                <p:messages globalOnly="true" id="global_Messages"/>
+                <p:growl globalOnly="true" id="global_Messages" />
             </h:form>
         </p:dialog>
 

@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Base64;
 
@@ -127,7 +128,8 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public String logoutUser(){
+    public String logoutUser()/* throws IOException*/{
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("/pages/auth/login.xhtml");
         return "/pages/auth/login.xhtml?faces-redirect=true";
     }
 

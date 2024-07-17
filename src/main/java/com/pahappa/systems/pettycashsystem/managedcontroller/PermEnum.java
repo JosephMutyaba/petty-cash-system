@@ -21,7 +21,7 @@ public class PermEnum implements Serializable {
     }
 
     public List<Perm> getRequisitionPermissions() {
-        return Arrays.asList(Perm.VIEW_REQUISITIONS,Perm.MAKE_REQUISITION, Perm.APPROVE_REQUISITION, Perm.REJECT_REQUISITION, Perm.EDIT_REQUISITION, Perm.DELETE_REQUISITION,Perm.CASHOUT_REQUISITION);
+        return Arrays.asList(Perm.VIEW_REQUISITIONS,Perm.MAKE_REQUISITION, Perm.APPROVE_REQUISITION, Perm.ACCEPT_REQUISITION, Perm.REJECT_REQUISITION, Perm.EDIT_REQUISITION, Perm.DELETE_REQUISITION,Perm.CASHOUT_REQUISITION);
     }
 
     public List<Perm> getBudgetLinePermissions() {
