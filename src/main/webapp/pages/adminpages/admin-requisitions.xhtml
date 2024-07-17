@@ -172,10 +172,10 @@
         <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" message="Transfer funds from Budgetline Acoount?"
                          header="Disburse" icon="pi pi-exclamation-triangle">
 
-            <p:commandButton icon="pi pi-dollar" styleClass="pill" value="Transact" oncomplete="PF('disburse_money_dialog').hide()"
-                             actionListener="#{disburseCash.disburseCash}"
-                             update="statsForm, :requisition_table, :new_requisition_form" />
+            <p:commandButton icon="pi pi-dollar" styleClass="pill" value="Transact" oncomplete="if (!args.validationFailed) PF('disburse_money_dialog').hide(); updateRequisitionsTable();"
+                             actionListener="#{disburseCash.disburseCash}" update="statsForm messages" />
             <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
+            <p:messages globalOnly="true" id="messages"/>
         </p:confirmDialog>
 
 
@@ -211,6 +211,8 @@
                 </p:panelGrid>
             </h:form>
         </p:dialog>
+
+        <p:remoteCommand name="updateRequisitionsTable" update="requisition_table"/>
 
     </ui:define>
 

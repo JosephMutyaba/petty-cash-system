@@ -120,9 +120,11 @@
                     </p:selectOneMenu>
 
                     <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
-                                     onclick="PF('new_budgetline_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+                                     oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide(); updateBudgetLinesTable();" update=":statsForm, messages"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
+
                 </p:panelGrid>
+                <p:messages globalOnly="true" closable="true" id="messages"/>
             </h:form>
         </p:dialog>
 
@@ -147,10 +149,11 @@
                         <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                     </p:selectOneMenu>
 
-                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}"
-                                     onsuccess="PF('edit_budgetline_dialog').hide()" update=":tabForm:tabView, budgetlines_table, :new_budgetline_form"/>
+                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                                     update=":tabForm:tabView, m_essages, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </p:panelGrid>
+                <p:messages globalOnly="true" closable="true" id="m_essages"/>
             </h:form>
         </p:dialog>
 
@@ -186,6 +189,8 @@
                 </p:panelGrid>
             </h:form>
         </p:dialog>
+
+        <p:remoteCommand name="updateBudgetLinesTable" update="budgetlines_table"/>
 
     </ui:define>
 </ui:composition>

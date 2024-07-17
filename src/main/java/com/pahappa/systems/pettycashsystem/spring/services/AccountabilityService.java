@@ -1,5 +1,6 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.dao.AccountabilityDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,15 @@ public class AccountabilityService {
         accountabilityDAO.deleteAccountability(id);
     }
 
+    public void validateAccountability(Accountability accountability) throws NullFieldException {
+        if (accountability.getAmountSpent() == null || accountability.getAmountSpent() < 0) {
+            throw new NullFieldException("Invalid value for amount spent");
+        }
+
+        if (accountability.getRequisition() ==null) {
+            throw new NullFieldException("requisition cannot be null");
+        }
+
+    }
 
 }

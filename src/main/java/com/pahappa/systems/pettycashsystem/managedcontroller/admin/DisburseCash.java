@@ -68,16 +68,18 @@ public class DisburseCash implements Serializable {
         userAccBal=userAccBal+amountGranted;
         budgetLineAccBal=budgetLineAccBal-amountGranted;
 
-        // updating acc_balances
-        user.setAccountBalance(userAccBal);
-        budgetLine.setBalance(budgetLineAccBal);
-
-
-        // setting requisition status to paid
-        requisition.setStatus("Paid");
-
-
         try {
+            // updating acc_balances
+            user.setAccountBalance(userAccBal);
+            budgetLine.setBalance(budgetLineAccBal);
+
+            requisitionService.validateBeforeDisbursement(budgetLineAccBal,budgetLine.getDescription());
+
+            // setting requisition status to paid
+            requisition.setStatus("Paid");
+
+
+
             //updating the db
             requisitionService.updateRequisition(requisition);
             userService.updateUser(user);

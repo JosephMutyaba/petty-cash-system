@@ -1,6 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.MinimumLengthException;
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.dao.RequisitionDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
@@ -106,5 +107,14 @@ public class RequisitionService {
 
     public List<Requisition> getAllCompletedRequisitionsByStatus() {
         return requisitionDAO.getAllCompletedRequisitionsByStatus();
+    }
+
+
+
+    ////////////////VALIDATE WHEN DISBURSING/
+    public void validateBeforeDisbursement(Double budgetLineBalance, String name) throws MinimumLengthException {
+        if (budgetLineBalance<0) {
+            throw new MinimumLengthException("Insufficient Balance on the "+name+"to cash this requisition");
+        }
     }
 }

@@ -30,6 +30,9 @@ public class CreateAccountability implements Serializable {
     private UserService userService;
 
     @Autowired
+    private AccountabilityService accountabilityService;
+
+    @Autowired
     private BudgetLineService budgetLineService;
 
     @Autowired
@@ -150,6 +153,9 @@ public class CreateAccountability implements Serializable {
 
             //setting status to completed
             requisition.setStatus("Completed");
+
+            accountabilityService.validateAccountability(accountability);
+
             requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
             //balancing books
