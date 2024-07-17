@@ -1,0 +1,139 @@
+<ui:composition template="temp.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pcs="http://java.sun.com/jsf/composite/pcs">
+    <ui:define name="title">Accountability</ui:define>
+    <ui:define name="main-content">
+        <h2 class="mb">Accountability</h2>
+        <!--<h:form class="mb mt pad1">
+            <p:commandButton value="Add New" onclick="PF('new_accountability').show()" icon="pi pi-plus" styleClass="mr pill"/>
+            <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
+        </h:form>-->
+        <h:form class="bg-white pad1">
+            <p:inputText styleClass="pill fillW mt" value="" placeholder="Search">
+                <p:ajax event="keyup" update="accountability_table"/>
+            </p:inputText>
+        </h:form>
+        <p:dataTable id="accountability_table" value="#{allRoles.roles}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+            <p:column headerText="No">
+                <h:outputText value="#{allRoles.roles.indexOf(accountability)+1}"/>
+            </p:column>
+            <p:column headerText="Amount Spent">
+                10,000
+            </p:column>
+            <p:column headerText="Description">
+                Used the money
+            </p:column>
+            <p:column headerText="Requisition">
+                Requisition
+            </p:column>
+            <p:column title="Image">
+                <pcs:image image="https://www.primefaces.org/showcase/icons.xhtml?jfwid="/>
+            </p:column>
+        </p:dataTable>
+
+        <!--<p:dialog widgetVar="new_accountability" header="Create New Accountability" modal="true">
+            <h:form id="new_accountability_form">
+                <p:panelGrid columns="2" layout="tabular">
+                    <p:outputLabel for="name" value="Name:"/>
+                    <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
+                    <p:outputLabel for="description" value="Description:"/>
+                    <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
+
+                    <p:outputLabel for="viewEmployees" value="Employees:"/>
+                    <p:selectCheckboxMenu id="viewEmployees" value="#{createUserRole.viewEmployeesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewRoles" value="Roles:"/>
+                    <p:selectCheckboxMenu id="viewRoles" value="#{createUserRole.viewRolesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewRequisitions" value="Requisitions:"/>
+                    <p:selectCheckboxMenu id="viewRequisitions" value="#{createUserRole.viewRequisitionsPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewBudgetLines" value="BudgetLines:"/>
+                    <p:selectCheckboxMenu id="viewBudgetLines" value="#{createUserRole.viewBudgetLinesPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="viewPermissions" value="Miscellaneous:"/>
+                    <p:selectCheckboxMenu id="viewPermissions" value="#{createUserRole.viewPermissions}" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+                </p:panelGrid>
+                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_accountability').hide()" update="new_accountability_form accountability_table"/>
+                <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_accountability').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="edit_accountability" header="Edit Role" modal="true">
+            <h:form id="edit_accountability_form">
+                <p:panelGrid columns="2" layout="tabular">
+                    <p:outputLabel for="accountability_name" value="Name:"/>
+                    <p:inputText id="accountability_name" value="" required="true" />
+                    <p:outputLabel for="accountability_description" value="Description:"/>
+                    <p:inputText id="accountability_description" value="" required="true" />
+
+                    <p:outputLabel for="edit_viewEmployees" value="Employees:"/>
+                    <p:selectCheckboxMenu id="edit_viewEmployees" value="" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewRoles" value="Roles:"/>
+                    <p:selectCheckboxMenu id="edit_viewRoles" value="" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.accountabilityPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewRequisitions" value="Requisitions:"/>
+                    <p:selectCheckboxMenu id="edit_viewRequisitions" value="" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewBudgetLines" value="BudgetLines:"/>
+                    <p:selectCheckboxMenu id="edit_viewBudgetLines" value="" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+
+                    <p:outputLabel for="edit_viewPermissions" value="Miscellaneous:"/>
+                    <p:selectCheckboxMenu id="edit_viewPermissions" value="" label="Select Permissions">
+                        <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                    </p:selectCheckboxMenu>
+                </p:panelGrid>
+                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="" oncomplete="PF('edit_accountability').hide()" update="accountability_table edit_accountability_form"/>
+                <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" action="" update="edit_accountability_form" onclick="PF('edit_accountability').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
+            <h:form id="confirm_dialog_form" styleClass="flex column">
+                <p:outputLabel value="Do you wish to delete this accountability?"/>
+                <div class="row mt">
+                    <h4 style="color: red">
+                        WARNING! This will delete all users attached to this accountability
+                    </h4>
+                    <p:commandButton icon="pi pi-trash" action="#{deleteRole.deleteARole}" styleClass="bg-r mr pill" value="Yes" oncomplete="PF('confirm_dialog').hide()" update="accountability_table"/>
+                    <p:commandButton icon="pi pi-times" styleClass="bg-g pill" value="No" onclick="PF('confirm_dialog').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
+            <h:form id="confirm_all_form" styleClass="flex column">
+                <h4 style="color: red">
+                    WARNING! This will delete all users attached to these accountabilitys
+                </h4>
+                <p:outputLabel value="Do you wish to delete all accountabilitys?"/>
+                <div class="row mt">
+                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" action="#{deleteRole.deleteAllRoles}" value="Yes" oncomplete="PF('confirm_all_dialog').hide()" update="accountability_table"/>
+                    <p:commandButton icon="pi pi-times" styleClass="bg-g pill" value="No" onclick="PF('confirm_all_dialog').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>-->
+    </ui:define>
+</ui:composition>

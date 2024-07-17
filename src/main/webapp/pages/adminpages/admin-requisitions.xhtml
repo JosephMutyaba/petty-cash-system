@@ -5,30 +5,33 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Requisitions</ui:define>
     <ui:define name="main-content">
-        <h2>Requisitions</h2>
-        <h4>Statistics</h4>
-        <div class="stats">
+        <h2 class="mb">Requisitions</h2>
+        <div class="stats mt">
             <h:form id="statsForm">
-                <p:panelGrid columns="3" styleClass="stats-grid" layout="grid">
-                    <p:panel header="Pending" styleClass="stat-panel">
-                        <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
-                    </p:panel>
-                    <p:panel header="Approved" styleClass="stat-panel">
-                        <h:outputText value="#{allRequisitions.approvedRequisitions.size()}" styleClass="stat-value"/>
-                    </p:panel>
-                    <p:panel header="Rejected" styleClass="stat-panel">
-                        <h:outputText value="#{allRequisitions.rejectedRequisitions.size()}" styleClass="stat-value"/>
-                    </p:panel>
-                    <p:panel header="Paid" styleClass="stat-panel">
-                        <h:outputText value="#{allRequisitions.paidRequisitions.size()}" styleClass="stat-value"/>
-                    </p:panel>
-                    <p:panel header="Completed" styleClass="stat-panel">
-                        <h:outputText value="#{allRequisitions.completedRequisitions.size()}" styleClass="stat-value"/>
-                    </p:panel>
-                    <p:panel header="Expired" styleClass="stat-panel">
-                        <h:outputText value="#{allRequisitions.expiredRequisitions.size()}" styleClass="stat-value"/>
-                    </p:panel>
-                </p:panelGrid>
+                <p:accordionPanel activeIndex="1">
+                    <p:tab title="Statistics">
+                        <p:panelGrid columns="3" styleClass="stats-grid" layout="grid">
+                            <p:panel header="Pending" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
+                            <p:panel header="Approved" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.approvedRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
+                            <p:panel header="Rejected" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.rejectedRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
+                            <p:panel header="Paid" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.paidRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
+                            <p:panel header="Completed" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.completedRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
+                            <p:panel header="Expired" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.expiredRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>
             </h:form>
 
         </div>
@@ -55,7 +58,7 @@
         </div>
         <h:form class="bg-white pad1">
             <p:inputText styleClass="pill fillW" value="#{allRequisitions.searchTerm}" placeholder="Search">
-                <p:ajax event="keyup" delay="200" update="requisition_table" listener="#{allRequisitions.filterRequisitionsForActiveTab}"/>
+                <p:ajax event="keyup" update="requisition_table" listener="#{allRequisitions.filterRequisitionsForActiveTab}"/>
             </p:inputText>
         </h:form>
 

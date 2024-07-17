@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Named
 @ApplicationScoped
 @Component
-public class Consts implements Serializable {
+public class Constants implements Serializable {
     public String getNameRegex() {
         return "[a-zA-Z]{2,30}";
     }
