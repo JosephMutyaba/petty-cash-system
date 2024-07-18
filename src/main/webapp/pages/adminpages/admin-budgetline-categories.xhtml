@@ -8,7 +8,7 @@
     <ui:define name="main-content">
         <h2>BudgetLine Categories</h2>
 
-        <div class="mt mb">
+        <div class="mt mb pad1">
             <h:form>
                 <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_category').show()" process="@this" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE')}"/>
                 <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirm_all_dialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
@@ -17,7 +17,7 @@
         <h:form>
             <div class="bg-white pad1">
                 <p:inputText styleClass="pill fillW" value="#{allBudgetLineCategories.searchTerm}" placeholder="Search">
-                    <p:ajax event="keyup" delay="200" update="budgetlines_categories__table" listener="#{allBudgetLineCategories.filterCategories}"/>
+                    <p:ajax event="keyup" update="budgetlines_categories__table" listener="#{allBudgetLineCategories.filterCategories}"/>
                 </p:inputText>
             </div>
         </h:form>
@@ -37,12 +37,12 @@
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_budgetline_category" width="500px" header="Create New Category" modal="true">
+        <p:dialog widgetVar="new_budgetline_category" header="Create New Category" modal="true">
             <h:form id="new_budgetline_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
-                </p:panelGrid>
+                </h:panelGroup>
                 <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_budgetline_category').hide()"/>
             </h:form>
@@ -50,10 +50,10 @@
 
         <p:dialog widgetVar="edit_category" header="Edit Category" modal="true">
             <h:form id="edit_category_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="cat_name" value="Name:"/>
                     <p:inputText id="cat_name" value="#{updateBudgetLineCategory.cat_name}" required="true" />
-                </p:panelGrid>
+                </h:panelGroup>
                 <p:commandButton styleClass="mr pill" icon="pi pi-pencil" value="Save" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('edit_category').hide()"/>
             </h:form>

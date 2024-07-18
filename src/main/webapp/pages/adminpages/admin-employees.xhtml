@@ -6,39 +6,27 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Employees</ui:define>
     <ui:define name="main-content">
-        <p:growl id="globalMessages" life="3000" globalOnly="true" showDetail="true" showSummary="true" skipDetailIfEqualsSummary="true"/>
-        <h2>Employees</h2>
-        <h4>Statistics</h4>
-        <div class="stats">
-            <p:panelGrid columns="3" styleClass="stats-grid" layout="grid">
-                <p:panel header="Male" styleClass="stat-panel">
-                    <h:outputText value="27" styleClass="stat-value"/>
-                </p:panel>
-                <p:panel header="Female" styleClass="stat-panel">
-                    <h:outputText value="36" styleClass="stat-value"/>
-                </p:panel>
-                <p:panel header="M:F" styleClass="stat-panel">
-                    <h:outputText value="3:4" styleClass="stat-value"/>
-                </p:panel>
-            </p:panelGrid>
-        </div>
-        <div class="bg-white pad1">
+        <h2 class="mb">Employees</h2>
+        <h:form class="pad1 mt">
             <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('addUserDialog').show()" rendered="#{checkPermission.hasPermission('ADD_EMPLOYEE')}"/>
             <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('deleteAllUsersDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_EMPLOYEE')}"/>
-        </div>
+        </h:form>
 
         <h:form id="usersDataTableForm">
             <div class="bg-white pad1">
                 <p:inputText styleClass="pill fillW" value="#{getEmployees.searchTerm}" placeholder="Search">
-                    <p:ajax event="keyup" delay="200" update="usersTable" listener="#{getEmployees.filterUsers}"/>
+                    <p:ajax event="keyup" update="usersTable" listener="#{getEmployees.filterUsers}"/>
                 </p:inputText>
             </div>
-            <p:dataTable id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5">
+            <p:dataTable id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
                 <p:column headerText="No">
                     <h:outputText value="#{getEmployees.users.indexOf(employee) + 1}"/>
                 </p:column>
                 <p:column headerText="Firstname">
                     <h:outputText value="#{employee.firstname}"/>
+                </p:column>
+                <p:column headerText="Lastname">
+                    <h:outputText value="#{employee.lastname}"/>
                 </p:column>
                 <p:column headerText="username">
                     <h:outputText value="#{employee.username}"/>
@@ -59,97 +47,94 @@
 
 
         <p:dialog header="New User" widgetVar="addUserDialog" modal="true" resizable="false">
-            <h:form id="addUserForm" styleClass="flex column">
-                <p:panelGrid columns="3" layout="tabular">
-
-                    <h:outputLabel for="firstname" value="First Name:" styleClass="label"/>
+            <h:form id="addUserForm">
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="firstname" value="First Name" styleClass="label"/>
                     <p:inputText id="firstname" value="#{createEmployee.firstName}" required="true" styleClass="input">
                         <f:validateLength minimum="2" maximum="30"/>
                     </p:inputText>
-                    <p:message for="firstname" styleClass="error"/>
-
-                    <h:outputLabel for="lastname" value="Last Name:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="lastname" value="Last Name" styleClass="label"/>
                     <p:inputText id="lastname" value="#{createEmployee.lastName}" required="true" styleClass="input">
                         <f:validateLength minimum="2" maximum="30"/>
                     </p:inputText>
-                    <p:message for="lastname" styleClass="error"/>
-
-                    <h:outputLabel for="email" value="Email:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="email" value="Email" styleClass="label"/>
                     <p:inputText id="email" value="#{createEmployee.email}" required="true" styleClass="input">
                         <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
                     </p:inputText>
-                    <p:message for="email" styleClass="error"/>
-
-                    <h:outputLabel for="password" value="Password:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="password" value="Password" styleClass="label"/>
                     <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" styleClass="input">
                         <f:validateLength minimum="6" maximum="20"/>
                     </p:password>
-                    <p:message for="password" styleClass="error"/>
-
-                    <h:outputLabel for="role" value="Role:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="role" value="Role" styleClass="label"/>
                     <p:selectOneMenu id="role" value="#{createEmployee.roleName}" required="true" styleClass="selectMenu">
                         <f:selectItems value="#{createEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
                     </p:selectOneMenu>
-                    <p:message for="role" styleClass="error"/>
-
-                    <h:outputLabel for="username" value="Username:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="username" value="Username" styleClass="label"/>
                     <p:inputText id="username" value="#{createEmployee.username}" required="true" styleClass="input">
                         <f:validateLength minimum="4" maximum="20"/>
                     </p:inputText>
-                    <p:message for="username" styleClass="error"/>
-                </p:panelGrid>
-
-                <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="pill" update="addUserForm globalMessages" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable();" />
-
-<!--                <p:growl globalOnly="true" id="globalMessages"/>-->
+                </h:panelGroup>
+                <div class="mt mb">
+                    <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="pill" update="addUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable();" />
+                </div>
             </h:form>
         </p:dialog>
 
 
 
         <p:dialog header="Update User" widgetVar="updateUserDialog" modal="true" resizable="false">
-            <h:form id="updateUserForm" styleClass="flex column">
-                <p:panelGrid columns="3" layout="tabular">
-
-                    <h:outputLabel for="first_name" value="First Name:" styleClass="label"/>
+            <h:form id="updateUserForm">
+                <h:panelGroup class="flex column">
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="first_name" value="First Name" styleClass="label"/>
                     <p:inputText id="first_name" value="#{updateEmployee.firstName}" required="true" styleClass="input">
                         <f:validateLength minimum="2" maximum="30"/>
                     </p:inputText>
-                    <p:message for="first_name" styleClass="error"/>
-
-                    <h:outputLabel for="last_name" value="Last Name:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="last_name" value="Last Name" styleClass="label"/>
                     <p:inputText id="last_name" value="#{updateEmployee.lastName}" required="true" styleClass="input">
                         <f:validateLength minimum="2" maximum="30"/>
                     </p:inputText>
-                    <p:message for="last_name" styleClass="error"/>
-
-                    <h:outputLabel for="emai_l" value="Email:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="emai_l" value="Email" styleClass="label"/>
                     <p:inputText id="emai_l" value="#{updateEmployee.email}" required="true" styleClass="input">
                         <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
                     </p:inputText>
-                    <p:message for="emai_l" styleClass="error"/>
-
-                    <h:outputLabel for="pass_word" value="Password:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="pass_word" value="Password" styleClass="label"/>
                     <p:password id="pass_word" redisplay="true" value="#{updateEmployee.password}" required="true" styleClass="input">
                         <f:validateLength minimum="6" maximum="20"/>
                     </p:password>
-                    <p:message for="pass_word" styleClass="error"/>
-
-                    <h:outputLabel for="ro_le" value="Role:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="ro_le" value="Role" styleClass="label"/>
                     <p:selectOneMenu id="ro_le" value="#{updateEmployee.roleName}" required="true" styleClass="selectMenu">
                         <f:selectItems value="#{updateEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
                     </p:selectOneMenu>
-                    <p:message for="ro_le" styleClass="error"/>
-
-                    <h:outputLabel for="user_name" value="Username:" styleClass="label"/>
+                </h:panelGroup>
+                <h:panelGroup class="flex column">
+                    <h:outputLabel for="user_name" value="Username" styleClass="label"/>
                     <p:inputText id="user_name" value="#{updateEmployee.username}" required="true" styleClass="input">
                         <f:validateLength minimum="4" maximum="20"/>
                     </p:inputText>
-                    <p:message for="user_name" styleClass="error"/>
-                </p:panelGrid>
-                <p:commandButton icon="pi pi-save" value="Update User" action="#{updateEmployee.updateEmployee}" styleClass="pill" update="updateUserForm global_Messages" oncomplete="if (!args.validationFailed) PF('updateUserDialog').hide(); updateUsersTable()" />
-
-                <p:growl globalOnly="true" id="global_Messages" />
+                </h:panelGroup>
+                <div class="mt mb">
+                    <p:commandButton icon="pi pi-save" value="Update User" action="#{updateEmployee.updateEmployee}" styleClass="pill" update="updateUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('updateUserDialog').hide(); updateUsersTable()" />
+                </div>
             </h:form>
         </p:dialog>
 

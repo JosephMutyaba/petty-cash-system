@@ -32,7 +32,8 @@ public enum Perm {
 
     REQUEST_CHANGES("Request Changes"),
 
-    ACCEPT_REQUISITION("Accept Requisition");
+    ACCEPT_REQUISITION("Accept Requisition"),
+    VIEW_ACCOUNTABILITY("View Accountability");
 
     private final String definition;
 

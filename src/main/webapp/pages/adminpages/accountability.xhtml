@@ -1,0 +1,37 @@
+<ui:composition template="temp.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pcs="http://java.sun.com/jsf/composite/pcs">
+    <ui:define name="title">Accountability</ui:define>
+    <ui:define name="main-content">
+        <h2 class="mb">Accountability</h2>
+        <!--<h:form class="mb mt pad1">
+            <p:commandButton value="Add New" onclick="PF('new_accountability').show()" icon="pi pi-plus" styleClass="mr pill"/>
+            <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
+        </h:form>-->
+        <h:form class="bg-white pad1">
+            <p:inputText styleClass="pill fillW mt" value="" placeholder="Search">
+                <p:ajax event="keyup" update="accountability_table"/>
+            </p:inputText>
+        </h:form>
+        <p:dataTable id="accountability_table" value="#{allRoles.roles}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+            <p:column headerText="No">
+                <h:outputText value="#{allRoles.roles.indexOf(accountability)+1}"/>
+            </p:column>
+            <p:column headerText="Amount Spent">
+                10,000
+            </p:column>
+            <p:column headerText="Description">
+                Used the money
+            </p:column>
+            <p:column headerText="Requisition">
+                Requisition
+            </p:column>
+            <p:column headerText="Image">
+                <pcs:image image="https://www.primefaces.org/showcase/icons.xhtml?jfwid="/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
