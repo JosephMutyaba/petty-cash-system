@@ -19,7 +19,7 @@
 
             <h:panelGroup class="flex column">
             </h:panelGroup>
-            <p:menuitem value="Accountability" outcome="/pages/adminpages/accountability" icon="pi pi-pencil" rendered="#{checkPermission.hasPermission('VIEW_ACCOUNTABILITY')}"/>
+            <p:menuitem value="Accountability" outcome="/pages/adminpages/accountability" icon="pi pi-file-edit" rendered="#{checkPermission.hasPermission('VIEW_ACCOUNTABILITY')}"/>
             <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog"/>
             <p:menuitem value="Logout" action="#{loginBean.logoutUser}" icon="pi pi-sign-out"/>
         </p:tieredMenu>

@@ -5,6 +5,8 @@
     --pad: 8px;
     --red: #f35;
     --grn: #9f5;
+    --yel: #ff3;
+    --blk: #4a4a4a;
 }
 .container {
     display: grid;
@@ -68,7 +70,9 @@ body .ui-inputfield {
     transform: translate(-50%, -50%);
 }
 
-span.flex.column > input {
+.ui-dialog span.flex.column>input,
+.ui-dialog span.ui-calendar>input,
+.ui-dialog span.ui-inputnumber>input {
     width: 24rem;
     margin-bottom: 8px;
 }
@@ -98,14 +102,16 @@ span.flex.column > .selectMenu {
 /*Colors for Background and text*/
 .bg-r {background-color:var(--red)!important}
 .bg-g {background-color:var(--grn)!important}
+.bg-y {background-color:var(--yel)!important}
 .bg-white {background-color:#fff!important}
-.bg-cream {background-color:mintcream!important}
 .bg-none {background-color:#0000!important}
 .text-r {color:var(--red)!important}
 .text-g {color:var(--grn)!important}
+.text-y {color:var(--yel)!important}
+.text-blk {color:var(--blk)!important}
 
 /*sizing and arrangement*/
-.fillW {width:-webkit-fill-available!important;flex:1!important;}
+.fillW,.fillW>input {width:-webkit-fill-available!important;flex:1!important;}
 .fillH {height:-webkit-fill-available!important;flex:1!important;}
 .flex {display:flex}
 .row {flex-direction:row}

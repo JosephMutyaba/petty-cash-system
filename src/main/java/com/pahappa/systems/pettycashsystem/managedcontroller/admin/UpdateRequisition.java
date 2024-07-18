@@ -201,6 +201,7 @@ public class UpdateRequisition implements Serializable {
         requisition.setReview_comments(reviewComments);
 
         requisition.setStatus(status);
+        if (status.equals("Approved")) requisition.setDateApproved(new Date());
         requisition.setMaxDateNeeded(maxDate);
 //        requisition.setDateCreated(new Date());
 

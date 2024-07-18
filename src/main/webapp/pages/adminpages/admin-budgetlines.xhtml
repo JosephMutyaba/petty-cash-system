@@ -65,6 +65,9 @@
             <p:column headerText="Description">
                 <h:outputText value="#{budgetLine.description}"/>
             </p:column>
+            <p:column headerText="Category">
+                <h:outputText value="#{budgetLine.budgetLineCategory.name}"/>
+            </p:column>
             <p:column headerText="Amount">
                 <h:outputText value="#{budgetLine.amount}"/>
             </p:column>
@@ -72,30 +75,21 @@
                 <h:outputText value="#{budgetLine.balance}"/>
             </p:column>
             <p:column headerText="StartDate">
-                <h:outputText value="#{budgetLine.startDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
+                <h:outputText value="#{con.formatDate(budgetLine.startDate)}"/>
             </p:column>
             <p:column headerText="End date">
-                <h:outputText value="#{budgetLine.endDate}"><f:convertDateTime dateStyle="short"/></h:outputText>
+                <h:outputText value="#{con.formatDate(budgetLine.endDate)}"/>
+            </p:column>
+            <p:column rendered="#{(allBudgetLines.tabId.equals('pendingTab')||allBudgetLines.tabId.equals('editLineTab')) and checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE')}" headerText="Status">
+                <h:form>
+                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="pill square bg-y text-blk" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
+                </h:form>
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
                     <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                     <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
-            </p:column>
-            <p:column rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')||checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE')}" headerText="Status">
-                <h:form>
-                    <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
-                </h:form>
-            </p:column>
-            <p:column headerText="Category">
-                <h:outputText value="#{budgetLine.budgetLineCategory.name}"/>
-            </p:column>
-            <p:column headerText="Date Created">
-                <h:outputText value="#{budgetLine.dateApproved}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
-            </p:column>
-            <p:column headerText="Date Approved">
-                <h:outputText value="#{budgetLine.dateApproved}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
             </p:column>
         </p:dataTable>
 
@@ -144,7 +138,7 @@
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="startdte" value="Start Date"/>
-                    <p:calendar id="startdte" value="#{updateBudgetLine.startDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+                    <p:calendar id="startdte" value="#{updateBudgetLine.startDate}" required="true" showButtonPanel="true" />
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="end_date" value="End Date"/>
@@ -161,7 +155,7 @@
                     </p:selectOneMenu>
                 </h:panelGroup>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
                                      update=":tabForm:tabView, m_essages, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </div>
