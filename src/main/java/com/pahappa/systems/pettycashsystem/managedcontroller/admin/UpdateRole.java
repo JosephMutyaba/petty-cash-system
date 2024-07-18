@@ -361,11 +361,11 @@ public class UpdateRole implements Serializable {
             }
 
             if (perm.getName().equals(Perm.VIEW_EMPLOYEES)) {
-                this.permissionsPermissions.add(Perm.VIEW_EMPLOYEES);
+                this.employeePermissions.add(Perm.VIEW_EMPLOYEES);
             }
 
             if (perm.getName().equals(Perm.VIEW_ROLES)) {
-                this.permissionsPermissions.add(Perm.VIEW_ROLES);
+                this.rolePermissions.add(Perm.VIEW_ROLES);
             }
 
             if (perm.getName().equals(Perm.VIEW_PERMISSIONS)) {
@@ -373,11 +373,19 @@ public class UpdateRole implements Serializable {
             }
 
             if (perm.getName().equals(Perm.VIEW_REQUISITIONS)) {
-                this.permissionsPermissions.add(Perm.VIEW_REQUISITIONS);
+                this.requisitionPermissions.add(Perm.VIEW_REQUISITIONS);
             }
 
             if (perm.getName().equals(Perm.VIEW_BUDGETLINES)) {
-                this.permissionsPermissions.add(Perm.VIEW_BUDGETLINES);
+                this.budgetLinePermissions.add(Perm.VIEW_BUDGETLINES);
+            }
+
+            if (perm.getName().equals(Perm.VIEW_ACCOUNTABILITY)) {
+                this.permissionsPermissions.add(Perm.VIEW_ACCOUNTABILITY);
+            }
+
+            if (perm.getName().equals(Perm.ACCEPT_REQUISITION)) {
+                this.requisitionPermissions.add(Perm.ACCEPT_REQUISITION);
             }
 
         }

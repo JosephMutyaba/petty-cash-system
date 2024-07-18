@@ -75,7 +75,7 @@
                 <h:outputText value="#{budgetLine.startDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
             </p:column>
             <p:column headerText="End date">
-                <h:outputText value="#{budgetLine.endDate}"><f:convertDateTime pattern="dd-MM-yyyy"/></h:outputText>
+                <h:outputText value="#{budgetLine.endDate}"><f:convertDateTime dateStyle="short"/></h:outputText>
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
@@ -131,6 +131,7 @@
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide(); updateBudgetLinesTable();" update=":statsForm, messages"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </div>
+                <p:messages id="messages" globalOnly="true" closable="true"/>
             </h:form>
         </p:dialog>
 
