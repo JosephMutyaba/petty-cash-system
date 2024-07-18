@@ -1,6 +1,5 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.login;
 
-import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
@@ -11,10 +10,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.Base64;
 
 @ManagedBean
 @SessionScoped
@@ -128,9 +126,12 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public String logoutUser()/* throws IOException*/{
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("/pages/auth/login.xhtml");
-        return "/pages/auth/login.xhtml?faces-redirect=true";
+    public String logoutUser() {
+        loggedInUser = null;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        externalContext.invalidateSession(); // Invalidate current session
+        return "/pages/auth/login.xhtml?faces-redirect=true"; // Redirect to login page
     }
 
     public void updateLoggedInUser(){

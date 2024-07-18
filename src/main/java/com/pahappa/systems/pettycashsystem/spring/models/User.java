@@ -138,9 +138,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", Firstname='" + Firstname + '\'' +
                 ", Lastname='" + Lastname + '\'' +
-                ", Email='" + Email + '\'' +
-                ", role=" + role +
-                ", requisition=" + requisition +
+                ", Email='" + Email +
                 '}';
     }
 }

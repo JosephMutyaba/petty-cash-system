@@ -62,7 +62,7 @@ public class RoleService {
         }
 
         if(role.getDescription().length() < 3) {
-            throw new MinimumLengthException("Role name cannot be longer less 3 characters");
+            throw new MinimumLengthException("Description cannot be less 3 characters");
         }
 
         if(role.getDescription().isEmpty() || role.getDescription()==null) {

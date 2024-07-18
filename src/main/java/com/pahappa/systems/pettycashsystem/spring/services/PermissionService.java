@@ -16,7 +16,6 @@ public class PermissionService {
     @Autowired
     private PermissionDAO permissionDAO;
 
-
     public void createPermission(Permission permission) {
         permissionDAO.createPermission(permission);
     }

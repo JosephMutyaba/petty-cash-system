@@ -111,7 +111,7 @@ public class RequisitionService {
 
 
 
-    ////////////////VALIDATE WHEN DISBURSING/
+    //////////////// VALIDATE WHEN DISBURSING /
     public void validateBeforeDisbursement(Double budgetLineBalance, String name) throws MinimumLengthException {
         if (budgetLineBalance<0) {
             throw new MinimumLengthException("Insufficient Balance on the "+name+"to cash this requisition");
