@@ -80,14 +80,23 @@
             <p:column headerText="End date">
                 <h:outputText value="#{con.formatDate(budgetLine.endDate)}"/>
             </p:column>
-            <p:column rendered="#{(allBudgetLines.tabId.equals('pendingTab')||allBudgetLines.tabId.equals('editLineTab')) and checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE')}" headerText="Status">
+
+
+
+            <p:column headerText="Review" rendered="#{(allBudgetLines.tabId.equals('editLineTab')||allBudgetLines.tabId.equals('approvedTab')||allBudgetLines.tabId.equals('rejectedTab')) and checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE')}">
+                <h:outputText value="#{budgetLine.review_comments}"/>
+            </p:column>
+
+
+
+            <p:column rendered="#{(allBudgetLines.tabId.equals('pendingTab')) and checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE')}" headerText="Status">
                 <h:form>
                     <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="pill square bg-y text-blk" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                     <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
             </p:column>
@@ -108,7 +117,7 @@
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="enddate" value="End Date"/>
-                    <p:calendar id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
+                    <p:calendar id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true"/>
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="amount" value="Amount"/>
@@ -155,7 +164,7 @@
                     </p:selectOneMenu>
                 </h:panelGroup>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
                                      update=":tabForm:tabView, m_essages, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </div>
@@ -190,9 +199,11 @@
                     </p:selectOneMenu>
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
+                    <p:outputLabel value="Comment" for="comment"/>
+                    <p:inputTextarea id="comment" value="#{updateBudgetLine.review_comments}" />
                 </h:panelGroup>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}"
                                      onclick="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
                 </div>

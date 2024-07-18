@@ -11,6 +11,9 @@ public class BudgetLine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = true)
+    private String review_comments;
+
     @Column(nullable = false)
     private String description;
 
@@ -40,7 +43,7 @@ public class BudgetLine {
 
     public BudgetLine() {}
 
-    private BudgetLine(Long id, String description, Date startDate, Date endDate, Double amount, Double balance, Date dateApproved, String status, List<Requisition> requisitions, BudgetLineCategory budgetLineCategory) {
+    private BudgetLine(Long id, String description, Date startDate, Date endDate, String review_comments, Double amount, Double balance, Date dateApproved, String status, List<Requisition> requisitions, BudgetLineCategory budgetLineCategory) {
         this.id = id;
         this.description = description;
         this.startDate = startDate;
@@ -51,6 +54,7 @@ public class BudgetLine {
         this.status = status;
         this.requisitions = requisitions;
         this.budgetLineCategory = budgetLineCategory;
+        this.review_comments=review_comments;
     }
 
     public Long getId() {
@@ -63,6 +67,14 @@ public class BudgetLine {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getReview_comments() {
+        return review_comments;
+    }
+
+    public void setReview_comments(String review_comments) {
+        this.review_comments = review_comments;
     }
 
     public void setDescription(String description) {

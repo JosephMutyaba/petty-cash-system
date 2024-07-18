@@ -84,7 +84,7 @@
             </p:column>
             <p:column rendered="#{allRequisitions.tabId.equals('pendingTab')||allRequisitions.tabId.equals('completed')}" headerText="Actions">
                 <h:form>
-                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onclick="PF('accountabilityDialog').show()" update="accountability_section" styleClass="mb mr pill square"/>
+                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onsuccess="PF('accountabilityDialog').show()" update="accountability_section" styleClass="mb mr pill square"/>
                     <p:commandButton title="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>

@@ -46,7 +46,7 @@
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
                                          update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
-                        <p:messages globalOnly="true" id="globalMessages"/>
+                        <p:messages globalOnly="true" id="globalMessages" closable="true"/>
                     </div>
                 </h:form>
                 <h:panelGroup id="accountability_section" rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
@@ -71,8 +71,8 @@
                         </div>
 
                         <div>
-                            <p:commandButton value="Submit Accountability" update="messages" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
-                            <p:messages globalOnly="true" id="messages" />
+                            <p:commandButton value="Submit Accountability" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
+                            <p:messages globalOnly="true" id="messages" closable="true"/>
                         </div>
                     </h:form>
                 </h:panelGroup>
