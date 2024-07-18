@@ -27,4 +27,7 @@ public class Constants implements Serializable {
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
         return sdf.format(date);
     }
+    public String getRequiredMessage() {
+        return "This field is required!";
+    }
 }

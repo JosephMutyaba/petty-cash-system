@@ -14,7 +14,7 @@
         <ui:include src="/pages/adminpages/sidebar.xhtml"/>
         <div class="main-content fillW">
             <p:growl id="mainGrowl" life="3000" globalOnly="true" showDetail="true" showSummary="true" skipDetailIfEqualsSummary="true">
-                <p:autoUpdate />
+                <p:autoUpdate on="error"/>
             </p:growl>
             <ui:insert name="main-content"/>
         </div>

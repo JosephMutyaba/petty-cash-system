@@ -82,9 +82,9 @@
                     <p:commandButton styleClass="pill square bg-y text-blk" icon="pi pi-flag-fill" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
                 </h:form>
             </p:column>
-            <p:column rendered="#{allRequisitions.tabId.equals('pendingTab')}" headerText="Actions">
+            <p:column rendered="#{allRequisitions.tabId.equals('pendingTab')||allRequisitions.tabId.equals('completed')}" headerText="Actions">
                 <h:form>
-                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('accountabilityDialog').show()" update="accountabilityDialog" styleClass="mb mr pill square"/>
+                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('accountabilityDialog').show()" update="accountabilityDialog" styleClass="mb mr pill square"/>
                     <p:commandButton title="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
