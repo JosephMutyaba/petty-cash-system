@@ -1,6 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
+import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,15 @@ public class UserService {
     private final UserDAO userDAO;
 
     @Autowired
+    private Constants con;
+
+    @Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     // Create operation
-    public void createUser(User user) throws NullFieldException {
+    public void createUser(User user) throws Exception {
         validateUser(user, "create");
         userDAO.createUser(user);
     }
@@ -44,7 +48,7 @@ public class UserService {
     }
 
     // Update operation
-    public void updateUser(User user) throws NullFieldException {
+    public void updateUser(User user) throws Exception {
         validateUser(user, "update");
         userDAO.updateUser(user);
     }
@@ -67,10 +71,13 @@ public class UserService {
     }
 
 
-    public void validateUser(User user, String action) throws NullFieldException {
+    public void validateUser(User user, String action) throws Exception {
         if (user.getUsername() == null || user.getPassword() == null|| user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
             throw new NullPointerException("All fields are required");
         }
+
+        if (!user.getFirstname().matches(con.getNameRegex()))
+            throw new Exception("A name can have letters only!");
 
         if (user.getUsername().length()<4) {
             throw new NullFieldException("Username should be at least 4 characters");
