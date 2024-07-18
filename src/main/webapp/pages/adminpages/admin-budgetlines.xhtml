@@ -94,7 +94,7 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                     <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
             </p:column>
