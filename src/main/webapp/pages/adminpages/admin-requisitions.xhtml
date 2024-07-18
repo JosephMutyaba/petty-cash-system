@@ -84,7 +84,7 @@
             </p:column>
             <p:column rendered="#{allRequisitions.tabId.equals('pendingTab')||allRequisitions.tabId.equals('completed')}" headerText="Actions">
                 <h:form>
-                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onclick="PF('accountabilityDialog').show()" update="accountabilityDialog" styleClass="mb mr pill square"/>
+                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onclick="PF('accountabilityDialog').show()" update="accountability_section" styleClass="mb mr pill square"/>
                     <p:commandButton title="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
@@ -195,7 +195,7 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog id="accountabilityDialog" modal="true" closable="true" closeOnEscape="true">
+        <p:dialog id="accountabilityDialog" widgetVar="accountabilityDialog" modal="true" closable="true" closeOnEscape="true" height="400px">
             <h:panelGroup id="accountability_section" styleClass="mt pad1 flex column">
                 <h3 class="mb">Accountability</h3>
                 <h:form styleClass="flex column pad2">
@@ -210,7 +210,7 @@
                         </h:panelGroup>
                     </h:panelGroup>
                     <p:column headerText="Image">
-                        <h:graphicImage width="100px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
+                        <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
                     </p:column>
                 </h:form>
             </h:panelGroup>
