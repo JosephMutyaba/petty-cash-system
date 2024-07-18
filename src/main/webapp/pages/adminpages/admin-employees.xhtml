@@ -27,7 +27,7 @@
                 <p:column headerText="Lastname">
                     <h:outputText value="#{employee.lastname}"/>
                 </p:column>
-                <p:column headerText="username">
+                <p:column headerText="Username">
                     <h:outputText value="#{employee.username}"/>
                 </p:column>
                 <p:column headerText="Email">
@@ -92,7 +92,8 @@
                 </p:panelGrid>
 <!--                <p:growl globalOnly="true" life="3000" />-->
                 <div class="mt mb">
-                    <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="pill" update="addUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable();" />
+                    <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="pill mr" update="addUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable();" />
+                    <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('addUserDialog').hide()"/>
                 </div>
             </h:form>
         </p:dialog>
@@ -102,8 +103,6 @@
         <p:dialog header="Update User" widgetVar="updateUserDialog" modal="true" resizable="false">
             <h:form id="updateUserForm">
                 <p:panelGrid columns="2" layout="grid">
-                    <h:panelGroup class="flex column">
-                    </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="first_name" value="First Name" styleClass="label"/>
                         <p:inputText id="first_name" value="#{updateEmployee.firstName}" required="true" styleClass="input">
@@ -142,7 +141,8 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt mb">
-                    <p:commandButton icon="pi pi-save" value="Update User" action="#{updateEmployee.updateEmployee}" styleClass="pill" update="updateUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('updateUserDialog').hide(); updateUsersTable()" />
+                    <p:commandButton icon="pi pi-save" value="Update User" action="#{updateEmployee.updateEmployee}" styleClass="pill mr" update="updateUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('updateUserDialog').hide(); updateUsersTable()" />
+                    <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('updateUserDialog').hide()"/>
                 </div>
             </h:form>
         </p:dialog>
