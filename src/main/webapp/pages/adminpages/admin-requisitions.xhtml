@@ -84,7 +84,7 @@
             </p:column>
             <p:column rendered="#{allRequisitions.tabId.equals('pendingTab')||allRequisitions.tabId.equals('completed')}" headerText="Actions">
                 <h:form>
-                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('accountabilityDialog').show()" update="accountabilityDialog" styleClass="mb mr pill square"/>
+                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('accountabilityDialog').show()" update="accountability_section" styleClass="mb mr pill square bg-y text-blk"/>
                     <p:commandButton title="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
@@ -195,19 +195,16 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog id="accountabilityDialog" modal="true" closable="true" closeOnEscape="true">
+        <p:dialog id="accountabilityDialog" widgetVar="accountabilityDialog" header="Accountability" modal="true" closable="true" closeOnEscape="true" height="18rem">
             <h:panelGroup id="accountability_section" styleClass="mt pad1 flex column">
-                <h3 class="mb">Accountability</h3>
-                <h:form styleClass="flex column pad2">
-                    <h:panelGroup styleClass="flex row pad1">
-                        <h:panelGroup styleClass="flex column">
-                            <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                            <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
-                        </h:panelGroup>
-                        <h:panelGroup styleClass="flex column">
-                            <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
-                            <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
-                        </h:panelGroup>
+                <h:form styleClass="pad1">
+                    <h:panelGroup styleClass="flex column">
+                        <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
+                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="flex column">
+                        <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
+                        <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
                     </h:panelGroup>
                     <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
                 </h:form>
