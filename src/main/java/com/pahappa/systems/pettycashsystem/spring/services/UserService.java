@@ -76,12 +76,15 @@ public class UserService {
             throw new NullPointerException("All fields are required");
         }
 
-        if (!user.getFirstname().matches(con.getNameRegex()))
+        if (!user.getFirstname().matches(con.getNameRegex()) || !user.getLastname().matches(con.getNameRegex()))
             throw new Exception("A name can have letters only!");
 
         if (user.getUsername().length()<4) {
             throw new NullFieldException("Username should be at least 4 characters");
         }
+
+        if (!user.getUsername().matches(con.getUsernameRegex()))
+            throw new Exception("A username can only contain letters(a-z,A-Z) numbers(0-9) and underscores(_).");
 
         if (action.equals("create")) {
             if (userDAO.getUserByUsername(user.getUsername())!=null) {
@@ -97,11 +100,11 @@ public class UserService {
             throw new NullPointerException("All fields are required");
         }
 
-        if (!Pattern.matches( "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]+$",user.getEmail())) {
+        if (!user.getEmail().matches(con.getEmailRegex())) {
             throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
         }
 
-        if (!Pattern.matches( "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_><])[A-Za-z\\d@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_>< ]{8,}$",user.getPassword())) {
+        if (!user.getPassword().matches(con.getPasswordRegex())) {
             throw new NullPointerException("Password should contain at least contain a number, upper, lowercase and special characters. Minimum length of 8");
         }
 

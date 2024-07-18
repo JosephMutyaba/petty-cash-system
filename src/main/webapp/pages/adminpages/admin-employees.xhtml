@@ -6,6 +6,7 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Employees</ui:define>
     <ui:define name="main-content">
+        #{getEmployees.init()}
         <h2 class="mb">Employees</h2>
         <h:form class="pad1 mt">
             <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('addUserDialog').show()" rendered="#{checkPermission.hasPermission('ADD_EMPLOYEE')}"/>
@@ -18,10 +19,8 @@
                     <p:ajax event="keyup" update="usersTable" listener="#{getEmployees.filterUsers}"/>
                 </p:inputText>
             </div>
-            <p:dataTable id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
-                <p:column headerText="No">
-                    <h:outputText value="#{getEmployees.users.indexOf(employee) + 1}"/>
-                </p:column>
+            <p:dataTable rowIndexVar="index" id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+                <p:column headerText="No" width="16px">#{index + 1}</p:column>
                 <p:column headerText="Firstname">
                     <h:outputText value="#{employee.firstname}"/>
                 </p:column>
@@ -48,42 +47,50 @@
 
         <p:dialog header="New User" widgetVar="addUserDialog" modal="true" resizable="false">
             <h:form id="addUserForm">
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="firstname" value="First Name" styleClass="label"/>
-                    <p:inputText id="firstname" value="#{createEmployee.firstName}" required="true" styleClass="input">
-                        <f:validateLength minimum="2" maximum="30"/>
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="lastname" value="Last Name" styleClass="label"/>
-                    <p:inputText id="lastname" value="#{createEmployee.lastName}" required="true" styleClass="input">
-                        <f:validateLength minimum="2" maximum="30"/>
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="email" value="Email" styleClass="label"/>
-                    <p:inputText id="email" value="#{createEmployee.email}" required="true" styleClass="input">
-                        <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="password" value="Password" styleClass="label"/>
-                    <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" styleClass="input">
-                        <f:validateLength minimum="6" maximum="20"/>
-                    </p:password>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="role" value="Role" styleClass="label"/>
-                    <p:selectOneMenu id="role" value="#{createEmployee.roleName}" required="true" styleClass="selectMenu">
-                        <f:selectItems value="#{createEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
-                    </p:selectOneMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="username" value="Username" styleClass="label"/>
-                    <p:inputText id="username" value="#{createEmployee.username}" required="true" styleClass="input">
-                        <f:validateLength minimum="4" maximum="20"/>
-                    </p:inputText>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="firstname" value="First Name" styleClass="label"/>
+                        <p:inputText id="firstname" value="#{createEmployee.firstName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                            <f:validateLength minimum="2" maximum="30"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="lastname" value="Last Name" styleClass="label"/>
+                        <p:inputText id="lastname" value="#{createEmployee.lastName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                            <f:validateLength minimum="2" maximum="30"/>
+                        </p:inputText>
+                        <p:message for="lastname"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="email" value="Email" styleClass="label"/>
+                        <p:inputText id="email" value="#{createEmployee.email}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
+                        </p:inputText>
+                        <p:message for="email"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="password" value="Password" styleClass="label"/>
+                        <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                            <f:validateLength minimum="6" maximum="20"/>
+                        </p:password>
+                        <p:message for="password"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="role" value="Role" styleClass="label"/>
+                        <p:selectOneMenu id="role" value="#{createEmployee.roleName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="selectMenu">
+                            <f:selectItems value="#{createEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
+                        </p:selectOneMenu>
+                        <p:message for="role"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="username" value="Username" styleClass="label"/>
+                        <p:inputText id="username" value="#{createEmployee.username}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                            <f:validateLength minimum="4" maximum="20"/>
+                        </p:inputText>
+                        <p:message for="username"/>
+                    </h:panelGroup>
+                </p:panelGrid>
+<!--                <p:growl globalOnly="true" life="3000" />-->
                 <div class="mt mb">
                     <p:commandButton icon="pi pi-plus" value="Add User" action="#{createEmployee.createEmployee}" styleClass="pill" update="addUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('addUserDialog').hide(); updateUsersTable();" />
                 </div>
@@ -94,44 +101,46 @@
 
         <p:dialog header="Update User" widgetVar="updateUserDialog" modal="true" resizable="false">
             <h:form id="updateUserForm">
-                <h:panelGroup class="flex column">
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="first_name" value="First Name" styleClass="label"/>
-                    <p:inputText id="first_name" value="#{updateEmployee.firstName}" required="true" styleClass="input">
-                        <f:validateLength minimum="2" maximum="30"/>
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="last_name" value="Last Name" styleClass="label"/>
-                    <p:inputText id="last_name" value="#{updateEmployee.lastName}" required="true" styleClass="input">
-                        <f:validateLength minimum="2" maximum="30"/>
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="emai_l" value="Email" styleClass="label"/>
-                    <p:inputText id="emai_l" value="#{updateEmployee.email}" required="true" styleClass="input">
-                        <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="pass_word" value="Password" styleClass="label"/>
-                    <p:password id="pass_word" redisplay="true" value="#{updateEmployee.password}" required="true" styleClass="input">
-                        <f:validateLength minimum="6" maximum="20"/>
-                    </p:password>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="ro_le" value="Role" styleClass="label"/>
-                    <p:selectOneMenu id="ro_le" value="#{updateEmployee.roleName}" required="true" styleClass="selectMenu">
-                        <f:selectItems value="#{updateEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
-                    </p:selectOneMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <h:outputLabel for="user_name" value="Username" styleClass="label"/>
-                    <p:inputText id="user_name" value="#{updateEmployee.username}" required="true" styleClass="input">
-                        <f:validateLength minimum="4" maximum="20"/>
-                    </p:inputText>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="first_name" value="First Name" styleClass="label"/>
+                        <p:inputText id="first_name" value="#{updateEmployee.firstName}" required="true" styleClass="input">
+                            <f:validateLength minimum="2" maximum="30"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="last_name" value="Last Name" styleClass="label"/>
+                        <p:inputText id="last_name" value="#{updateEmployee.lastName}" required="true" styleClass="input">
+                            <f:validateLength minimum="2" maximum="30"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="emai_l" value="Email" styleClass="label"/>
+                        <p:inputText id="emai_l" value="#{updateEmployee.email}" required="true" styleClass="input">
+                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="pass_word" value="Password" styleClass="label"/>
+                        <p:password id="pass_word" redisplay="true" value="#{updateEmployee.password}" required="true" styleClass="input">
+                            <f:validateLength minimum="6" maximum="20"/>
+                        </p:password>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="ro_le" value="Role" styleClass="label"/>
+                        <p:selectOneMenu id="ro_le" value="#{updateEmployee.roleName}" required="true" styleClass="selectMenu">
+                            <f:selectItems value="#{updateEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <h:outputLabel for="user_name" value="Username" styleClass="label"/>
+                        <p:inputText id="user_name" value="#{updateEmployee.username}" required="true" styleClass="input">
+                            <f:validateLength minimum="4" maximum="20"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                </p:panelGrid>
                 <div class="mt mb">
                     <p:commandButton icon="pi pi-save" value="Update User" action="#{updateEmployee.updateEmployee}" styleClass="pill" update="updateUserForm mainGrowl" oncomplete="if (!args.validationFailed) PF('updateUserDialog').hide(); updateUsersTable()" />
                 </div>

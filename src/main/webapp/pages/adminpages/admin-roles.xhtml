@@ -16,10 +16,8 @@
                 <p:ajax event="keyup" update="role_table" listener="#{allRoles.filterRoles}"/>
             </p:inputText>
         </h:form>
-        <p:dataTable id="role_table" value="#{allRoles.roles}" var="role" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
-            <p:column headerText="No">
-                <h:outputText value="#{allRoles.roles.indexOf(role)+1}"/>
-            </p:column>
+        <p:dataTable rowIndexVar="index" id="role_table" value="#{allRoles.roles}" var="role" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+            <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Role name">
                 <h:outputText value="#{role.name}"/>
             </p:column>
@@ -36,44 +34,46 @@
 
         <p:dialog widgetVar="new_role" header="Create New Role" modal="true">
             <h:form id="new_role_form">
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="name" value="Name"/>
-                    <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="description" value="Description"/>
-                    <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="viewEmployees" value="Employees"/>
-                    <p:selectCheckboxMenu id="viewEmployees" value="#{createUserRole.viewEmployeesPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="viewRoles" value="Roles"/>
-                    <p:selectCheckboxMenu id="viewRoles" value="#{createUserRole.viewRolesPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="viewRequisitions" value="Requisitions"/>
-                    <p:selectCheckboxMenu id="viewRequisitions" value="#{createUserRole.viewRequisitionsPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="viewBudgetLines" value="BudgetLines"/>
-                    <p:selectCheckboxMenu id="viewBudgetLines" value="#{createUserRole.viewBudgetLinesPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="viewPermissions" value="Miscellaneous"/>
-                    <p:selectCheckboxMenu id="viewPermissions" value="#{createUserRole.viewPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="name" value="Name"/>
+                        <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="description" value="Description"/>
+                        <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewEmployees" value="Employees"/>
+                        <p:selectCheckboxMenu id="viewEmployees" value="#{createUserRole.viewEmployeesPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewRoles" value="Roles"/>
+                        <p:selectCheckboxMenu id="viewRoles" value="#{createUserRole.viewRolesPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewRequisitions" value="Requisitions"/>
+                        <p:selectCheckboxMenu id="viewRequisitions" value="#{createUserRole.viewRequisitionsPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewBudgetLines" value="BudgetLines"/>
+                        <p:selectCheckboxMenu id="viewBudgetLines" value="#{createUserRole.viewBudgetLinesPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewPermissions" value="Miscellaneous"/>
+                        <p:selectCheckboxMenu id="viewPermissions" value="#{createUserRole.viewPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
                 <div class="mt flex row">
                     <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="new_role_form role_table"/>
                     <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_role').hide()"/>
@@ -83,44 +83,46 @@
 
         <p:dialog widgetVar="edit_role" header="Edit Role" modal="true">
             <h:form id="edit_role_form">
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="role_name" value="Name"/>
-                    <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="role_description" value="Description"/>
-                    <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_viewEmployees" value="Employees"/>
-                    <p:selectCheckboxMenu id="edit_viewEmployees" value="#{updateRole.employeePermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_viewRoles" value="Roles"/>
-                    <p:selectCheckboxMenu id="edit_viewRoles" value="#{updateRole.rolePermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_viewRequisitions" value="Requisitions"/>
-                    <p:selectCheckboxMenu id="edit_viewRequisitions" value="#{updateRole.requisitionPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_viewBudgetLines" value="BudgetLines"/>
-                    <p:selectCheckboxMenu id="edit_viewBudgetLines" value="#{updateRole.budgetLinePermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_viewPermissions" value="Miscellaneous"/>
-                    <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.permissionsPermissions}" label="Select Permissions">
-                        <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
-                    </p:selectCheckboxMenu>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="role_name" value="Name"/>
+                        <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="role_description" value="Description"/>
+                        <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewEmployees" value="Employees"/>
+                        <p:selectCheckboxMenu id="edit_viewEmployees" value="#{updateRole.employeePermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewRoles" value="Roles"/>
+                        <p:selectCheckboxMenu id="edit_viewRoles" value="#{updateRole.rolePermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewRequisitions" value="Requisitions"/>
+                        <p:selectCheckboxMenu id="edit_viewRequisitions" value="#{updateRole.requisitionPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewBudgetLines" value="BudgetLines"/>
+                        <p:selectCheckboxMenu id="edit_viewBudgetLines" value="#{updateRole.budgetLinePermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewPermissions" value="Miscellaneous"/>
+                        <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.permissionsPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
                 <div class="mt mb">
                     <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table edit_role_form"/>
                     <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" action="#{updateRole.clearVals}" update="edit_role_form" onclick="PF('edit_role').hide()"/>
