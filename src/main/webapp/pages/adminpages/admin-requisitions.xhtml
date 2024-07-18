@@ -195,19 +195,16 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog id="accountabilityDialog" widgetVar="accountabilityDialog" modal="true" closable="true" closeOnEscape="true" height="400px">
+        <p:dialog id="accountabilityDialog" widgetVar="accountabilityDialog" header="Accountability" modal="true" closable="true" closeOnEscape="true" height="18rem">
             <h:panelGroup id="accountability_section" styleClass="mt pad1 flex column">
-                <h3 class="mb">Accountability</h3>
-                <h:form styleClass="flex column pad2">
-                    <h:panelGroup styleClass="flex row pad1">
-                        <h:panelGroup styleClass="flex column">
-                            <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                            <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true"/>
-                        </h:panelGroup>
-                        <h:panelGroup styleClass="flex column">
-                            <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
-                            <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{handleOneAccountability.accountability.description}" readonly="true"/>
-                        </h:panelGroup>
+                <h:form styleClass="pad1">
+                    <h:panelGroup styleClass="flex column">
+                        <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
+                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="flex column">
+                        <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
+                        <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
                     </h:panelGroup>
                     <p:column headerText="Image">
                         <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
