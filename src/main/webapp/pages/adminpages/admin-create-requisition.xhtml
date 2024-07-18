@@ -6,7 +6,7 @@
     <f:event type="preRenderView" listener="#{myRequisitionHandler.selectRequisition}"/>
     <ui:define name="title">My Requisitions</ui:define>
     <ui:define name="main-content">
-        <p:tabView>
+        <p:tabView id="bigTab">
             <p:tab title="Current">
                 <h:form id="requisition_form" styleClass="pad2 mb flex column">
                 <h2 class="mb">#{myRequisitionHandler.status.equals("")?'Create':myRequisitionHandler.status} Requisition</h2>
@@ -24,11 +24,11 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{createRequisition.budgetLine ne null}"/>
+                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{createRequisition.budgetLine ne null}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="date_needed" value="Date Needed"/>
-                            <p:calendar id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}"/>
+                            <p:calendar styleClass="fillW" id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="justification" value="Justification"/>
@@ -78,45 +78,41 @@
                 </h:panelGroup>
             </p:tab>
             <p:tab title="History">
-                <h:form>
-                    <h:form>
-                        <p:tabView activeIndex="#{myRequisitions.activeTab}">
-                            <p:ajax event="tabChange" listener="#{myRequisitions.onTabChange}" update="j_idt26:j_idt63:history_form"/>
-                            <p:tab id="completedTab" title="COMPLETED"/>
-                            <p:tab id="rejectedTab" title="REJECTED"/>
-                            <p:tab id="expiredTab" title="EXPIRED"/>
-                        </p:tabView>
-                    </h:form>
-                    <h:form id="history_form">
-                        <div class="bg-white pad1">
-                            <p:inputText styleClass="pill fillW" value="#{myRequisitions.searchTerm}" placeholder="Search">
-                                <p:ajax event="keyup" update="my_requisition_table" listener="#{myRequisitions.filterRequisitionsForActiveTab}"/>
-                            </p:inputText>
-                        </div>
-                        <p:dataTable id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
-                            <p:column headerText="No." width="12px">
-                                #{myRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}
-                            </p:column>
-                            <p:column headerText="Description">
-                                #{requisition.justification}
-                            </p:column>
-                            <p:column headerText="Status">
-                                #{requisition.status}
-                            </p:column>
-                            <p:column headerText="Requested">
-                                #{requisition.estimatedAmount}
-                            </p:column>
-                            <p:column headerText="Granted">
-                                #{requisition.amountGranted}
-                            </p:column>
-                            <p:column headerText="Budget Line">
-                                #{requisition.budgetline.description}
-                            </p:column>
-                            <p:column headerText="Date Approved" rendered="#{requisition.status.equals('Approved')}">
-                                #{requisition.dateApproved}
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
+                <h:form id="history_form">
+                    <p:tabView activeIndex="#{myRequisitions.activeTab}">
+                        <p:ajax event="tabChange" listener="#{myRequisitions.onTabChange}" update="bigTab:history_form"/>
+                        <p:tab id="completedTab" title="COMPLETED"/>
+                        <p:tab id="rejectedTab" title="REJECTED"/>
+                        <p:tab id="expiredTab" title="EXPIRED"/>
+                    </p:tabView>
+                    <div class="bg-white pad1">
+                        <p:inputText styleClass="pill fillW" value="#{myRequisitions.searchTerm}" placeholder="Search">
+                            <p:ajax event="keyup" update="my_requisition_table" listener="#{myRequisitions.filterRequisitionsForActiveTab}"/>
+                        </p:inputText>
+                    </div>
+                    <p:dataTable id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
+                        <p:column headerText="No." width="12px">
+                            #{myRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}
+                        </p:column>
+                        <p:column headerText="Description">
+                            #{requisition.justification}
+                        </p:column>
+                        <p:column headerText="Status">
+                            #{requisition.status}
+                        </p:column>
+                        <p:column headerText="Requested">
+                            #{requisition.estimatedAmount}
+                        </p:column>
+                        <p:column headerText="Granted">
+                            #{requisition.amountGranted}
+                        </p:column>
+                        <p:column headerText="Budget Line">
+                            #{requisition.budgetline.description}
+                        </p:column>
+                        <p:column headerText="Date Approved" rendered="#{requisition.status.equals('Approved')}">
+                            #{requisition.dateApproved}
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
             </p:tab>
         </p:tabView>

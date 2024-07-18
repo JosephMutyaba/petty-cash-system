@@ -68,7 +68,9 @@ body .ui-inputfield {
     transform: translate(-50%, -50%);
 }
 
-span.flex.column > input {
+.ui-dialog span.flex.column>input,
+.ui-dialog span.ui-calendar>input,
+.ui-dialog span.ui-inputnumber>input {
     width: 24rem;
     margin-bottom: 8px;
 }
@@ -105,7 +107,7 @@ span.flex.column > .selectMenu {
 .text-g {color:var(--grn)!important}
 
 /*sizing and arrangement*/
-.fillW {width:-webkit-fill-available!important;flex:1!important;}
+.fillW,.fillW>input {width:-webkit-fill-available!important;flex:1!important;}
 .fillH {height:-webkit-fill-available!important;flex:1!important;}
 .flex {display:flex}
 .row {flex-direction:row}
