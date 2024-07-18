@@ -5,8 +5,9 @@ import org.springframework.stereotype.Component;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Date;
 
-@Named
+@Named("con")
 @ApplicationScoped
 @Component
 public class Constants implements Serializable {
@@ -21,5 +22,9 @@ public class Constants implements Serializable {
     }
     public String getPasswordRegex() {
         return "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_><])[A-Za-z\\d@$!%*?&#^{}\\[\\]:;'\"/\\\\,.+=\\-_>< ]{8,30}$";
+    }
+    public String formatDate(Date date) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
+        return sdf.format(date);
     }
 }
