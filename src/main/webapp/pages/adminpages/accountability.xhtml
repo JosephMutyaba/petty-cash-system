@@ -32,7 +32,7 @@
                 <p:outputLabel value="#{accountability.requisition.user.firstname}"/>
             </p:column>
             <p:column headerText="Image">
-                <p:commandLink onclick="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}">
+                <p:commandLink onsuccess="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}" update="imagePanel">
                     <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
                 </p:commandLink>
             </p:column>
@@ -40,7 +40,9 @@
         </p:dataTable>
 
         <p:dialog widgetVar="imageDialog" header="Receipt Image" modal="true">
-            <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
+            <p:panelGrid id="imagePanel">
+                <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
+            </p:panelGrid>
         </p:dialog>
     </ui:define>
 </ui:composition>

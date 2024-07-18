@@ -200,11 +200,11 @@
                 <h:form styleClass="pad1">
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
+                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true"/>
                     </h:panelGroup>
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
-                        <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
+                        <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{handleOneAccountability.accountability.description}" readonly="true"/>
                     </h:panelGroup>
                     <p:column headerText="Image">
                         <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />

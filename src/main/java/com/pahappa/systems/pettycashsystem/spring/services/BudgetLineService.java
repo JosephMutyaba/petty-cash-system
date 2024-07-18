@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -66,6 +67,10 @@ public class BudgetLineService {
         
         if (budgetLine.getEndDate().before(budgetLine.getStartDate())) {
             throw new IncompatibleDatesException("End date cannot be before start date");
+        }
+
+        if (budgetLine.getEndDate().equals(new Date())) {
+            throw new IncompatibleDatesException("End date cannot be today otherwise new budgetLine would expire almost immediately.");
         }
 
         if (budgetLine.getAmount().isNaN()) {
