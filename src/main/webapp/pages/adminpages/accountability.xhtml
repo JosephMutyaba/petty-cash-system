@@ -7,6 +7,7 @@
     <ui:define name="title">Accountability</ui:define>
     <ui:define name="main-content">
         <h2 class="mb">Accountability</h2>
+
         <h:form class="mb mt pad1">
 <!--            <p:commandButton value="Add New" onclick="PF('new_accountability').show()" icon="pi pi-plus" styleClass="mr pill"/>-->
             <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
@@ -33,8 +34,15 @@
                 <p:outputLabel value="#{accountability.requisition.user.firstname}"/>
             </p:column>
             <p:column headerText="Image">
-                <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
+                <p:commandLink onclick="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}">
+                    <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
+                </p:commandLink>
             </p:column>
+
         </p:dataTable>
+
+        <p:dialog widgetVar="imageDialog" header="Receipt Image" modal="true">
+            <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
+        </p:dialog>
     </ui:define>
 </ui:composition>

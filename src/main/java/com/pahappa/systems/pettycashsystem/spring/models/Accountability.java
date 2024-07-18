@@ -116,9 +116,6 @@ public class Accountability {
                 "id=" + id +
                 ", extraClaims='" + extraClaims + '\'' +
                 ", amountSpent=" + amountSpent +
-                ", requisition=" + requisition +
-                ", dateSubmitted=" + dateSubmitted +
-                ", receiptImage=" + Arrays.toString(receiptImage) +
                 ", description='" + description + '\'' +
                 '}';
     }
