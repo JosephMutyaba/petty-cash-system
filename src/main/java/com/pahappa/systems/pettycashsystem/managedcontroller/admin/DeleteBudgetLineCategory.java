@@ -32,8 +32,7 @@ public class DeleteBudgetLineCategory implements Serializable {
     public void selectBudgetLineCategory(BudgetLineCategory selectedBudgetLineCategory) {
         this.budgetLineCategory = selectedBudgetLineCategory;
 
-        // Add a success message
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Deleted Successfully");
+        FacesMessage message = new FacesMessage("Deleted Successfully", "Deleted Successfully");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 

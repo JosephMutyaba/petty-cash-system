@@ -7,30 +7,33 @@
     <ui:define name="title">Accountability</ui:define>
     <ui:define name="main-content">
         <h2 class="mb">Accountability</h2>
-        <!--<h:form class="mb mt pad1">
-            <p:commandButton value="Add New" onclick="PF('new_accountability').show()" icon="pi pi-plus" styleClass="mr pill"/>
+        <h:form class="mb mt pad1">
+<!--            <p:commandButton value="Add New" onclick="PF('new_accountability').show()" icon="pi pi-plus" styleClass="mr pill"/>-->
             <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
-        </h:form>-->
+        </h:form>
         <h:form class="bg-white pad1">
-            <p:inputText styleClass="pill fillW mt" value="" placeholder="Search">
-                <p:ajax event="keyup" update="accountability_table"/>
+            <p:inputText styleClass="pill fillW mt" value="#{allAccountability.searchTerm}" placeholder="Search">
+                <p:ajax event="keyup" update="accountability_table" listener="#{allAccountability.filterAccountabilities()}"/>
             </p:inputText>
         </h:form>
-        <p:dataTable id="accountability_table" value="#{allRoles.roles}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+        <p:dataTable id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
             <p:column headerText="No">
-                <h:outputText value="#{allRoles.roles.indexOf(accountability)+1}"/>
+                <h:outputText value="#{allAccountability.accountabilities.indexOf(accountability)+1}"/>
             </p:column>
             <p:column headerText="Amount Spent">
-                10,000
+                <p:outputLabel value="#{accountability.amountSpent}"/>
             </p:column>
             <p:column headerText="Description">
-                Used the money
+                <p:outputLabel value="#{accountability.description}"/>
             </p:column>
             <p:column headerText="Requisition">
-                Requisition
+                <p:outputLabel value="#{accountability.requisition.justification}"/>
+            </p:column>
+            <p:column headerText="User">
+                <p:outputLabel value="#{accountability.requisition.user.firstname}"/>
             </p:column>
             <p:column headerText="Image">
-                <pcs:image image="https://www.primefaces.org/showcase/icons.xhtml?jfwid="/>
+                <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
             </p:column>
         </p:dataTable>
     </ui:define>

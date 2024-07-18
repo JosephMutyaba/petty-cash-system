@@ -41,12 +41,18 @@ public class CreateBudgetLineCategory implements Serializable {
     }
 
     public void createCategory(){
+        FacesContext context = FacesContext.getCurrentInstance();
+
         budgetLineCategory.setName(cat_name);
         try {
             budgetLineCategoryService.createBudgetLineCategory(budgetLineCategory);
             allCategories.init();
+
+            FacesMessage message = new FacesMessage("BudgetLine Category created successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", e.getMessage()));
+            context.validationFailed();
         }
 
     }

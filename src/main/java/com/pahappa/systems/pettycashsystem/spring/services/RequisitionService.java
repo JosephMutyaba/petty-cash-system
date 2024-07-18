@@ -1,6 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleValueException;
 import com.pahappa.systems.pettycashsystem.exceptions.MinimumLengthException;
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.dao.RequisitionDAO;
@@ -24,7 +25,7 @@ public class RequisitionService {
         this.requisitionDAO = requisitionDAO;
     }
 
-    public void createRequisition(Requisition requisition) throws IncompatibleDatesException, NullFieldException {
+    public void createRequisition(Requisition requisition) throws IncompatibleDatesException, NullFieldException, IncompatibleValueException {
         validateRequisition(requisition);
         requisitionDAO.createRequisition(requisition);
     }
@@ -37,7 +38,7 @@ public class RequisitionService {
         return requisitionDAO.getAllRequisitions();
     }
 
-    public void updateRequisition(Requisition requisition) throws IncompatibleDatesException, NullFieldException {
+    public void updateRequisition(Requisition requisition) throws IncompatibleDatesException, NullFieldException, IncompatibleValueException {
         validateRequisition(requisition);
         requisitionDAO.updateRequisition(requisition);
     }
@@ -54,7 +55,7 @@ public class RequisitionService {
         requisitionDAO.deleteRequisitionsByStatus(status);
     }
 
-    public void validateRequisition(Requisition requisition) throws NullFieldException, IncompatibleDatesException {
+    public void validateRequisition(Requisition requisition) throws NullFieldException, IncompatibleDatesException, IncompatibleValueException {
         if (requisition.getJustification()==null || requisition.getJustification().trim().isEmpty()) {
             throw new NullFieldException("Justification must be filled");
         }
@@ -81,6 +82,10 @@ public class RequisitionService {
 
         if (requisition.getEstimatedAmount()>requisition.getBudgetline().getBalance()){
             throw new NullFieldException("You cannot requisite more than"+requisition.getBudgetline().getBalance());
+        }
+
+        if (requisition.getAmountGranted()>requisition.getEstimatedAmount()) {
+            throw new IncompatibleValueException("You cannot grant an amount greater than what was requested");
         }
     }
 

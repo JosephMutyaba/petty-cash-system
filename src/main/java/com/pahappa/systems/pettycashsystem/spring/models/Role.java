@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +21,6 @@ public class Role {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> user;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))

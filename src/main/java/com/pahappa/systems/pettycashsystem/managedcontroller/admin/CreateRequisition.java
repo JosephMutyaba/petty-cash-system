@@ -157,6 +157,9 @@ public class CreateRequisition implements Serializable {
     }
 
     public void createRequisition() {
+        FacesContext context=FacesContext.getCurrentInstance();
+
+
         requisition.setJustification(justification);
         requisition.setUser(loginBean.getLoggedInUser());
 
@@ -173,8 +176,12 @@ public class CreateRequisition implements Serializable {
         try {
             requisitionService.createRequisition(requisition);
             allRequisitions.update();
+
+            FacesMessage message = new FacesMessage("Requisition saved successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),"Error"));
+            context.validationFailed();
         }finally {
             //////////
             this.justification = null;

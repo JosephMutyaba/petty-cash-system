@@ -138,6 +138,9 @@ public class CreateEmployee implements Serializable {
         try {
             userService.createUser(user);
 
+            FacesMessage message = new FacesMessage("User saved successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
             //clear the fields
             this.role=null;
             this.roleName=null;

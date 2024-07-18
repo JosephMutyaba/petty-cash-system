@@ -115,6 +115,8 @@ public class UpdateBudgetLine implements Serializable {
     }
 
     public void updateBudgetLine() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         System.out.println("\nUpdating budgetLine.........\n");
         budgetLine.setAmount(amount);
         budgetLine.setDescription(description);
@@ -129,8 +131,13 @@ public class UpdateBudgetLine implements Serializable {
         try {
             budgetLineService.updateBudgetLine(budgetLine);
             allBudgetLines.update();
+
+
+            FacesMessage message = new FacesMessage("BudgetLine updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            context.validationFailed();
         }
 
 //        return "/pages/auth/login.xhtml?faces-redirect=true";

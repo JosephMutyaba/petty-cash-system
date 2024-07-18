@@ -117,6 +117,9 @@ public class UpdateEmployee implements Serializable {
     }
 
     public void updateEmployee() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+
         user.setUsername(username);
         user.setPassword(password);
 
@@ -138,8 +141,13 @@ public class UpdateEmployee implements Serializable {
             this.email=null;
             this.password=null;
             this.username=null;
+
+            FacesMessage message = new FacesMessage("User updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
+            context.validationFailed();
         }
     }
 

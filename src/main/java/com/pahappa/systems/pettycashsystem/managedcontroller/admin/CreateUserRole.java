@@ -148,6 +148,8 @@ public class CreateUserRole implements Serializable {
     }
 
     public void createRole() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         role.setName(roleName);
         role.setDescription(roleDescription);
 
@@ -163,8 +165,12 @@ public class CreateUserRole implements Serializable {
         try {
             roleService.createRole(role);
             allRoles.init();
+
+            FacesMessage message = new FacesMessage("BudgetLine saved successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),"Error"));
+            context.validationFailed();
         }finally {
             this.role = new Role();
             this.roleName = null;

@@ -154,7 +154,7 @@ public class CreateAccountability implements Serializable {
             //setting status to completed
             requisition.setStatus("Completed");
 
-            accountabilityService.validateAccountability(accountability);
+            accountabilityService.validateAccountability(accountability, requisition);
 
             requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
@@ -185,7 +185,7 @@ public class CreateAccountability implements Serializable {
 
             requisitionService.updateRequisition(requisition);  // this automatically creates
 
-            FacesMessage message = new FacesMessage("Success", "accountability saved successfully. Your account has been debited with shs."+expenditureBalance);
+            FacesMessage message = new FacesMessage("Accountability saved successfully. Your account has been debited with shs."+expenditureBalance, "Success");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),null));

@@ -81,8 +81,6 @@ public class UpdateRole implements Serializable {
         employeePermissions=new ArrayList<>();
         requisitionPermissions=new ArrayList<>();
         permissionsPermissions=new ArrayList<>();
-
-
     }
 
 
@@ -187,12 +185,12 @@ public class UpdateRole implements Serializable {
 
     public void setRolePermissions(List<Perm> rolePermissions) {
         if (rolePermissions != null && !rolePermissions.isEmpty()) {
-            this.viewRolesPermissions.add(permissionService.findByName(Perm.VIEW_ROLES));
+//            this.viewRolesPermissions.add(permissionService.findByName(Perm.VIEW_ROLES));
             for (Perm perm: rolePermissions) {
                 this.viewRolesPermissions.add(permissionService.findByName(perm));
             }
         }else {
-            this.viewRolesPermissions = new HashSet<>();
+            this.viewRolesPermissions =new HashSet<>();
         }
     }
 
@@ -203,7 +201,7 @@ public class UpdateRole implements Serializable {
 
     public void setEmployeePermissions(List<Perm> employeePermissions) {
         if (employeePermissions != null && !employeePermissions.isEmpty()) {
-            this.viewEmployeesPermissions.add(permissionService.findByName(Perm.VIEW_EMPLOYEES));
+//            this.viewEmployeesPermissions.add(permissionService.findByName(Perm.VIEW_EMPLOYEES));
             for (Perm perm: employeePermissions) {
                 this.viewEmployeesPermissions.add(permissionService.findByName(perm));
             }
@@ -219,7 +217,7 @@ public class UpdateRole implements Serializable {
 
     public void setRequisitionPermissions(List<Perm> requisitionPermissions) {
         if (requisitionPermissions != null && !requisitionPermissions.isEmpty()) {
-            this.viewRequisitionsPermissions.add(permissionService.findByName(Perm.VIEW_REQUISITIONS));
+//            this.viewRequisitionsPermissions.add(permissionService.findByName(Perm.VIEW_REQUISITIONS));
             for (Perm perm: requisitionPermissions) {
                 this.viewRequisitionsPermissions.add(permissionService.findByName(perm));
             }
@@ -235,7 +233,7 @@ public class UpdateRole implements Serializable {
 
     public void setPermissionsPermissions(List<Perm> permissionsPermissions) {
         if(permissionsPermissions != null && !permissionsPermissions.isEmpty()) {
-            this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
+//            this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
             for (Perm perm: permissionsPermissions) {
                 this.viewPermissions.add(permissionService.findByName(perm));
             }
@@ -395,6 +393,8 @@ public class UpdateRole implements Serializable {
 
 
     public void updateRole() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         role.setName(roleName);
         role.setDescription(roleDescription);
 
@@ -412,8 +412,12 @@ public class UpdateRole implements Serializable {
 
             clearVals();
 
+            FacesMessage message = new FacesMessage("Role updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            context.validationFailed();
         }
 
     }

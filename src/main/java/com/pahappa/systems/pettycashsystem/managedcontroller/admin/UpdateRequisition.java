@@ -184,6 +184,8 @@ public class UpdateRequisition implements Serializable {
 
 
     public void updateRequisition() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         requisition.setJustification(justification);
 //        requisition.setUser(loginBean.getLoggedInUser());
 
@@ -204,8 +206,13 @@ public class UpdateRequisition implements Serializable {
 
         try {
             requisitionService.updateRequisition(requisition);
+
+            FacesMessage message = new FacesMessage("Requisition updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+            context.validationFailed();
         }
 
         allRequisitions.update();

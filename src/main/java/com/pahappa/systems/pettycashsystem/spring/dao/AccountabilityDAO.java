@@ -27,7 +27,7 @@ public class AccountabilityDAO {
 
     public List<Accountability> getAllAccountabilities() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Accountability ORDER BY id DESC", Accountability.class)
+                .createQuery("FROM Accountability ORDER BY id DESC")
                 .getResultList();
     }
 

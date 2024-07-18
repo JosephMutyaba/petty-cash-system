@@ -51,6 +51,8 @@ public class DisburseCash implements Serializable {
     }
 
     public void disburseCash() {
+        FacesContext context=FacesContext.getCurrentInstance();
+
         BudgetLine budgetLine = new BudgetLine();
         User user = new User();
 
@@ -78,8 +80,6 @@ public class DisburseCash implements Serializable {
             // setting requisition status to paid
             requisition.setStatus("Paid");
 
-
-
             //updating the db
             requisitionService.updateRequisition(requisition);
             userService.updateUser(user);
@@ -90,8 +90,12 @@ public class DisburseCash implements Serializable {
 
             //updating budgetLines table
             allBudgetLines.update();
+
+            FacesMessage message = new FacesMessage("Transaction was successful.", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
+            context.validationFailed();
         }
 
 
