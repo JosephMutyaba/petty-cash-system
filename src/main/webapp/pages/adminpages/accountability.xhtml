@@ -17,10 +17,8 @@
                 <p:ajax event="keyup" update="accountability_table" listener="#{allAccountability.filterAccountabilities()}"/>
             </p:inputText>
         </h:form>
-        <p:dataTable id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
-            <p:column headerText="No">
-                <h:outputText value="#{allAccountability.accountabilities.indexOf(accountability)+1}"/>
-            </p:column>
+        <p:dataTable rowIndexVar="index" id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+            <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Amount Spent">
                 <p:outputLabel value="#{accountability.amountSpent}"/>
             </p:column>

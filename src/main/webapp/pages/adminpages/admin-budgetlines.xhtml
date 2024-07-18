@@ -57,11 +57,9 @@
             </p:inputText>
         </h:form>
 
-        <p:dataTable id="budgetlines_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
+        <p:dataTable rowIndexVar="index" id="budgetlines_table" value="#{allBudgetLines.budgetLinesForActiveTab}" var="budgetLine" paginator="true" rows="5">
             <p:autoUpdate/>
-            <p:column headerText="No">
-                <h:outputText value="#{allBudgetLines.budgetLinesForActiveTab.indexOf(budgetLine) + 1}"/>
-            </p:column>
+            <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Description">
                 <h:outputText value="#{budgetLine.description}"/>
             </p:column>
@@ -96,7 +94,7 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
+                    <p:commandButton title="Edit" rendered="#{budgetLine.status.equals('Pending')||budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                     <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
             </p:column>
@@ -104,31 +102,33 @@
 
         <p:dialog widgetVar="new_budgetline_dialog" header="Create New Budgetline" modal="true">
             <h:form id="new_budgetline_form">
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="description" value="Description"/>
-                    <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false">
-                        <f:validateRequired/>
-                        <f:validateLength minimum="5"/>
-                    </p:inputText>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="startdate" value="Start Date"/>
-                    <p:calendar id="startdate" value="#{createBudgetLine.startDate}" required="true" showButtonPanel="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="enddate" value="End Date"/>
-                    <p:calendar id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true"/>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="amount" value="Amount"/>
-                    <p:inputNumber id="amount" value="#{createBudgetLine.amount}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="category" value="Category"/>
-                    <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}">
-                        <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
-                    </p:selectOneMenu>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="description" value="Description"/>
+                        <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false">
+                            <f:validateRequired/>
+                            <f:validateLength minimum="5"/>
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="startdate" value="Start Date"/>
+                        <p:calendar navigator="true" id="startdate" value="#{createBudgetLine.startDate}" required="true" showButtonPanel="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="enddate" value="End Date"/>
+                        <p:calendar navigator="true" id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="amount" value="Amount"/>
+                        <p:inputNumber id="amount" value="#{createBudgetLine.amount}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="category" value="Category"/>
+                        <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}">
+                            <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide(); updateBudgetLinesTable();" update=":statsForm, messages"/>
@@ -141,28 +141,30 @@
 
         <p:dialog id="edit_budgetline_dialog" widgetVar="edit_budgetline_dialog" header="Edit Budgetline" modal="true">
             <h:form id="edit_budgetline_form">
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="desc" value="Description"/>
-                    <p:inputText id="desc" value="#{updateBudgetLine.description}" required="true" autocomplete="false"/>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="startdte" value="Start Date"/>
-                    <p:calendar id="startdte" value="#{updateBudgetLine.startDate}" required="true" showButtonPanel="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="end_date" value="End Date"/>
-                    <p:calendar id="end_date" value="#{updateBudgetLine.endDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="am_ount" value="Amount"/>
-                    <p:inputNumber id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="categor_y" value="Category"/>
-                    <p:selectOneMenu id="categor_y" value="#{updateBudgetLine.budgetLineCategoryName}">
-                        <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
-                    </p:selectOneMenu>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="desc" value="Description"/>
+                        <p:inputText id="desc" value="#{updateBudgetLine.description}" required="true" autocomplete="false"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="startdte" value="Start Date"/>
+                        <p:calendar navigator="true" id="startdte" value="#{updateBudgetLine.startDate}" required="true" showButtonPanel="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="end_date" value="End Date"/>
+                        <p:calendar navigator="true" id="end_date" value="#{updateBudgetLine.endDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="am_ount" value="Amount"/>
+                        <p:inputNumber id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="categor_y" value="Category"/>
+                        <p:selectOneMenu id="categor_y" value="#{updateBudgetLine.budgetLineCategoryName}">
+                            <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
                                      update=":tabForm:tabView, m_essages, :new_budgetline_form"/>

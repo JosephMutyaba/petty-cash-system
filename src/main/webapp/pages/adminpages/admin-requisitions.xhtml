@@ -61,10 +61,8 @@
             </p:inputText>
         </h:form>
 
-        <p:dataTable id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
-            <p:column headerText="No" width="12px">
-                <h:outputText value="#{allRequisitions.requisitionsForActiveTab.indexOf(requisition) + 1}"/>
-            </p:column>
+        <p:dataTable rowIndexVar="index" id="requisition_table" value="#{allRequisitions.requisitionsForActiveTab}" var="requisition" paginator="true" rows="5">
+            <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Reason">
                 <h:outputText value="#{requisition.justification}"/>
             </p:column>
@@ -112,25 +110,27 @@
 
         <p:dialog id="edit_requisition_dialog" widgetVar="edit_requisition_dialog" header="Edit Requisition" modal="true">
             <h:form id="edit_requisition_form">
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_amount_requested" value="Amount Requested:"/>
-                    <p:inputText id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false"/>
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_date_needed" value="Date Needed:"/>
-                    <p:calendar id="edit_date_needed" value="#{updateRequisition.maxDate}" required="true" mindate="t" showButtonPanel="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_justification" value="Justification:"/>
-                    <p:inputText id="edit_justification" value="#{updateRequisition.justification}" required="true" />
-                </h:panelGroup>
-                <h:panelGroup class="flex column">
-                    <p:outputLabel for="edit_requisition" value="Requisition:"/>
-                    <p:selectOneMenu id="edit_requisition" value="#{updateRequisition.budgetLineId}">
-                        <f:selectItem itemValue="" itemLabel="Select Requisition"/>
-                        <f:selectItems value="#{updateRequisition.budgetLines}" var="budgetline" itemLabel="#{budgetline.description}" itemValue="#{budgetline.id}" />
-                    </p:selectOneMenu>
-                </h:panelGroup>
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_amount_requested" value="Amount Requested:"/>
+                        <p:inputText id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_date_needed" value="Date Needed:"/>
+                        <p:calendar navigator="true" id="edit_date_needed" value="#{updateRequisition.maxDate}" required="true" mindate="t" showButtonPanel="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_justification" value="Justification:"/>
+                        <p:inputText id="edit_justification" value="#{updateRequisition.justification}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_requisition" value="Requisition:"/>
+                        <p:selectOneMenu id="edit_requisition" value="#{updateRequisition.budgetLineId}">
+                            <f:selectItem itemValue="" itemLabel="Select Requisition"/>
+                            <f:selectItems value="#{updateRequisition.budgetLines}" var="budgetline" itemLabel="#{budgetline.description}" itemValue="#{budgetline.id}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateRequisition.updateRequisition}"
                                      onclick="PF('edit_requisition_dialog').hide()" update="statsForm, :tabForm:tabView, :requisition_table, mainGrowl"/>

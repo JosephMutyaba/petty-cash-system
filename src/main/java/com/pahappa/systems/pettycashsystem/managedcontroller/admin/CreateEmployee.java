@@ -128,6 +128,10 @@ public class CreateEmployee implements Serializable {
         user.setUsername(username);
         user.setPassword(password);
 
+//        // Encrypt the password using BCrypt before saving it
+//        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+//        user.setPassword(encodedPassword);
+
         role=roleService.findByName(roleName);
 
         user.setRole(role);
@@ -154,5 +158,14 @@ public class CreateEmployee implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             context.validationFailed();
         }
+    }
+
+    public int userCount(){
+        int count=0;
+        List<User> users = userService.getAllUsers();
+        for(User user : users){
+            count++;
+        }
+        return count;
     }
 }
