@@ -20,12 +20,16 @@
                 <p:panel>
                     <f:facet name="header">
                         <i class="pi pi-briefcase"/>
-                        <h:outputText value="Active BudgetLines"/>
+                        <h:outputText value="Pending BudgetLines"/>
                     </f:facet>
-                    <h:outputText value="#{allBudgetLines.approvedBudgetLines.size()}" styleClass="stat-value"/>
+                    <h:outputText value="#{allBudgetLines.pendingBudgetLines.size()}" styleClass="stat-value"/>
                 </p:panel>
-                <p:panel header="Balance" styleClass="fillW">
-                    <h:outputText value="3"/>
+                <p:panel>
+                    <f:facet name="header">
+                        <i class="pi pi-users"/>
+                        <h:outputText value="Users"/>
+                    </f:facet>
+                    <h:outputText value="#{createEmployee.userCount()}" styleClass="stat-value"/>
                 </p:panel>
             </p:panelGrid>
         </div>

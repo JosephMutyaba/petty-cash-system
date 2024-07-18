@@ -15,7 +15,7 @@ import java.util.List;
 @ManagedBean
 @ViewScoped
 @Component
-public class AdminChart implements Serializable {
+public class  AdminChart implements Serializable {
 
     @Autowired
     private AllRequisitions allRequisitions;
@@ -25,14 +25,14 @@ public class AdminChart implements Serializable {
         PieChartDataSet ds = new PieChartDataSet();
         PieChartModel pcm = new PieChartModel();
 
-        List<Number> values = List.of(allRequisitions.getPendingRequisitions().size(),allRequisitions.getApprovedRequisitions().size(),allRequisitions.getPaidRequisitions().size(), allRequisitions.getRejectedRequisitions().size());
+        List<Number> values = List.of(allRequisitions.getPendingRequisitions().size(),allRequisitions.getApprovedRequisitions().size(),allRequisitions.getPaidRequisitions().size(), allRequisitions.getRejectedRequisitions().size(), allRequisitions.getCompletedRequisitions().size(), allRequisitions.getExpiredRequisitions().size());
         ds.setData(values);
 
-        List<String> colors = List.of("#faa","#aaf","#c7e", "#00FFFF");
+        List<String> colors = List.of("#faa","#aaf","#c7e", "#00FFFF","#15D33B", "#F50E34");
         ds.setBackgroundColor(colors);
 
         cd.addChartDataSet(ds);
-        List<String> labels = List.of("Pending Requisitions","Approved Requisitions","Paid Out Requisitions", "Rejected Requisitions");
+        List<String> labels = List.of("Pending","Approved","Paid Out", "Rejected", "Completed", "Expired");
         cd.setLabels(labels);
         pcm.setData(cd);
 
