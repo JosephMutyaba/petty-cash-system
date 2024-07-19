@@ -205,7 +205,7 @@
                     <p:inputTextarea id="comment" value="#{updateBudgetLine.review_comments}" />
                 </h:panelGroup>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
                                      onclick="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
                 </div>
