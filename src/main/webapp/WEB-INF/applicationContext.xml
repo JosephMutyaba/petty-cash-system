@@ -18,7 +18,7 @@
     <!-- Data Source Declaration -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/petty_cash_system?createDatabaseIfNotExist=true" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/petty_cash_system_test?createDatabaseIfNotExist=true" />
         <property name="user" value="root" />
         <property name="password" value="" />
         <property name="maxPoolSize" value="10" />

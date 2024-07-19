@@ -11,7 +11,11 @@
     </h:outputScript>
 
     <div class="sidebar">
-        <h3>#{loginBean.loggedInUser.role.name}</h3>
+        <h:panelGroup styleClass="flex column pad1">
+            <h3>#{loginBean.loggedInUser.firstname} #{loginBean.loggedInUser.lastname}</h3>
+            <p:outputLabel value="@#{loginBean.loggedInUser.username}"/>
+        </h:panelGroup>
+
         <p:tieredMenu styleClass="no-border fillW">
             <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home"/>
             <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase" rendered="#{checkPermission.hasPermission('VIEW_ROLES')}"/>

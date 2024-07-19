@@ -3,13 +3,17 @@ package com.pahappa.systems.pettycashsystem.spring.services;
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
+import com.pahappa.systems.pettycashsystem.spring.models.Permission;
+import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Service
@@ -118,6 +122,18 @@ public class UserService {
 
     public User getByUsername(String username) {
         return userDAO.getUserByUsername(username);
+    }
+
+    public void loadPermissions(User user) {
+        Set<Permission> permissions = new HashSet<>();
+        for (Role r:user.getRoles()) {
+            permissions.addAll(r.getPermissions());
+        }
+        user.setPermissions(permissions);
+    }
+
+    public void addRoleToUser(User user, Role role) {
+        user.getRoles().add(role);
     }
 }
 

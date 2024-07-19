@@ -33,8 +33,10 @@
                 <p:column headerText="Email">
                     <h:outputText value="#{employee.email}"/>
                 </p:column>
-                <p:column headerText="Role">
-                    <h:outputText value="#{employee.role.name}"/>
+                <p:column headerText="Roles">
+                    <ui:repeat value="#{employee.roles}" var="role">
+                        #{role.name}
+                    </ui:repeat>
                 </p:column>
                 <p:column headerText="Actions">
                     <p:commandButton title="Edit" action="#{updateEmployee.selectedUser(employee)}" icon="pi pi-pencil" styleClass="bg-g square pill mr" update="updateUserForm" onsuccess="PF('updateUserDialog').show()"/>
@@ -77,9 +79,9 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="role" value="Role" styleClass="label"/>
-                        <p:selectOneMenu id="role" value="#{createEmployee.roleName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="selectMenu">
-                            <f:selectItems value="#{createEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
-                        </p:selectOneMenu>
+                        <p:selectCheckboxMenu id="role" value="#{createEmployee.roles}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="selectMenu" label="Select Roles">
+                            <f:selectItems value="#{createEmployee.rolesFromDB}" var="role" itemLabel="#{role.name}" itemValue="#{role}"/>
+                        </p:selectCheckboxMenu>
                         <p:message for="role"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
@@ -129,9 +131,9 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="ro_le" value="Role" styleClass="label"/>
-                        <p:selectOneMenu id="ro_le" value="#{updateEmployee.roleName}" required="true" styleClass="selectMenu">
-                            <f:selectItems value="#{updateEmployee.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.name}"/>
-                        </p:selectOneMenu>
+                        <p:selectCheckboxMenu id="ro_le" value="#{updateEmployee.userRoles}" required="true" styleClass="selectMenu" label="Select Roles">
+                            <f:selectItems value="#{updateEmployee.rolesFromDatabase}" var="role" itemLabel="#{role.name}" itemValue="#{role}"/>
+                        </p:selectCheckboxMenu>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="user_name" value="Username" styleClass="label"/>

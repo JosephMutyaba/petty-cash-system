@@ -33,7 +33,7 @@ public class UserDAO {
 
     // Read operation: Get all users
     public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("FROM User ORDER BY id DESC", User.class).list();
+        return getCurrentSession().createQuery("select u FROM User u left join fetch u.roles ORDER BY u.id DESC", User.class).list();
     }
 
     // Update operation
@@ -55,7 +55,7 @@ public class UserDAO {
     }
 
     public User getUserUsernameAndRole(String username, String role) {
-        return (User) getCurrentSession().createQuery("from User where username = :username and role.name = :role")
+        return (User) getCurrentSession().createQuery("select u from User u join u.roles r where u.username = :username and r.name = :role")
                 .setParameter("username", username)
                 .setParameter("role", role)
                 .uniqueResult();
@@ -69,8 +69,8 @@ public class UserDAO {
 
         if (role != null) {
             // Fetch users with the role
-            return getCurrentSession().createQuery("FROM User WHERE role.id=:role_id", User.class)
-                    .setParameter("role_id", role.getId())
+            return getCurrentSession().createQuery("select u FROM User u join u.roles r WHERE r=:role",User.class)
+                    .setParameter("role", role)
                     .getResultList();
         } else {
             return Collections.emptyList(); // Return an empty list if the role is not found

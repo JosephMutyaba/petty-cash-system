@@ -167,7 +167,7 @@ public class CreateUserRole implements Serializable {
             allRoles.init();
 
             FacesMessage message = new FacesMessage("BudgetLine saved successfully", "Success");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            context.addMessage(null, message);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),"Error"));
             context.validationFailed();

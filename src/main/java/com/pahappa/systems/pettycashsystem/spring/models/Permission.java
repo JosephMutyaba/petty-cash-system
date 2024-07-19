@@ -4,6 +4,7 @@ import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Permission {
@@ -14,6 +15,14 @@ public class Permission {
 
     @Enumerated(EnumType.STRING)
     private Perm name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_permission",
+            joinColumns = @JoinColumn(name = "permissions_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users;
 
     // Getters and Setters
     public Permission() {}

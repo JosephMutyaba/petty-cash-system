@@ -98,7 +98,7 @@ public class AdminInit {
             adminUser.setUsername("admin");
             adminUser.setPassword("adminPass#1"); // Encrypt password in a real application
             adminUser.setEmail("admin@example.com");
-            adminUser.setRole(adminRole);
+            userService.addRoleToUser(adminUser,adminRole);
             adminUser.setFirstname("Bob");
             adminUser.setLastname("Alexander");
             try {
