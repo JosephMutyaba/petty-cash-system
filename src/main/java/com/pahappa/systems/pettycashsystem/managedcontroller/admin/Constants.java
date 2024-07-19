@@ -3,6 +3,8 @@ package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 import org.springframework.stereotype.Component;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
@@ -29,5 +31,15 @@ public class Constants implements Serializable {
     }
     public String getRequiredMessage() {
         return "This field is required!";
+    }
+
+    public void showErrorMessage(String msg) {
+        showErrorMessageS(msg);
+    }
+    /** Static version of showErrorMessage()*/
+    public static void showErrorMessageS(String msg) {
+        FacesMessage message = new FacesMessage(msg);
+        message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        FacesContext.getCurrentInstance().addMessage(null,message);
     }
 }
