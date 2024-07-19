@@ -18,6 +18,15 @@
             </p:inputText>
         </h:form>
         <p:dataTable rowIndexVar="index" id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+
+            <f:facet name="header">
+                <p:commandButton value="Export to CSV" icon="ui-icon-arrowthickstop-1-s">
+                    <p:dataExporter type="csv" target="accountability_table" fileName="data_export" />
+                </p:commandButton>
+            </f:facet>
+
+
+
             <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Amount Spent">
                 <p:outputLabel value="#{accountability.amountSpent}"/>
