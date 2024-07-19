@@ -7,7 +7,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
-import javax.persistence.Column;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
