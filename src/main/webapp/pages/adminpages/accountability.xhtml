@@ -20,7 +20,7 @@
         <p:dataTable rowIndexVar="index" id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
 
             <f:facet name="header">
-                <p:commandButton value="Export to CSV" icon="ui-icon-arrowthickstop-1-s">
+                <p:commandButton value="Export to CSV" icon="pi pi-cloud-download">
                     <p:dataExporter type="csv" target="accountability_table" fileName="data_export" />
                 </p:commandButton>
             </f:facet>

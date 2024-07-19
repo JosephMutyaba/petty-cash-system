@@ -124,9 +124,8 @@
                         <p:inputText id="edit_justification" value="#{updateRequisition.justification}" required="true" />
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
-                        <p:outputLabel for="edit_requisition" value="Requisition:"/>
+                        <p:outputLabel for="edit_requisition" value="BudgetLine:"/>
                         <p:selectOneMenu id="edit_requisition" value="#{updateRequisition.budgetLineId}">
-                            <f:selectItem itemValue="" itemLabel="Select Requisition"/>
                             <f:selectItems value="#{updateRequisition.budgetLines}" var="budgetline" itemLabel="#{budgetline.description}" itemValue="#{budgetline.id}" />
                         </p:selectOneMenu>
                     </h:panelGroup>
@@ -172,7 +171,8 @@
             <h:form id="modify_status_form">
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="status" value="Status:"/>
-                    <p:selectOneMenu id="status" value="#{updateRequisition.status}">
+                    <p:selectOneMenu id="status" value="#{updateRequisition.status}" required="true">
+                        <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
                         <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_REQUISITION')}" itemLabel="Approve" itemValue="Approved"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accept"/>

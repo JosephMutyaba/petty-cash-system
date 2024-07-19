@@ -124,13 +124,14 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="category" value="Category"/>
-                        <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}">
+                        <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}" required="true">
+                            <f:selectItem value="#{null}" itemLabel="Select Category" itemValue="#{null}"/>
                             <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                         </p:selectOneMenu>
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide(); updateBudgetLinesTable();" update=":statsForm, messages"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </div>
@@ -194,19 +195,21 @@
             <h:form id="modify_status_form">
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="status" value="Status"/>
-                    <p:selectOneMenu id="status" value="#{updateBudgetLine.status}">
+                    <p:selectOneMenu id="status" value="#{updateBudgetLine.status}" required="true" requiredMessage="#{con.requiredMessage}">
+                        <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REJECT_BUDGETLINE')}" itemLabel="Reject" itemValue="Rejected"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_BUDGETLINE')}" itemLabel="Approve" itemValue="Approved"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REQUEST_CHANGES')}" itemLabel="Request changes" itemValue="RequestEdit"/>
                     </p:selectOneMenu>
                 </h:panelGroup>
+                <p:message for="status" closable="true"/>
                 <h:panelGroup class="flex column">
                     <p:outputLabel value="Comment" for="comment"/>
                     <p:inputTextarea id="comment" value="#{updateBudgetLine.review_comments}" />
                 </h:panelGroup>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
-                                     onclick="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
+                                     onsuccess="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
                 </div>
             </h:form>
