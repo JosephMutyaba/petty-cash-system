@@ -65,7 +65,6 @@ public class UpdateRole implements Serializable {
 
         allPermissions = new HashSet<Permission>();
 
-
         budgetLinePermissions= new ArrayList<Perm>();
         rolePermissions=new ArrayList<>();
         employeePermissions=new ArrayList<>();
@@ -386,6 +385,9 @@ public class UpdateRole implements Serializable {
 
         role.setName(roleName);
         role.setDescription(roleDescription);
+
+        role.getPermissions().clear();
+
 
         // Combine all permissions
         allPermissions.addAll(viewEmployeesPermissions);
