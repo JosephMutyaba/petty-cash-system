@@ -18,7 +18,7 @@ public class AccountabilityDAO {
     }
 
     public void createAccountability(Accountability accountability) {
-        sessionFactory.getCurrentSession().save(accountability);
+        sessionFactory.getCurrentSession().saveOrUpdate(accountability);
     }
 
     public Accountability getAccountabilityById(Long id) {
@@ -40,5 +40,11 @@ public class AccountabilityDAO {
         if (accountability != null) {
             sessionFactory.getCurrentSession().delete(accountability);
         }
+    }
+
+    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
+        return (Accountability) sessionFactory.getCurrentSession().createQuery("FROM Accountability WHERE requisition_id = :requisitionId")
+                .setParameter("requisitionId", requisitionId)
+                .uniqueResult();
     }
 }

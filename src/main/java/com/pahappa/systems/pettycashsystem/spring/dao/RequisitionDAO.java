@@ -19,7 +19,7 @@ public class RequisitionDAO {
     }
 
     public void createRequisition(Requisition requisition) {
-        sessionFactory.getCurrentSession().save(requisition);
+        sessionFactory.getCurrentSession().saveOrUpdate(requisition);
     }
 
     public Requisition getRequisitionById(Long id) {
@@ -33,7 +33,7 @@ public class RequisitionDAO {
     }
 
     public void updateRequisition(Requisition requisition) {
-        sessionFactory.getCurrentSession().update(requisition);
+        sessionFactory.getCurrentSession().saveOrUpdate(requisition);
     }
 
     public void deleteRequisition(Long id) {
@@ -56,8 +56,8 @@ public class RequisitionDAO {
     }
 
     public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
-        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded > CURRENT_DATE ORDER BY maxDateNeeded ASC")
-                .setParameterList("statuses", Arrays.asList("Pending", "Approved", "Paid"))
+        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded >= CURRENT_DATE")
+                .setParameterList("statuses", Arrays.asList("Draft","Pending", "Approved", "Paid"))
                 .setParameter("userId", userId)
                 .uniqueResult();
     }

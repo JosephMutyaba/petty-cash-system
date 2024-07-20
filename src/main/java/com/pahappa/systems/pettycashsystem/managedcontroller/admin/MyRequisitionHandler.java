@@ -36,6 +36,8 @@ public class MyRequisitionHandler implements Serializable {
     @Autowired
     private AllRequisitions allRequisitions;
 
+    private Long id;
+
     private String justification;
 
     private User user;
@@ -78,7 +80,14 @@ public class MyRequisitionHandler implements Serializable {
                 .collect(Collectors.toList());
 
         selectRequisition();
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getJustification() {
@@ -183,6 +192,7 @@ public class MyRequisitionHandler implements Serializable {
         if (this.requisition != null) {
             System.out.println("Non null section");
             this.status = requisition.getStatus();
+            this.id=requisition.getId();
             this.budgetLineId = requisition.getId();
             this.justification = requisition.getJustification();
             this.maxDate = requisition.getMaxDateNeeded();
@@ -196,7 +206,7 @@ public class MyRequisitionHandler implements Serializable {
             // Handle the case when there is no requisition
             // For example, you could initialize the fields to default values or handle accordingly
             System.out.println("Null section");
-            this.status = "";
+            this.status = "Draft";
             this.budgetLineId = null;
             this.justification = "";
             this.maxDate = null;
@@ -211,7 +221,13 @@ public class MyRequisitionHandler implements Serializable {
 
 
     public void updateRequisition() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+
         requisition =new Requisition();
+
+        requisition.setId(id);
+
         requisition.setJustification(justification);
         requisition.setUser(loginBean.getLoggedInUser());
 
@@ -222,7 +238,50 @@ public class MyRequisitionHandler implements Serializable {
         requisition.setStatus("Pending");
 
         requisition.setEstimatedAmount(requestedAmount);
-        requisition.setAmountGranted(requestedAmount);
+//        requisition.setAmountGranted(requestedAmount);
+
+//        requisition.setAmountGranted(amountGranted);
+
+//        requisition.setReview_comments(reviewComments);
+
+//        requisition.setStatus(status);
+
+        requisition.setMaxDateNeeded(maxDate);
+        requisition.setDateCreated(new Date());
+
+        try {
+            requisitionService.createRequisition(requisition);
+
+            allRequisitions.update();
+            selectRequisition();
+
+            FacesMessage message = new FacesMessage("Requisition created/updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            context.validationFailed();
+        }
+
+
+    }
+
+    public void saveOrUpdateDraftRequisition() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        requisition =new Requisition();
+        requisition.setId(id);
+        requisition.setJustification(justification);
+        requisition.setUser(loginBean.getLoggedInUser());
+
+        budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
+
+        requisition.setBudgetline(budgetLine);
+
+        requisition.setStatus("Draft");
+
+        requisition.setEstimatedAmount(requestedAmount);
+//        requisition.setAmountGranted(requestedAmount);
 
 //        requisition.setAmountGranted(amountGranted);
 
@@ -234,12 +293,15 @@ public class MyRequisitionHandler implements Serializable {
 
         try {
             requisitionService.createRequisition(requisition);
-
             allRequisitions.update();
             selectRequisition();
 
+            FacesMessage message = new FacesMessage("Draft saved/updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            context.validationFailed();
         }
 
 

@@ -224,6 +224,7 @@ public class UpdateRequisition implements Serializable {
         this.maxDate=null;
         this.budgetLine=new BudgetLine();
         this.requestedAmount=null;
+        this.amountGranted= null;
 
     }
 

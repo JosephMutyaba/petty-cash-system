@@ -1,8 +1,5 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
-import com.pahappa.systems.pettycashsystem.exceptions.MinimumLengthException;
-import com.pahappa.systems.pettycashsystem.exceptions.NameExistsException;
-import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -15,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,17 +35,12 @@ public class UpdateRole implements Serializable {
     private String roleName;
     private String roleDescription;
 
-
-
-
     //// list of permissions to display in the edit role dialog
     private List<Perm> budgetLinePermissions;
     private List<Perm> rolePermissions;
     private List<Perm> employeePermissions;
     private List<Perm> requisitionPermissions;
     private List<Perm> permissionsPermissions;
-
-    ////
 
     Set<Permission> allPermissions;
 
@@ -73,7 +64,6 @@ public class UpdateRole implements Serializable {
         viewPermissions = new HashSet<Permission>();
 
         allPermissions = new HashSet<Permission>();
-
 
 
         budgetLinePermissions= new ArrayList<Perm>();
@@ -100,18 +90,87 @@ public class UpdateRole implements Serializable {
         this.roleDescription = roleDescription;
     }
 
-
-
-
-
-
-
-
-
     public List<Perm> getRolePermissions() {
         initialiseSets();
         return rolePermissions;
     }
+
+
+
+
+    public Set<Permission> getViewEmployeesPermissions() {
+        return viewEmployeesPermissions;
+    }
+
+    public void setViewEmployeesPermissions(Set<Perm> viewEmployeesPermissions) {
+        if (viewEmployeesPermissions != null && !viewEmployeesPermissions.isEmpty()) {
+            this.viewEmployeesPermissions.add(permissionService.findByName(Perm.VIEW_EMPLOYEES));
+            for (Perm perm: viewEmployeesPermissions) {
+                this.viewEmployeesPermissions.add(permissionService.findByName(perm));
+            }
+        }
+    }
+
+    public Set<Permission> getViewRolesPermissions() {
+        return viewRolesPermissions;
+    }
+
+    public void setViewRolesPermissions(Set<Perm> viewRolesPermissions) {
+        if (viewRolesPermissions != null && !viewRolesPermissions.isEmpty()) {
+            this.viewRolesPermissions.add(permissionService.findByName(Perm.VIEW_ROLES));
+            for (Perm perm: viewRolesPermissions) {
+                this.viewRolesPermissions.add(permissionService.findByName(perm));
+            }
+        }
+
+    }
+
+    public Set<Permission> getViewRequisitionsPermissions() {
+        return viewRequisitionsPermissions;
+    }
+
+    public void setViewRequisitionsPermissions(Set<Perm> viewRequisitionsPermissions) {
+        if (viewRequisitionsPermissions != null && !viewRequisitionsPermissions.isEmpty()) {
+            this.viewRequisitionsPermissions.add(permissionService.findByName(Perm.VIEW_REQUISITIONS));
+            for (Perm perm: viewRequisitionsPermissions) {
+                this.viewRequisitionsPermissions.add(permissionService.findByName(perm));
+            }
+        }
+
+    }
+
+    public Set<Permission> getViewBudgetLinesPermissions() {
+        return viewBudgetLinesPermissions;
+    }
+
+    public void setViewBudgetLinesPermissions(Set<Perm> viewBudgetLinesPermissions) {
+        if (viewBudgetLinesPermissions != null && !viewBudgetLinesPermissions.isEmpty()) {
+            this.viewBudgetLinesPermissions.add(permissionService.findByName(Perm.VIEW_BUDGETLINES));
+            for (Perm perm: viewBudgetLinesPermissions) {
+                this.viewBudgetLinesPermissions.add(permissionService.findByName(perm));
+            }
+        }
+
+    }
+
+    public Set<Permission> getViewPermissions() {
+        initialiseSets();
+        return viewPermissions;
+    }
+
+    public void setViewPermissions(Set<Perm> viewPermissions) {
+
+        if(viewPermissions != null && !viewPermissions.isEmpty()) {
+
+            this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
+            for (Perm perm: viewPermissions) {
+                this.viewPermissions.add(permissionService.findByName(perm));
+            }
+        }
+    }
+
+
+
 
     public void setRolePermissions(List<Perm> rolePermissions) {
         if (rolePermissions != null && !rolePermissions.isEmpty()) {
@@ -179,7 +238,7 @@ public class UpdateRole implements Serializable {
 
     public void setBudgetLinePermissions(List<Perm> budgetLinePermissions) {
         if (budgetLinePermissions != null && !budgetLinePermissions.isEmpty()) {
-            this.viewBudgetLinesPermissions.add(permissionService.findByName(Perm.VIEW_BUDGETLINES));
+//            this.viewBudgetLinesPermissions.add(permissionService.findByName(Perm.VIEW_BUDGETLINES));
             for (Perm perm: budgetLinePermissions) {
                 this.viewBudgetLinesPermissions.add(permissionService.findByName(perm));
             }

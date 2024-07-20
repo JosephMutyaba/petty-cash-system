@@ -146,8 +146,6 @@
             <p:commandButton icon="pi pi-times" styleClass="pill bg-g" value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
         </p:confirmDialog>
 
-
-
         <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" message="Transfer funds from BudgetLine Acoount?"
                          header="Disburse" icon="pi pi-exclamation-triangle">
 
@@ -156,8 +154,6 @@
             <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
             <p:messages globalOnly="true" id="messages"/>
         </p:confirmDialog>
-
-
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Requisitions?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
@@ -185,7 +181,8 @@
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="granted_amount" value="Granted Amount"/>
-                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" />
+                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}"/>
+                    <p:outputLabel value="Max: #{updateRequisition.requestedAmount}" style="color:cornflowerblue;font-size:0.8rem;padding-left:16px"/>
                 </h:panelGroup>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Modify" actionListener="#{updateRequisition.updateRequisition}"

@@ -30,7 +30,7 @@ public class Requisition {
     private Double estimatedAmount;
 
 
-    private Double amountGranted = estimatedAmount; // amount granted is by default equal to estimated amount
+    private Double amountGranted = 0.0; // amount granted is by default equal to 0.0
 
     @Column(nullable = false)
     private String status="NEW";

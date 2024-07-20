@@ -44,7 +44,11 @@ public class CreateAccountability implements Serializable {
     @Autowired
     private LoginBean loginBean;
 
+    private Long accountabilityId;
+
     private String description;
+
+    private String accountabilityStatus;
 
     private String extraClaims;
 
@@ -64,6 +68,19 @@ public class CreateAccountability implements Serializable {
     public void init() {
         accountability = new Accountability();
         requisition = myRequisitionHandler.getRequisition();
+//        initialiseAccountability();
+    }
+
+//    public CreateAccountability() {
+//        initialiseAccountability();
+//    }
+
+    public Long getAccountabilityId() {
+        return accountabilityId;
+    }
+
+    public void setAccountabilityId(Long accountabilityId) {
+        this.accountabilityId = accountabilityId;
     }
 
     public String getDescription() {
@@ -80,6 +97,14 @@ public class CreateAccountability implements Serializable {
 
     public void setExtraClaims(String extraClaims) {
         this.extraClaims = extraClaims;
+    }
+
+    public String getAccountabilityStatus() {
+        return accountabilityStatus;
+    }
+
+    public void setAccountabilityStatus(String accountabilityStatus) {
+        this.accountabilityStatus = accountabilityStatus;
     }
 
     public Double getAmountSpent() {
@@ -140,10 +165,43 @@ public class CreateAccountability implements Serializable {
         return buffer.toByteArray();
     }
 
+    public void initialiseAccountability(){
+//        Requisition requisition = new Requisition();
+        requisition=myRequisitionHandler.getRequisition();
+//        requisition=requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
+        if(requisition!=null){
+            System.out.println("\nAcc not null\n");
+//            accountability =accountabilityService.getAccountabilityByRequisitionId(requisition.getId());
+            accountability=requisition.getAccountability();
+            if (accountability != null) {
+                this.accountabilityId=accountability.getId();
+                this.description=accountability.getDescription();
+                this.accountabilityStatus=accountability.getStatus();
+                this.extraClaims=accountability.getExtraClaims();
+                this.amountSpent=accountability.getAmountSpent();
+                this.dateSubmitted=accountability.getDateSubmitted();
+                this.receiptImage=accountability.getReceiptImage();
+            }
+
+        }else {
+            System.out.println("\nAcc not null.............!!!!!\n");
+            this.accountability =new Accountability();
+            this.description=null;
+            this.accountabilityStatus=null;
+            this.extraClaims=null;
+            this.amountSpent=10.0;
+            this.dateSubmitted=new Date();
+            this.receiptImage=null;
+        }
+    }
+
     public void save() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             requisition=myRequisitionHandler.getRequisition();
+            accountability=new Accountability();
+            accountability.setId(accountabilityId);
+            accountability.setStatus("Submitted");
             accountability.setDescription(description);
             accountability.setExtraClaims(extraClaims);
             accountability.setDateSubmitted(new Date());
@@ -158,34 +216,93 @@ public class CreateAccountability implements Serializable {
 
             requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
-            //balancing books
-            User user=loginBean.getLoggedInUser();
+//            //balancing books
+//            User user=loginBean.getLoggedInUser();
+//
+//            BudgetLine budgetLine=requisition.getBudgetline();
+//
+//            Double budgetlineBal=budgetLine.getBalance();
+//
+//            Double requisitionAmountGranted = requisition.getAmountGranted();
+//
+//            Double userAccBal = user.getAccountBalance();
+//
+//            Double expenditureBalance = requisitionAmountGranted-amountSpent;
+//
+//            Double newUserAccBal=userAccBal-expenditureBalance;
+//
+//            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
+//
+//            user.setAccountBalance(newUserAccBal);
+//            budgetLine.setBalance(newBudgetLineBal);
+//
+//            //accountabilityService.createAccountability(accountability);
+//            userService.updateUser(user);
 
-            BudgetLine budgetLine=requisition.getBudgetline();
-
-            Double budgetlineBal=budgetLine.getBalance();
-
-            Double requisitionAmountGranted = requisition.getAmountGranted();
-
-            Double userAccBal = user.getAccountBalance();
-
-            Double expenditureBalance = requisitionAmountGranted-amountSpent;
-
-            Double newUserAccBal=userAccBal-expenditureBalance;
-
-            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
-
-            user.setAccountBalance(newUserAccBal);
-            budgetLine.setBalance(newBudgetLineBal);
-
-            //accountabilityService.createAccountability(accountability);
-            userService.updateUser(user);
-
-            budgetLineService.updateBudgetLine(budgetLine);
+//            budgetLineService.updateBudgetLine(budgetLine);
 
             requisitionService.updateRequisition(requisition);  // this automatically creates
 
-            FacesMessage message = new FacesMessage("Accountability saved successfully. Your account has been debited with shs."+expenditureBalance, "Success");
+            FacesMessage message = new FacesMessage("Accountability saved/updated successfully. ", "success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),null));
+            context.validationFailed();
+        }
+    }
+
+
+    public void saveOrUpdateAccountabilityDraft() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            requisition=myRequisitionHandler.getRequisition();
+            accountability=new Accountability();
+            accountability.setDescription(description);
+            accountability.setExtraClaims(extraClaims);
+            accountability.setDateSubmitted(new Date());
+            accountability.setAmountSpent(amountSpent);
+            accountability.setRequisition(requisition);
+            accountability.setReceiptImage(receiptImage);
+            accountability.setStatus(accountabilityStatus);
+            accountability.setId(accountabilityId);
+            accountability.setStatus("Draft");
+            accountability.setId(accountabilityId);
+
+            //setting status to completed
+//            requisition.setStatus("Completed");
+
+            accountabilityService.validateAccountability(accountability, requisition);
+
+            requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
+
+//            //balancing books
+//            User user=loginBean.getLoggedInUser();
+//
+//            BudgetLine budgetLine=requisition.getBudgetline();
+//
+//            Double budgetlineBal=budgetLine.getBalance();
+//
+//            Double requisitionAmountGranted = requisition.getAmountGranted();
+//
+//            Double userAccBal = user.getAccountBalance();
+//
+//            Double expenditureBalance = requisitionAmountGranted-amountSpent;
+//
+//            Double newUserAccBal=userAccBal-expenditureBalance;
+//
+//            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
+//
+//            user.setAccountBalance(newUserAccBal);
+//            budgetLine.setBalance(newBudgetLineBal);
+//
+//            //accountabilityService.createAccountability(accountability);
+//            userService.updateUser(user);
+//
+//            budgetLineService.updateBudgetLine(budgetLine);
+//
+            requisitionService.updateRequisition(requisition);  // this automatically creates
+
+            FacesMessage message = new FacesMessage("Accountability saved successfully.", "Success");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),null));

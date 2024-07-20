@@ -20,7 +20,7 @@
         <p:dataTable rowIndexVar="index" id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
 
             <f:facet name="header">
-                <p:commandButton value="Export to CSV" icon="pi pi-cloud-download">
+                <p:commandButton value="Export to CSV" icon="pi pi-cloud-download" styleClass="pill">
                     <p:dataExporter type="csv" target="accountability_table" fileName="data_export" />
                 </p:commandButton>
             </f:facet>
@@ -41,17 +41,25 @@
                 <p:outputLabel value="#{accountability.requisition.user.firstname}"/>
             </p:column>
             <p:column headerText="Image">
-                <p:commandLink onsuccess="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}" update="imagePanel">
+                <p:commandLink onsuccess="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}" update="imagePanelForm">
                     <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
                 </p:commandLink>
             </p:column>
 
         </p:dataTable>
 
+
+
         <p:dialog widgetVar="imageDialog" header="Receipt Image" modal="true">
-            <p:panelGrid id="imagePanel">
-                <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
-            </p:panelGrid>
+            <h:form id="imagePanelForm">
+                <p:panelGrid id="imagePanel" columns="1">
+                    <p:commandButton icon="pi pi-cloud-download" styleClass="pill" value="Download Image" actionListener="#{handleOneAccountability.downloadReceiptImage}" ajax="false" />
+
+                    <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
+                </p:panelGrid>
+            </h:form>
+
         </p:dialog>
+
     </ui:define>
 </ui:composition>

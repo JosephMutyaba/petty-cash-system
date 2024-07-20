@@ -57,4 +57,7 @@ public class AccountabilityService {
 
     }
 
+    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
+        return accountabilityDAO.getAccountabilityByRequisitionId(requisitionId);
+    }
 }

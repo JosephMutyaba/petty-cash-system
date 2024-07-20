@@ -45,11 +45,16 @@
                         <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
                         <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+
+                        <p:commandButton value="Save Draft" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.saveOrUpdateDraftRequisition}"
+                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                         <p:messages globalOnly="true" id="globalMessages" closable="true"/>
                     </div>
                 </h:form>
                 <h:panelGroup id="accountability_section" rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
+                    <f:event type="preRenderView" listener="#{createAccountability.initialiseAccountability}"/>
+
                     <h3 class="mb">Accountability</h3>
                     <h:form styleClass="flex column pad2">
                         <h:panelGroup styleClass="flex row pad1">
@@ -64,13 +69,14 @@
                         </h:panelGroup>
                         <div>
                             <p:panel header="Upload Image">
-                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" auto="true" update="imagePreview messages" />
+                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" dragDropSupport="true" auto="true" update="imagePreview messages" />
 
                                 <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
                             </p:panel>
                         </div>
 
                         <div>
+                            <p:commandButton value="Save Draft" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.saveOrUpdateAccountabilityDraft}" styleClass="mt pill"/>
                             <p:commandButton value="Submit Accountability" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
                             <p:messages globalOnly="true" id="messages" closable="true"/>
                         </div>
