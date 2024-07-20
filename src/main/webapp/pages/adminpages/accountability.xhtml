@@ -8,10 +8,10 @@
     <ui:define name="main-content">
         <h2 class="mb">Accountability</h2>
 
-        <h:form class="mb mt pad1">
+<!--        <h:form class="mb mt pad1">-->
 <!--            <p:commandButton value="Add New" onclick="PF('new_accountability').show()" icon="pi pi-plus" styleClass="mr pill"/>-->
-            <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
-        </h:form>
+<!--            <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>-->
+<!--        </h:form>-->
         <h:form class="bg-white pad1">
             <p:inputText styleClass="pill fillW mt" value="#{allAccountability.searchTerm}" placeholder="Search">
                 <p:ajax event="keyup" update="accountability_table" listener="#{allAccountability.filterAccountabilities()}"/>
@@ -26,21 +26,36 @@
             </f:facet>
 
 
-
             <p:column headerText="No" width="16px">#{index + 1}</p:column>
+
+            <p:column headerText="Requisition">
+                <p:commandButton value="#{accountability.requisition.justification}" update="viewRequisitionDialog_panel" action="#{confirmBalanceReturn.selectRequisition(accountability.requisition)}" onsuccess="PF('viewRequisitionDialog').show()"/>
+            </p:column>
+            <p:column headerText="Amount Granted">
+                <p:outputLabel value="#{accountability.requisition.amountGranted}"/>
+            </p:column>
             <p:column headerText="Amount Spent">
                 <p:outputLabel value="#{accountability.amountSpent}"/>
             </p:column>
+
+            <p:column headerText="Balance">
+                <p:outputLabel value="#{accountability.requisition.amountGranted-accountability.amountSpent}"/>
+            </p:column>
+
+            <p:column headerText="Balance returned">
+                <p:outputLabel value="#cleared" rendered="#{accountability.balanceIsReturned}"/>
+                <p:commandButton value="Confirm Balance Return" rendered="#{!accountability.balanceIsReturned}" action="#{confirmBalanceReturn.selectAccountability(accountability)}" onsuccess="PF('confirm_balance_return_dialog').show()" update="confirm_balance_return_dialog_form"/>
+            </p:column>
+
             <p:column headerText="Description">
                 <p:outputLabel value="#{accountability.description}"/>
             </p:column>
-            <p:column headerText="Requisition">
-                <p:outputLabel value="#{accountability.requisition.justification}"/>
-            </p:column>
+
             <p:column headerText="User">
-                <p:outputLabel value="#{accountability.requisition.user.firstname}"/>
+                <p:commandButton value="#{accountability.requisition.user.firstname}" action="#{confirmBalanceReturn.selectUser(accountability.requisition.user)}" onsuccess="PF('viewUserDialog').show()" update="viewUserDialog_panel"/>
             </p:column>
-            <p:column headerText="Image">
+
+            <p:column headerText="Receipt">
                 <p:commandLink onsuccess="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}" update="imagePanelForm">
                     <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
                 </p:commandLink>
@@ -61,5 +76,58 @@
 
         </p:dialog>
 
+        <p:dialog widgetVar="confirm_balance_return_dialog" modal="true" header="Confirm Return of Balance">
+            <h:form id="confirm_balance_return_dialog_form">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="User has returned Balance?" for="balance_returned"/>
+                    <p:selectBooleanCheckbox id="balance_returned" value="#{confirmBalanceReturn.balanceReturned}" label="Balance Returned?"/>
+                </p:panelGrid>
+                <div class="mt">
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{confirmBalanceReturn.updateAccountabilityBalanceReturnStatus}"
+                                     oncomplete="if (!args.validationFailed) PF('confirm_balance_return_dialog').hide(); updateAccountability_table();" />
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('confirm_balance_return_dialog').hide(); return false;"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="viewRequisitionDialog" header="Requisition" modal="true" width="500px" resizable="false">
+            <p:panelGrid id="viewRequisitionDialog_panel" columns="2">
+                <p:outputLabel value="Budgetline" for="budgetLine"/>
+                <p:inputText id="budgetLine" value="#{confirmBalanceReturn.requisition.budgetline.description}" readonly="true"/>
+
+                <p:outputLabel value="Reason" for="reason"/>
+                <p:inputText id="reason" value="#{confirmBalanceReturn.requisition.justification}" readonly="true"/>
+
+                <p:outputLabel value="Amount Requested" for="requested"/>
+                <p:inputText id="requested" value="#{confirmBalanceReturn.requisition.estimatedAmount}" readonly="true"/>
+
+                <p:outputLabel value="Amount Granted" for="granted"/>
+                <p:inputText id="granted" value="#{confirmBalanceReturn.requisition.amountGranted}" readonly="true"/>
+
+                <p:outputLabel value="Max Date needed" for="date_needed"/>
+                <p:calendar id="date_needed" value="#{confirmBalanceReturn.requisition.maxDateNeeded}" readonly="true"/>
+            </p:panelGrid>
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="viewUserDialog" header="User" modal="true" width="500px" resizable="false">
+            <p:panelGrid id="viewUserDialog_panel" columns="2">
+                <p:outputLabel value="Firstname" for="f_name"/>
+                <p:inputText id="f_name" value="#{confirmBalanceReturn.user.firstname}" readonly="true"/>
+
+                <p:outputLabel value="Lastname" for="l_name"/>
+                <p:inputText id="l_name" value="#{confirmBalanceReturn.user.lastname}" readonly="true"/>
+
+                <p:outputLabel value="Email" for="email"/>
+                <p:inputText id="email" value="#{confirmBalanceReturn.user.email}" readonly="true"/>
+
+                <p:outputLabel value="User Role" for="role"/>
+                <p:inputText id="role" value="#{confirmBalanceReturn.user.role.name}" readonly="true"/>
+
+            </p:panelGrid>
+        </p:dialog>
+
+        <p:remoteCommand name="updateAccountability_table" update="accountability_table"/>
     </ui:define>
 </ui:composition>

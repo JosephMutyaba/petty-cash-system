@@ -2,9 +2,7 @@ package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.managedcontroller.login.LoginBean;
 import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
-import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
-import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.AccountabilityService;
 import com.pahappa.systems.pettycashsystem.spring.services.BudgetLineService;
 import com.pahappa.systems.pettycashsystem.spring.services.RequisitionService;
@@ -151,9 +149,6 @@ public class CreateAccountability implements Serializable {
         }
     }
 
-
-
-
     private byte[] toByteArray(InputStream input) throws IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         int nRead;
@@ -214,7 +209,6 @@ public class CreateAccountability implements Serializable {
 
             accountabilityService.validateAccountability(accountability, requisition);
 
-            requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
 //            //balancing books
 //            User user=loginBean.getLoggedInUser();
@@ -223,11 +217,11 @@ public class CreateAccountability implements Serializable {
 //
 //            Double budgetlineBal=budgetLine.getBalance();
 //
-//            Double requisitionAmountGranted = requisition.getAmountGranted();
+            Double requisitionAmountGranted = requisition.getAmountGranted();
 //
 //            Double userAccBal = user.getAccountBalance();
 //
-//            Double expenditureBalance = requisitionAmountGranted-amountSpent;
+            Double expenditureBalance = requisitionAmountGranted-amountSpent;
 //
 //            Double newUserAccBal=userAccBal-expenditureBalance;
 //
@@ -240,6 +234,12 @@ public class CreateAccountability implements Serializable {
 //            userService.updateUser(user);
 
 //            budgetLineService.updateBudgetLine(budgetLine);
+
+            if (expenditureBalance ==0.0) {
+                accountability.setBalanceIsReturned(true);
+            }
+
+            requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
             requisitionService.updateRequisition(requisition);  // this automatically creates
 

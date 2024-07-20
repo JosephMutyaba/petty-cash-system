@@ -11,6 +11,8 @@ public class Accountability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Boolean balanceIsReturned=false;
+
     private String description;
 
     private String status;
@@ -34,9 +36,10 @@ public class Accountability {
     public Accountability() {
     }
 
-    private Accountability(Long id, String description, String extraClaims, Double amountSpent, Requisition requisition, Date dateSubmitted, byte[] receiptImage) {
+    private Accountability(Long id, String description, Boolean balanceIsReturned, String extraClaims, Double amountSpent, Requisition requisition, Date dateSubmitted, byte[] receiptImage) {
         this.id = id;
         this.description = description;
+        this.balanceIsReturned = balanceIsReturned;
         this.extraClaims = extraClaims;
         this.amountSpent = amountSpent;
         this.requisition = requisition;
@@ -50,6 +53,14 @@ public class Accountability {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getBalanceIsReturned() {
+        return balanceIsReturned;
+    }
+
+    public void setBalanceIsReturned(Boolean balanceIsReturned) {
+        this.balanceIsReturned = balanceIsReturned;
     }
 
     public String getStatus() {
