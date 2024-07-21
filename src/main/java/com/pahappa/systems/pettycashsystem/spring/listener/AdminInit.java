@@ -68,6 +68,27 @@ public class AdminInit {
             }
         }
 
+        ///THIS DEFAULT ROLE TO WHICH USERS WHOSE ROLE IS DELETED FROM SYSTEM ARE ASSIGNED
+        Role userRole = roleService.findByName("USER");
+
+        if (userRole == null) {
+//            LOGGER.info("Admin role not found. Creating admin role...");
+            userRole = new Role();
+            userRole.setName("USER");
+            userRole.setDescription("This the default role");
+
+            // Assign all permissions except 'make_requisition' to admin role
+            Set<Permission> userPermissions = new HashSet<>();
+            userPermissions.add(permissionService.findByName(Perm.MAKE_REQUISITION));
+            userRole.setPermissions(userPermissions);
+
+            try {
+                roleService.createRole(userRole);
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            }
+        }
+
         LOGGER.info("Checking for existing admin users...");
         List<User> adminUsers = userService.findByRoleName("ADMIN");
 

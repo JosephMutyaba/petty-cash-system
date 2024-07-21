@@ -26,8 +26,8 @@
             </p:column>
             <p:column headerText="Actions">
                 <h:form>
-                    <p:commandButton title="Edit" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
-                    <p:commandButton title="Delete" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
+                    <p:commandButton rendered="#{role.name!='USER'}" title="Edit" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
+                    <p:commandButton rendered="#{role.name!='USER'}" title="Delete" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -135,7 +135,7 @@
                 <p:outputLabel value="Do you wish to delete this role?"/>
                 <div class="row mt">
                     <h4 style="color: red">
-                        WARNING! This will delete all users attached to this role
+                        WARNING! All users attached to this role will be assigned to the default USER role
                     </h4>
                     <p:commandButton icon="pi pi-trash" action="#{deleteRole.deleteARole}" styleClass="bg-r mr pill" value="Yes" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
                     <p:commandButton icon="pi pi-times" styleClass="bg-g pill" value="No" onclick="PF('confirm_dialog').hide()"/>
@@ -146,7 +146,7 @@
         <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
             <h:form id="confirm_all_form" styleClass="flex column">
                 <h4 style="color: red">
-                    WARNING! This will delete all users attached to these roles
+                    WARNING! All users attached to these roles will be reassigned to the default USER role
                 </h4>
                 <p:outputLabel value="Do you wish to delete all roles?"/>
                 <div class="row mt">
