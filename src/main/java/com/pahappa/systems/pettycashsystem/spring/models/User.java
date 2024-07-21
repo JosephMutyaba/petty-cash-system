@@ -1,10 +1,9 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -22,9 +21,9 @@ public class User {
 
     private String Password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -34,15 +33,24 @@ public class User {
 
     public User() {}
 
-    private User(Long id, String firstname, String lastname, String email, String password, Role role, String username, List<Requisition> requisition) {
+    public User(Long id, String firstname, String lastname, Double accountBalance, String email, String password, Set<Role> roles, String username, List<Requisition> requisition) {
         this.id = id;
         Firstname = firstname;
         Lastname = lastname;
+        this.accountBalance = accountBalance;
         Email = email;
         Password = password;
-        this.role = role;
+        this.roles = roles;
         this.username = username;
         this.requisition = requisition;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -85,14 +93,6 @@ public class User {
         Password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public Double getAccountBalance() {
         return accountBalance;
     }
@@ -123,12 +123,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getRole(), user.getRole()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getRequisition(), user.getRequisition());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getRequisition(), user.getRequisition());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstname(), getLastname(), getEmail(), getPassword(), getRole(), getUsername(), getRequisition());
+        return Objects.hash(getId(), getFirstname(), getLastname(), getEmail(), getPassword(), getUsername(), getRequisition());
     }
 
     @Override

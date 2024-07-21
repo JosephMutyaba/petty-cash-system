@@ -14,8 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 @Named
 @ViewScoped
@@ -32,16 +31,39 @@ public class UpdateEmployee implements Serializable {
     private String lastName;
     private String email;
     private String password;
-    private Role role;
+    private Set<Role> userRoles;
     private String roleName;
     private List<Role> roles;
     private String username;
     private User user;
 
+    private List<String> userRoleNames;
+
     @PostConstruct
     public void init() {
         roles=roleService.getAllRoles();
-        role = new Role();
+        userRoles=new HashSet<>();
+        userRoleNames = new ArrayList<>();
+    }
+
+    public List<String> getUserRoleNames() {
+        userRoleNames.clear();
+        for (Role role: userRoles) {
+            userRoleNames.add(role.getName());
+        }
+        return userRoleNames;
+    }
+
+    public void setUserRoleNames(List<String> userRoleNames) {
+        if (userRoleNames != null && !userRoleNames.isEmpty()) {
+            // first delete all former roles
+            user.getRoles().clear();
+
+            // and set new roles ones
+            for (String userRoleName : userRoleNames) {
+                this.userRoles.add(roleService.findByName(userRoleName));
+            }
+        }
     }
 
     public String getFirstName() {
@@ -76,12 +98,12 @@ public class UpdateEmployee implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getUserRoles() {
+        return userRoles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setUserRoles(Set<Role> userRoles) {
+        this.userRoles = userRoles;
     }
 
     public List<Role> getRoles() {
@@ -123,9 +145,9 @@ public class UpdateEmployee implements Serializable {
         user.setUsername(username);
         user.setPassword(password);
 
-        role=roleService.findByName(roleName);
+//        role=roleService.findByName(roleName);
 
-        user.setRole(role);
+        user.setRoles(userRoles);
         user.setFirstname(firstName);
         user.setLastname(lastName);
         user.setEmail(email);
@@ -134,7 +156,7 @@ public class UpdateEmployee implements Serializable {
             userService.updateUser(user);
 
             //clear the fields
-            this.role=null;
+            this.userRoles.clear();
             this.roleName=null;
             this.firstName=null;
             this.lastName=null;
@@ -153,7 +175,7 @@ public class UpdateEmployee implements Serializable {
 
     public void selectedUser(User userSelected){
         this.user=userSelected;
-        this.role=user.getRole();
+        this.userRoles=user.getRoles();
         this.firstName=user.getFirstname();
         this.lastName=user.getLastname();
         this.email=user.getEmail();

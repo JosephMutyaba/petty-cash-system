@@ -5,13 +5,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
 
-    <!-- Redirect to login page if user is not logged in -->
-    <h:outputScript rendered="#{loginBean.loggedInUser == null}">
-        window.location = '#{facesContext.externalContext.requestContextPath}/pages/auth/login.xhtml';
-    </h:outputScript>
-
     <div class="sidebar">
-        <h3>#{loginBean.loggedInUser.role.name}</h3>
         <p:tieredMenu styleClass="no-border fillW">
             <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home"/>
             <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase" rendered="#{checkPermission.hasPermission('VIEW_ROLES')}"/>

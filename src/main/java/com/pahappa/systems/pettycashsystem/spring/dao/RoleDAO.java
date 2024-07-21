@@ -39,17 +39,23 @@ public class RoleDAO {
     public void deleteRole(Long id) {
         Role role = sessionFactory.getCurrentSession().load(Role.class, id);
 
+        Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
+
+
         if (role != null) {
 
-            List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User WHERE role_id = :roleId")
-                    .setParameter("roleId",id)
-                    .getResultList();
-
-            Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
+            List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User").getResultList();
 
             for (User user : users) {
-                user.setRole(defaultRole);
-                sessionFactory.getCurrentSession().update(user);
+                if (user.getRoles().contains(role)) {
+                    if (user.getRoles().size()>1) {
+                        user.getRoles().remove(role);
+                    }else {
+                        user.getRoles().clear();
+                        user.getRoles().add(defaultRole);
+                    }
+                    sessionFactory.getCurrentSession().update(user);
+                }
             }
 
             ////////////////////////////////
@@ -65,17 +71,27 @@ public class RoleDAO {
     public void deleteAllRoles() {
 //        sessionFactory.getCurrentSession().createQuery("DELETE FROM User").executeUpdate();
 
-        List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User")
-                .getResultList();
+        List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User").getResultList();
 
         Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
 
-        for (User user : users) {
-            user.setRole(defaultRole);
-            sessionFactory.getCurrentSession().update(user);
+        List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role").getResultList();
+
+        for (Role role : roles) {
+            for (User user : users) {
+                if (user.getRoles().contains(role)) {
+                    if (user.getRoles().size()>1) {
+                        user.getRoles().remove(role);
+                    }else {
+                        user.getRoles().clear();
+                        user.getRoles().add(defaultRole);
+                    }
+                    sessionFactory.getCurrentSession().update(user);
+                }
+            }
         }
 
-        List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role").getResultList();
+
         for (Role role : roles) {
             if (!role.getName().equals("USER")) {
                 sessionFactory.getCurrentSession().delete(role);

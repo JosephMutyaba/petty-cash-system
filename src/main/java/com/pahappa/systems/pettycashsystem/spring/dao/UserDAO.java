@@ -61,21 +61,34 @@ public class UserDAO {
                 .uniqueResult();
     }
 
-    public List<User> findByRoleName(String roleName) {
-        // Fetch the role using a query
-        Role role = (Role) getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
-                .setParameter("role_name", roleName)
-                .uniqueResult(); // Fetch a single result
 
-        if (role != null) {
-            // Fetch users with the role
-            return getCurrentSession().createQuery("FROM User WHERE role.id=:role_id", User.class)
-                    .setParameter("role_id", role.getId())
-                    .getResultList();
-        } else {
-            return Collections.emptyList(); // Return an empty list if the role is not found
-        }
+
+    public List<User> findByRoleName(String roleName) {
+        // Fetch users with the role by joining the roles table
+        return getCurrentSession().createQuery(
+                        "SELECT u FROM User u JOIN u.roles r WHERE r.name = :role_name", User.class)
+                .setParameter("role_name", roleName)
+                .getResultList();
     }
+
+
+
+
+//    public List<User> findByRoleName(String roleName) {
+//        // Fetch the role using a query
+//        Role role = (Role) getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
+//                .setParameter("role_name", roleName)
+//                .uniqueResult(); // Fetch a single result
+//
+//        if (role != null) {
+//            // Fetch users with the role
+//            return getCurrentSession().createQuery("FROM User WHERE roles.id=:role_id", User.class)
+//                    .setParameter("role_id", role.getId())
+//                    .getResultList();
+//        } else {
+//            return Collections.emptyList(); // Return an empty list if the role is not found
+//        }
+//    }
 
     public User findUserByUsernameAndPassword(String username, String password) {
         return (User) getCurrentSession().createQuery("from User where username=:username and Password=:password")

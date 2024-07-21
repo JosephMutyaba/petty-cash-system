@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,7 +99,17 @@ public class AdminInit {
             adminUser.setUsername("admin");
             adminUser.setPassword("adminPass#1"); // Encrypt password in a real application
             adminUser.setEmail("admin@example.com");
-            adminUser.setRole(adminRole);
+
+
+
+
+            Set<Role> adminRoles = new HashSet<>();
+            adminRoles.add(adminRole);
+
+
+
+
+            adminUser.setRoles(adminRoles);
             adminUser.setFirstname("Bob");
             adminUser.setLastname("Alexander");
             try {

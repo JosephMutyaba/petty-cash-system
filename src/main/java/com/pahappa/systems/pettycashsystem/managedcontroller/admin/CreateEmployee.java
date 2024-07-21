@@ -15,8 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 @Named
 @ViewScoped
@@ -34,18 +33,21 @@ public class CreateEmployee implements Serializable {
     private String lastName;
     private String email;
     private String password;
-    private Role role;
-    private String roleName;
+    private Set<Role> selectedRoles;
+    private List<String> roleNames;
     private List<Role> roles;
     private String username;
     private User user;
 
 
 
+
+
     @PostConstruct
     public void init() {
         roles=roleService.getAllRoles();
-        role = new Role();
+        selectedRoles = new HashSet<>();
+        roleNames = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -80,12 +82,12 @@ public class CreateEmployee implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getSelectedRoles() {
+        return selectedRoles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setSelectedRoles(Set<Role> selectedRoles) {
+        this.selectedRoles = selectedRoles;
     }
 
     public List<Role> getRoles() {
@@ -112,12 +114,17 @@ public class CreateEmployee implements Serializable {
         this.user = user;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public List<String> getRoleNames() {
+        return roleNames;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoleNames(List<String> roleNames) {
+        if (roleNames != null && !roleNames.isEmpty()) {
+            for (String roleName : roleNames) {
+                selectedRoles.add(roleService.findByName(roleName));
+            }
+        }
+
     }
 
     public void createEmployee() {
@@ -132,9 +139,9 @@ public class CreateEmployee implements Serializable {
 //        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
 //        user.setPassword(encodedPassword);
 
-        role=roleService.findByName(roleName);
+//        role=roleService.findByName(roleName);
 
-        user.setRole(role);
+        user.setRoles(selectedRoles);
         user.setFirstname(firstName);
         user.setLastname(lastName);
         user.setEmail(email);
@@ -146,8 +153,8 @@ public class CreateEmployee implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
 
             //clear the fields
-            this.role=null;
-            this.roleName=null;
+            this.selectedRoles=new HashSet<>();
+//            this.roleName=null;
             this.firstName=null;
             this.lastName=null;
             this.email=null;
