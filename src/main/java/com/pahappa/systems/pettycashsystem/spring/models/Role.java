@@ -1,7 +1,5 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
