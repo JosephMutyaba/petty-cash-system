@@ -8,35 +8,73 @@
     <ui:define name="main-content">
         <h2>BudgetLine Categories</h2>
 
-        <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin" onclick="PF('new_budgetline_category').show()" process="@this"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
+        <div class="mt mb pad1">
+            <h:form>
+                <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_category').show()" process="@this" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE')}"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirm_all_dialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
+            </h:form>
         </div>
+        <h:form>
+            <div class="bg-white pad1">
+                <p:inputText styleClass="pill fillW" value="#{allBudgetLineCategories.searchTerm}" placeholder="Search">
+                    <p:ajax event="keyup" update="budgetlines_categories__table" listener="#{allBudgetLineCategories.filterCategories}"/>
+                </p:inputText>
+            </div>
+        </h:form>
 
-        <p:dataTable id="budgetlines_categories__table" value="#{allBudgetLineCategories.categories}" var="category" paginator="true" rows="5">
-            <p:column headerText="No">
-                <h:outputText value="#{allBudgetLineCategories.categories.indexOf(category) + 1}"/>
-            </p:column>
+        <p:dataTable rowIndexVar="index" id="budgetlines_categories__table" value="#{allBudgetLineCategories.categories}" var="category" paginator="true" rows="5">
+            <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Name">
                 <h:outputText value="#{category.name}"/>
             </p:column>
             <p:column headerText="Actions">
-                <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
-                <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
+                <h:form>
+                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr pill square" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
+                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
+                </h:form>
             </p:column>
         </p:dataTable>
 
-        <p:dialog widgetVar="new_budgetline_category" width="500px" header="Create New Budgetline" modal="true">
+        <p:dialog widgetVar="new_budgetline_category" header="Create New Category" modal="true">
             <h:form id="new_budgetline_form">
-                <p:panelGrid columns="2" styleClass="budgetline-grid">
+                <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
-                </p:panelGrid>
-                <p:commandButton value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
-                <p:commandButton value="Cancel" onclick="PF('new_budgetline_category').hide(); return false;"/>
+                </h:panelGroup>
+                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_budgetline_category').hide()"/>
             </h:form>
         </p:dialog>
 
+        <p:dialog widgetVar="edit_category" header="Edit Category" modal="true">
+            <h:form id="edit_category_form">
+                <h:panelGroup styleClass="flex column">
+                    <p:outputLabel for="cat_name" value="Name:"/>
+                    <p:inputText id="cat_name" value="#{updateBudgetLineCategory.cat_name}" required="true" />
+                </h:panelGroup>
+                <p:commandButton styleClass="mr pill" icon="pi pi-pencil" value="Save" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('edit_category').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
+            <h:form id="confirm_dialog_form">
+                <h2 style="color: red; ">Warning! Deleting this will delete all associated Budgetlines!</h2>
+                <p:outputLabel value="Delete this category?"/>
+                <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" action="#{deleteBudgetLineCategory.deleteBudgetLineCategory}" value="Delete" oncomplete="PF('confirm_dialog').hide()" update="budgetlines_categories__table mainGrowl"/>
+                <p:commandButton icon="pi pi-times" styleClass="pill" value="Cancel" onclick="PF('confirm_dialog').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
+            <h:form id="confirm_all_form" styleClass="flex column">
+                <p:outputLabel value="Do you wish to delete all categories?"/>
+                <div class="row mt">
+                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" value="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="budgetlines_categories__table mainGrowl"/>
+                    <p:commandButton icon="pi pi-times" styleClass="pill" value="Cancel" onclick="PF('confirm_all_dialog').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>
 
     </ui:define>
 </ui:composition>

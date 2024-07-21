@@ -1,21 +1,23 @@
-<!-- admin.xhtml -->
 <ui:composition template="temp.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">Roles</ui:define>
     <ui:define name="main-content">
-        <h2>Roles</h2>
-        <div class="actions">
-            <p:commandButton value="Add New" icon="pi pi-plus" styleClass="add-button right-margin"/>
-            <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="delete-button"/>
-        </div>
-
-        <p:dataTable value="#{allRoles.roles}" var="role" paginator="true" rows="5">
-            <p:column headerText="No">
-                <h:outputText value="#{allRoles.roles.indexOf(role)+1}"/>
-            </p:column>
+        <h2 class="mb">Roles</h2>
+        <h:form class="mb mt pad1">
+            <p:commandButton value="Add New" onclick="PF('new_role').show()" icon="pi pi-plus" styleClass="mr pill"/>
+            <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
+        </h:form>
+        <p:messages globalOnly="true"/>
+        <h:form class="bg-white pad1">
+            <p:inputText styleClass="pill fillW mt" value="#{allRoles.searchTerm}" placeholder="Search">
+                <p:ajax event="keyup" update="role_table" listener="#{allRoles.filterRoles}"/>
+            </p:inputText>
+        </h:form>
+        <p:dataTable rowIndexVar="index" id="role_table" value="#{allRoles.roles}" var="role" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+            <p:column headerText="No" width="16px">#{index + 1}</p:column>
             <p:column headerText="Role name">
                 <h:outputText value="#{role.name}"/>
             </p:column>
@@ -23,9 +25,135 @@
                 <h:outputText value="#{role.description}"/>
             </p:column>
             <p:column headerText="Actions">
-                <p:commandButton value="Delete" icon="pi pi-times" styleClass="delete-action"/>
-                <p:commandButton value="Edit" icon="pi pi-pencil" styleClass="edit-action"/>
+                <h:form>
+                    <p:commandButton rendered="#{role.name!='USER'}" title="Edit" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
+                    <p:commandButton rendered="#{role.name!='USER'}" title="Delete" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
+                </h:form>
             </p:column>
         </p:dataTable>
+
+        <p:dialog widgetVar="new_role" header="Create New Role" modal="true">
+            <h:form id="new_role_form">
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="name" value="Name"/>
+                        <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="description" value="Description"/>
+                        <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewEmployees" value="Employees"/>
+                        <p:selectCheckboxMenu id="viewEmployees" value="#{createUserRole.viewEmployeesPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewRoles" value="Roles"/>
+                        <p:selectCheckboxMenu id="viewRoles" value="#{createUserRole.viewRolesPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewRequisitions" value="Requisitions"/>
+                        <p:selectCheckboxMenu id="viewRequisitions" value="#{createUserRole.viewRequisitionsPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewBudgetLines" value="BudgetLines"/>
+                        <p:selectCheckboxMenu id="viewBudgetLines" value="#{createUserRole.viewBudgetLinesPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="viewPermissions" value="Miscellaneous"/>
+                        <p:selectCheckboxMenu id="viewPermissions" value="#{createUserRole.viewPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <div class="mt flex row">
+                    <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="new_role_form role_table"/>
+                    <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_role').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="edit_role" header="Edit Role" modal="true">
+            <h:form id="edit_role_form">
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="role_name" value="Name"/>
+                        <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="role_description" value="Description"/>
+                        <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewEmployees" value="Employees"/>
+                        <p:selectCheckboxMenu id="edit_viewEmployees" value="#{updateRole.employeePermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.employeePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewRoles" value="Roles"/>
+                        <p:selectCheckboxMenu id="edit_viewRoles" value="#{updateRole.rolePermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.rolePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewRequisitions" value="Requisitions"/>
+                        <p:selectCheckboxMenu id="edit_viewRequisitions" value="#{updateRole.requisitionPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.requisitionPermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewBudgetLines" value="BudgetLines"/>
+                        <p:selectCheckboxMenu id="edit_viewBudgetLines" value="#{updateRole.budgetLinePermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.budgetLinePermissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="edit_viewPermissions" value="Miscellaneous"/>
+                        <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.permissionsPermissions}" label="Select Permissions">
+                            <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <div class="mt mb">
+                    <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table edit_role_form"/>
+                    <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" action="#{updateRole.clearVals}" update="edit_role_form" onclick="PF('edit_role').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
+            <h:form id="confirm_dialog_form" styleClass="flex column">
+                <p:outputLabel value="Do you wish to delete this role?"/>
+                <div class="row mt">
+                    <h4 style="color: red">
+                        WARNING! All users attached to this role will be assigned to the default USER role
+                    </h4>
+                    <p:commandButton icon="pi pi-trash" action="#{deleteRole.deleteARole}" styleClass="bg-r mr pill" value="Yes" oncomplete="PF('confirm_dialog').hide()" update="role_table"/>
+                    <p:commandButton icon="pi pi-times" styleClass="bg-g pill" value="No" onclick="PF('confirm_dialog').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
+            <h:form id="confirm_all_form" styleClass="flex column">
+                <h4 style="color: red">
+                    WARNING! All users attached to these roles will be reassigned to the default USER role
+                </h4>
+                <p:outputLabel value="Do you wish to delete all roles?"/>
+                <div class="row mt">
+                    <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" action="#{deleteRole.deleteAllRoles}" value="Yes" oncomplete="PF('confirm_all_dialog').hide()" update="role_table"/>
+                    <p:commandButton icon="pi pi-times" styleClass="bg-g pill" value="No" onclick="PF('confirm_all_dialog').hide()"/>
+                </div>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>

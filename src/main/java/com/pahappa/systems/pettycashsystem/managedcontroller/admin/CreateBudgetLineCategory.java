@@ -1,11 +1,15 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.NameExistsException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLineCategory;
 import com.pahappa.systems.pettycashsystem.spring.services.BudgetLineCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -16,6 +20,9 @@ public class CreateBudgetLineCategory implements Serializable {
 
     @Autowired
     private BudgetLineCategoryService budgetLineCategoryService;
+
+    @Autowired
+    private AllBudgetLineCategories allCategories;
 
     private BudgetLineCategory budgetLineCategory;
     private String cat_name;
@@ -34,7 +41,19 @@ public class CreateBudgetLineCategory implements Serializable {
     }
 
     public void createCategory(){
+        FacesContext context = FacesContext.getCurrentInstance();
+
         budgetLineCategory.setName(cat_name);
-        budgetLineCategoryService.createBudgetLineCategory(budgetLineCategory);
+        try {
+            budgetLineCategoryService.createBudgetLineCategory(budgetLineCategory);
+            allCategories.init();
+
+            FacesMessage message = new FacesMessage("BudgetLine Category created successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", e.getMessage()));
+            context.validationFailed();
+        }
+
     }
 }

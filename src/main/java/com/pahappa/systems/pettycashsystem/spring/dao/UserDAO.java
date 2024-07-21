@@ -27,13 +27,13 @@ public class UserDAO {
     }
 
     // Read operation: Get user by ID
-    public User getUserById(int userId) {
+    public User getUserById(Long userId) {
         return getCurrentSession().get(User.class, userId);
     }
 
     // Read operation: Get all users
     public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("FROM User", User.class).list();
+        return getCurrentSession().createQuery("FROM User ORDER BY id DESC", User.class).list();
     }
 
     // Update operation
@@ -42,7 +42,7 @@ public class UserDAO {
     }
 
     // Delete operation
-    public void deleteUser(int userId) {
+    public void deleteUser(Long userId) {
         User user = getCurrentSession().load(User.class, userId);
         if (user != null) {
             getCurrentSession().delete(user);
@@ -81,6 +81,29 @@ public class UserDAO {
         return (User) getCurrentSession().createQuery("from User where username=:username and Password=:password")
                 .setParameter("username", username)
                 .setParameter("password", password)
+                .uniqueResult();
+    }
+
+    public boolean deleteAllUsers() {
+        try {
+            getCurrentSession().createQuery("delete from User").executeUpdate();
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    public User getUserByUsername(String username) {
+        return (User) getCurrentSession()
+                .createQuery("from User where username=:username")
+                .setParameter("username", username)
+                .uniqueResult();
+    }
+
+    public User getUserByUserEmail(String email) {
+        return (User) getCurrentSession()
+                .createQuery("from User where Email=:userEmail")
+                .setParameter("userEmail", email)
                 .uniqueResult();
     }
 }

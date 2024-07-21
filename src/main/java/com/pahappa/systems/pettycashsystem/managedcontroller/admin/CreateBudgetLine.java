@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
@@ -110,9 +112,16 @@ public class CreateBudgetLine implements Serializable {
         budgetLineCategory=budgetLineCategoryService.getBudgetLineCategoryByName(budgetLineCategoryName);
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 
-        budgetLineService.createBudgetLine(budgetLine);
+        FacesContext context=FacesContext.getCurrentInstance();
+        try {
+            budgetLineService.createBudgetLine(budgetLine);
+            FacesMessage message = new FacesMessage("BudgetLine saved successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  e.getMessage(), null));
+            context.validationFailed();
+        }
         allBudgetLines.update();
-//        return "/pages/auth/login.xhtml?faces-redirect=true";
         setAmount(null);
         setDescription(null);
         setEndDate(null);

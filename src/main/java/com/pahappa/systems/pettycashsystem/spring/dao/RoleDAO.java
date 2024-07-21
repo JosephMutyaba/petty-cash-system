@@ -1,6 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.dao;
 
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
+import com.pahappa.systems.pettycashsystem.spring.models.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,7 @@ public class RoleDAO {
 
     public List<Role> getAllRoles() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Role", Role.class)
+                .createQuery("FROM Role ORDER BY id DESC", Role.class)
                 .getResultList();
     }
 
@@ -37,7 +38,21 @@ public class RoleDAO {
 
     public void deleteRole(Long id) {
         Role role = sessionFactory.getCurrentSession().load(Role.class, id);
+
         if (role != null) {
+
+            List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User WHERE role_id = :roleId")
+                    .setParameter("roleId",id)
+                    .getResultList();
+
+            Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
+
+            for (User user : users) {
+                user.setRole(defaultRole);
+                sessionFactory.getCurrentSession().update(user);
+            }
+
+            ////////////////////////////////
             sessionFactory.getCurrentSession().delete(role);
         }
     }
@@ -45,5 +60,33 @@ public class RoleDAO {
     public Role findByName(String role_name) {
         return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
                 .setParameter("role_name",role_name).uniqueResult();
+    }
+
+    public void deleteAllRoles() {
+//        sessionFactory.getCurrentSession().createQuery("DELETE FROM User").executeUpdate();
+
+        List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User")
+                .getResultList();
+
+        Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
+
+        for (User user : users) {
+            user.setRole(defaultRole);
+            sessionFactory.getCurrentSession().update(user);
+        }
+
+        List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role").getResultList();
+        for (Role role : roles) {
+            if (!role.getName().equals("USER")) {
+                sessionFactory.getCurrentSession().delete(role);
+            }
+        }
+    }
+
+    public Role getRoleByName(String name) {
+        return (Role) sessionFactory.getCurrentSession()
+                .createQuery("FROM Role WHERE name=:role_name")
+                .setParameter("role_name",name)
+                .uniqueResult();
     }
 }

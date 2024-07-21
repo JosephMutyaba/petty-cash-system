@@ -10,6 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -19,16 +20,40 @@ public class AllBudgetLineCategories implements Serializable {
     private BudgetLineCategoryService budgetLineCategoryService;
 
     private List<BudgetLineCategory> categories;
+
+    private String searchTerm;
+
     @PostConstruct
     public void init() {
         categories = budgetLineCategoryService.getAllBudgetLineCategories();
     }
 
     public List<BudgetLineCategory> getCategories() {
-        return budgetLineCategoryService.getAllBudgetLineCategories();
+        categories = budgetLineCategoryService.getAllBudgetLineCategories();
+        filterCategories();
+        return categories;
     }
 
     public void setCategories(List<BudgetLineCategory> categories) {
-        this.categories = categories;
+        this.categories = budgetLineCategoryService.getAllBudgetLineCategories();
+    }
+
+    public String getSearchTerm() {
+        return searchTerm;
+    }
+
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
+    }
+
+    public void filterCategories() {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            categories=budgetLineCategoryService.getAllBudgetLineCategories();
+        } else {
+            categories = categories.stream()
+                    .filter(category ->
+                            category.getName().toLowerCase().contains(searchTerm.toLowerCase())
+                    ).collect(Collectors.toList());
+        }
     }
 }

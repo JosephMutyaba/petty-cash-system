@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLineCategory;
 import com.pahappa.systems.pettycashsystem.spring.services.BudgetLineCategoryService;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -36,6 +40,8 @@ public class UpdateBudgetLine implements Serializable {
 
     private String status;
 
+    private String review_comments;
+
     private String budgetLineCategoryName;
 
     private Date today = new Date();
@@ -47,6 +53,14 @@ public class UpdateBudgetLine implements Serializable {
         budgetLineCategory = new BudgetLineCategory();
         budgetLine = new BudgetLine();
         budgetLineCategories = budgetLineCategoryService.getAllBudgetLineCategories();
+    }
+
+    public String getReview_comments() {
+        return review_comments;
+    }
+
+    public void setReview_comments(String review_comments) {
+        this.review_comments = review_comments;
     }
 
     public Date getToday() {
@@ -111,7 +125,10 @@ public class UpdateBudgetLine implements Serializable {
     }
 
     public void updateBudgetLine() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         System.out.println("\nUpdating budgetLine.........\n");
+        budgetLine.setReview_comments(review_comments);
         budgetLine.setAmount(amount);
         budgetLine.setDescription(description);
         budgetLine.setStartDate(startDate);
@@ -122,14 +139,65 @@ public class UpdateBudgetLine implements Serializable {
 
         budgetLine.setStatus(status);
 
-        budgetLineService.updateBudgetLine(budgetLine);
-        allBudgetLines.update();
+        try {
+            budgetLineService.updateBudgetLine(budgetLine);
+            allBudgetLines.update();
+
+
+            FacesMessage message = new FacesMessage("BudgetLine updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            context.validationFailed();
+        }
+
 //        return "/pages/auth/login.xhtml?faces-redirect=true";
         setAmount(null);
         setDescription(null);
         setEndDate(null);
         setStartDate(null);
+        setReview_comments(null);
     }
+
+
+
+    public void updateBudgetLineFromEditLineStatusToPending() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        System.out.println("\nUpdating budgetLine.........\n");
+        budgetLine.setReview_comments(review_comments);
+        budgetLine.setAmount(amount);
+        budgetLine.setDescription(description);
+        budgetLine.setStartDate(startDate);
+        budgetLine.setEndDate(endDate);
+        budgetLine.setBalance(amount);
+        budgetLineCategory=budgetLineCategoryService.getBudgetLineCategoryByName(budgetLineCategoryName);
+        budgetLine.setBudgetLineCategory(budgetLineCategory);
+
+        budgetLine.setStatus("Pending");
+
+        try {
+            budgetLineService.updateBudgetLine(budgetLine);
+            allBudgetLines.update();
+
+
+            FacesMessage message = new FacesMessage("BudgetLine updated successfully", "Success");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",e.getMessage()));
+            context.validationFailed();
+        }
+
+//        return "/pages/auth/login.xhtml?faces-redirect=true";
+        setAmount(null);
+        setDescription(null);
+        setEndDate(null);
+        setStartDate(null);
+        setReview_comments(null);
+    }
+
+
+
 
     public String getBudgetLineCategoryName() {
         return budgetLineCategoryName;
@@ -148,5 +216,6 @@ public class UpdateBudgetLine implements Serializable {
         this.budgetLineCategory=selectedBudgetLine.getBudgetLineCategory();
         this.budgetLineCategoryName=budgetLineCategory.getName();
         this.status=selectedBudgetLine.getStatus();
+        this.review_comments=selectedBudgetLine.getReview_comments();
     }
 }

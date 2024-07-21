@@ -19,4 +19,9 @@
             org.primefaces.application.DialogViewHandler
         </view-handler>
     </application>
+
+    <lifecycle>
+        <phase-listener>com.pahappa.systems.pettycashsystem.managedcontroller.login.AuthorizationPhaseListener</phase-listener>
+    </lifecycle>
+
 </faces-config>

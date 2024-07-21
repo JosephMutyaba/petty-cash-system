@@ -1,12 +1,16 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
+import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
+import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -15,17 +19,21 @@ public class UserService {
     private final UserDAO userDAO;
 
     @Autowired
+    private Constants con;
+
+    @Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
     // Create operation
-    public void createUser(User user) {
+    public void createUser(User user) throws Exception {
+        validateUser(user, "create");
         userDAO.createUser(user);
     }
 
     // Read operation: Get user by ID
-    public User getUserById(int userId) {
+    public User getUserById(Long userId) {
         return userDAO.getUserById(userId);
     }
 
@@ -40,12 +48,13 @@ public class UserService {
     }
 
     // Update operation
-    public void updateUser(User user) {
+    public void updateUser(User user) throws Exception {
+        validateUser(user, "update");
         userDAO.updateUser(user);
     }
 
     // Delete operation
-    public void deleteUser(int userId) {
+    public void deleteUser(Long userId) {
         userDAO.deleteUser(userId);
     }
 
@@ -55,6 +64,60 @@ public class UserService {
 
     public User findUserByUsernameAndPassword(String username, String password) {
         return userDAO.findUserByUsernameAndPassword(username, password);
+    }
+
+    public boolean deleteAllUsers() {
+        return userDAO.deleteAllUsers();
+    }
+
+
+    public void validateUser(User user, String action) throws Exception {
+        if (user.getUsername() == null || user.getPassword() == null|| user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+            throw new NullPointerException("All fields are required");
+        }
+
+        if (!user.getFirstname().matches(con.getNameRegex()) || !user.getLastname().matches(con.getNameRegex()))
+            throw new Exception("A name can have letters only!");
+
+        if (user.getUsername().length()<4) {
+            throw new NullFieldException("Username should be at least 4 characters");
+        }
+
+        if (!user.getUsername().matches(con.getUsernameRegex()))
+            throw new Exception("A username can only contain letters(a-z,A-Z) numbers(0-9) and underscores(_).");
+
+        if (action.equals("create")) {
+            if (userDAO.getUserByUsername(user.getUsername())!=null) {
+                throw new NullFieldException("Username already exists, try a different one");
+            }
+        }
+
+        if (user.getFirstname() == null || user.getLastname() == null|| user.getFirstname().isEmpty() || user.getLastname().isEmpty()) {
+            throw new NullPointerException("All fields are required");
+        }
+
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+            throw new NullPointerException("All fields are required");
+        }
+
+        if (!user.getEmail().matches(con.getEmailRegex())) {
+            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
+        }
+
+        if (!user.getPassword().matches(con.getPasswordRegex())) {
+            throw new NullPointerException("Password should contain at least contain a number, upper, lowercase and special characters. Minimum length of 8");
+        }
+
+        if (action.equals("create")) {
+            if (userDAO.getUserByUserEmail(user.getEmail())!=null) {
+                throw new NullFieldException("Email already exists, try a different one");
+            }
+        }
+
+    }
+
+    public User getByUsername(String username) {
+        return userDAO.getUserByUsername(username);
     }
 }
 

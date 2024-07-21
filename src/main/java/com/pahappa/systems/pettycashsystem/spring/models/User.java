@@ -15,6 +15,8 @@ public class User {
     private String Firstname;
     private String Lastname;
 
+    private Double accountBalance=0.0;
+
     @Column(unique = true)
     private String Email;
 
@@ -27,7 +29,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Requisition> requisition;
 
     public User() {}
@@ -91,6 +93,14 @@ public class User {
         this.role = role;
     }
 
+    public Double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(Double accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -128,9 +138,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", Firstname='" + Firstname + '\'' +
                 ", Lastname='" + Lastname + '\'' +
-                ", Email='" + Email + '\'' +
-                ", role=" + role +
-                ", requisition=" + requisition +
+                ", Email='" + Email +
                 '}';
     }
 }

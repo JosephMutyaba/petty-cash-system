@@ -61,7 +61,7 @@ public class BudgetLineCategory {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBudgetLines());
+        return Objects.hash(getId(),getName());
     }
 
 

@@ -10,6 +10,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -20,6 +21,8 @@ public class AllRoles implements Serializable {
 
     private List<Role> roles;
 
+    private String searchTerm;
+
 
     @PostConstruct
     public void init() {
@@ -27,11 +30,33 @@ public class AllRoles implements Serializable {
     }
 
     public List<Role> getRoles() {
-        return roleService.getAllRoles();
+        roles = roleService.getAllRoles();
+        filterRoles();
+        return roles;
     }
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getSearchTerm() {
+        return searchTerm;
+    }
+
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
+    }
+
+    public void filterRoles() {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            roles=roleService.getAllRoles();
+        } else {
+            roles = roles.stream()
+                    .filter(role ->
+                            role.getName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(role.getDescription()).toLowerCase().contains(searchTerm.toLowerCase())
+                    ).collect(Collectors.toList());
+        }
     }
 
 }
