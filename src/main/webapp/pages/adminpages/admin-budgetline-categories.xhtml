@@ -27,10 +27,10 @@
             <p:column headerText="Name">
                 <h:outputText value="#{category.name}"/>
             </p:column>
-            <p:column headerText="Actions">
+            <p:column headerText="Actions" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE','DELETE_BUDGETLINE')}">
                 <h:form>
-                    <p:commandButton title="Edit" icon="pi pi-pencil" styleClass="mr pill square" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
-                    <p:commandButton title="Delete" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
+                    <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE')}" icon="pi pi-pencil" styleClass="mr pill square" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
+                    <p:commandButton title="Delete" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
                 </h:form>
             </p:column>
         </p:dataTable>

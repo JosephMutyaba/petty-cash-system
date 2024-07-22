@@ -6,6 +6,7 @@ import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,8 +125,10 @@ public class UserService {
         return userDAO.getUserByUsername(username);
     }
 
+//    @Transactional
     public void loadPermissions(User user) {
         Set<Permission> permissions = new HashSet<>();
+        Hibernate.initialize(user.getRoles());
         for (Role r:user.getRoles()) {
             permissions.addAll(r.getPermissions());
         }

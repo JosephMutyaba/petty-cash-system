@@ -120,7 +120,6 @@ public class LoginBean implements Serializable {
             this.firstname = loggedInUser.getFirstname();
             this.lastname = loggedInUser.getLastname();
             loadPermissions();
-            
 
             // Set loginBean in session
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginBean", this);

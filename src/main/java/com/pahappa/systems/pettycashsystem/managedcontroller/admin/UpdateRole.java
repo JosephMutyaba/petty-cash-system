@@ -40,7 +40,7 @@ public class UpdateRole implements Serializable {
     private List<Perm> rolePermissions;
     private List<Perm> employeePermissions;
     private List<Perm> requisitionPermissions;
-    private List<Perm> permissionsPermissions;
+    private List<Perm> miscellaneousPermissions;
 
     Set<Permission> allPermissions;
 
@@ -69,7 +69,7 @@ public class UpdateRole implements Serializable {
         rolePermissions=new ArrayList<>();
         employeePermissions=new ArrayList<>();
         requisitionPermissions=new ArrayList<>();
-        permissionsPermissions=new ArrayList<>();
+        miscellaneousPermissions =new ArrayList<>();
     }
 
 
@@ -93,9 +93,6 @@ public class UpdateRole implements Serializable {
         initialiseSets();
         return rolePermissions;
     }
-
-
-
 
     public Set<Permission> getViewEmployeesPermissions() {
         return viewEmployeesPermissions;
@@ -157,7 +154,7 @@ public class UpdateRole implements Serializable {
         return viewPermissions;
     }
 
-    public void setViewPermissions(Set<Perm> viewPermissions) {
+    /*public void setViewPermissions(Set<Perm> viewPermissions) {
 
         if(viewPermissions != null && !viewPermissions.isEmpty()) {
 
@@ -166,10 +163,7 @@ public class UpdateRole implements Serializable {
                 this.viewPermissions.add(permissionService.findByName(perm));
             }
         }
-    }
-
-
-
+    }*/
 
     public void setRolePermissions(List<Perm> rolePermissions) {
         if (rolePermissions != null && !rolePermissions.isEmpty()) {
@@ -214,15 +208,15 @@ public class UpdateRole implements Serializable {
         }
     }
 
-    public List<Perm> getPermissionsPermissions() {
+    public List<Perm> getMiscellaneousPermissions() {
         initialiseSets();
-        return permissionsPermissions;
+        return miscellaneousPermissions;
     }
 
-    public void setPermissionsPermissions(List<Perm> permissionsPermissions) {
-        if(permissionsPermissions != null && !permissionsPermissions.isEmpty()) {
+    public void setMiscellaneousPermissions(List<Perm> miscellaneousPermissions) {
+        if(miscellaneousPermissions != null && !miscellaneousPermissions.isEmpty()) {
 //            this.viewPermissions.add(permissionService.findByName(Perm.VIEW_PERMISSIONS));
-            for (Perm perm: permissionsPermissions) {
+            for (Perm perm: miscellaneousPermissions) {
                 this.viewPermissions.add(permissionService.findByName(perm));
             }
         }else {
@@ -257,126 +251,27 @@ public class UpdateRole implements Serializable {
     }
 
     private void initialiseSets(){
-        permissionsPermissions.clear();
+        miscellaneousPermissions.clear();
         budgetLinePermissions.clear();
         rolePermissions.clear();
         requisitionPermissions.clear();
         employeePermissions.clear();
 
 
-        for (Permission perm: allPermissions) {
-
-            //EMPLOYEE PERMS
-            if (perm.getName().equals(Perm.ADD_EMPLOYEE)) {
-                this.employeePermissions.add(Perm.ADD_EMPLOYEE);
-            }
-
-            if (perm.getName().equals(Perm.DELETE_EMPLOYEE)) {
-                this.employeePermissions.add(Perm.DELETE_EMPLOYEE);
-            }
-
-            if (perm.getName().equals(Perm.EDIT_EMPLOYEE)) {
-                this.employeePermissions.add(Perm.EDIT_EMPLOYEE);
-            }
-
-
-            // ROLE PERMS
-            if (perm.getName().equals(Perm.ADD_ROLE)) {
-                this.rolePermissions.add(Perm.ADD_ROLE);
-            }
-
-            if (perm.getName().equals(Perm.DELETE_ROLE)) {
-                this.rolePermissions.add(Perm.DELETE_ROLE);
-            }
-
-            if (perm.getName().equals(Perm.EDIT_ROLE)) {
-                this.rolePermissions.add(Perm.EDIT_ROLE);
-            }
-
-            //REQUISITION PERMISSIONS
-            if (perm.getName().equals(Perm.MAKE_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.MAKE_REQUISITION);
-            }
-
-            if (perm.getName().equals(Perm.CASHOUT_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.CASHOUT_REQUISITION);
-            }
-
-            if (perm.getName().equals(Perm.APPROVE_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.APPROVE_REQUISITION);
-            }
-
-            if (perm.getName().equals(Perm.REJECT_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.REJECT_REQUISITION);
-            }
-
-            if (perm.getName().equals(Perm.EDIT_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.EDIT_REQUISITION);
-            }
-
-            if (perm.getName().equals(Perm.DELETE_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.DELETE_REQUISITION);
-            }
-
-
-
-            //BUDGET LINE PERMISSIONS
-            if (perm.getName().equals(Perm.MAKE_BUDGETLINE)) {
-                this.budgetLinePermissions.add(Perm.MAKE_BUDGETLINE);
-            }
-
-            if (perm.getName().equals(Perm.APPROVE_BUDGETLINE)) {
-                this.budgetLinePermissions.add(Perm.APPROVE_BUDGETLINE);
-            }
-
-            if (perm.getName().equals(Perm.REJECT_BUDGETLINE)) {
-                this.budgetLinePermissions.add(Perm.REJECT_BUDGETLINE);
-            }
-
-            if (perm.getName().equals(Perm.EDIT_BUDGETLINE)) {
-                this.budgetLinePermissions.add(Perm.EDIT_BUDGETLINE);
-            }
-
-            if (perm.getName().equals(Perm.DELETE_BUDGETLINE)) {
-                this.budgetLinePermissions.add(Perm.DELETE_BUDGETLINE);
-            }
-
-            //PERMISSIONS PERMISSIONS
-            if (perm.getName().equals(Perm.REQUEST_CHANGES)) {
-                this.permissionsPermissions.add(Perm.REQUEST_CHANGES);
-            }
-
-            if (perm.getName().equals(Perm.VIEW_EMPLOYEES)) {
-                this.employeePermissions.add(Perm.VIEW_EMPLOYEES);
-            }
-
-            if (perm.getName().equals(Perm.VIEW_ROLES)) {
-                this.rolePermissions.add(Perm.VIEW_ROLES);
-            }
-
-            if (perm.getName().equals(Perm.VIEW_PERMISSIONS)) {
-                this.permissionsPermissions.add(Perm.VIEW_PERMISSIONS);
-            }
-
-            if (perm.getName().equals(Perm.VIEW_REQUISITIONS)) {
-                this.requisitionPermissions.add(Perm.VIEW_REQUISITIONS);
-            }
-
-            if (perm.getName().equals(Perm.VIEW_BUDGETLINES)) {
-                this.budgetLinePermissions.add(Perm.VIEW_BUDGETLINES);
-            }
-
-            if (perm.getName().equals(Perm.VIEW_ACCOUNTABILITY)) {
-                this.permissionsPermissions.add(Perm.VIEW_ACCOUNTABILITY);
-            }
-
-            if (perm.getName().equals(Perm.ACCEPT_REQUISITION)) {
-                this.requisitionPermissions.add(Perm.ACCEPT_REQUISITION);
-            }
-
+        for (Permission permission: allPermissions) {
+            Perm perm = permission.getName();
+            String name = perm.toString();
+            if (name.contains("EMPLOYEE"))
+                employeePermissions.add(perm);
+            else if (name.contains("ROLE"))
+                rolePermissions.add(perm);
+            else if (name.contains("REQUISITION"))
+                requisitionPermissions.add(perm);
+            else if (name.contains("BUDGETLINE"))
+                budgetLinePermissions.add(perm);
+            else
+                miscellaneousPermissions.add(perm);
         }
-
-
     }
 
 
@@ -425,7 +320,7 @@ public class UpdateRole implements Serializable {
         this.viewBudgetLinesPermissions.clear();
         this.viewPermissions.clear();
 
-        this.permissionsPermissions.clear();
+        this.miscellaneousPermissions.clear();
         this.rolePermissions.clear();
         this.requisitionPermissions.clear();
         this.employeePermissions.clear();

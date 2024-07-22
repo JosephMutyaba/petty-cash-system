@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ public class UserDAO {
 
     // Read operation: Get all users
     public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("select u FROM User u left join fetch u.roles ORDER BY u.id DESC", User.class).list();
+        return getCurrentSession().createQuery("FROM User u ORDER BY id DESC", User.class).list();
     }
 
     // Update operation

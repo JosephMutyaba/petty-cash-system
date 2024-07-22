@@ -13,7 +13,6 @@ public class Requisition {
     private String justification;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -21,7 +20,6 @@ public class Requisition {
 
 
     @ManyToOne
-    @JoinColumn(name = "budgetline_id", nullable = false)
     private BudgetLine budgetline;
 
     private String review_comments;

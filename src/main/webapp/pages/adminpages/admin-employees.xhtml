@@ -7,6 +7,7 @@
     <ui:define name="title">Employees</ui:define>
     <ui:define name="main-content">
         #{getEmployees.init()}
+        #{updateEmployee.setRolesFromDatabase()}
         <h2 class="mb">Employees</h2>
         <h:form class="pad1 mt">
             <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('addUserDialog').show()" rendered="#{checkPermission.hasPermission('ADD_EMPLOYEE')}"/>
@@ -19,7 +20,7 @@
                     <p:ajax event="keyup" update="usersTable" listener="#{getEmployees.filterUsers}"/>
                 </p:inputText>
             </div>
-            <p:dataTable rowIndexVar="index" id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+            <p:dataTable rowIndexVar="index" id="usersTable" value="#{getEmployees.users}" var="employee" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" >
                 <p:column headerText="No" width="16px">#{index + 1}</p:column>
                 <p:column headerText="Firstname">
                     <h:outputText value="#{employee.firstname}"/>
@@ -33,14 +34,14 @@
                 <p:column headerText="Email">
                     <h:outputText value="#{employee.email}"/>
                 </p:column>
-                <p:column headerText="Roles">
-                    <ui:repeat value="#{employee.roles}" var="role">
-                        #{role.name}
+                <p:column headerText="Roles" style="overflow-y: auto;overflow-wrap: break-word">
+                    <ui:repeat value="#{employee.roles}" var="role" varStatus="status">
+                        #{role.name}#{status.last?"":","}
                     </ui:repeat>
                 </p:column>
-                <p:column headerText="Actions">
-                    <p:commandButton title="Edit" action="#{updateEmployee.selectedUser(employee)}" icon="pi pi-pencil" styleClass="bg-g square pill mr" update="updateUserForm" onsuccess="PF('updateUserDialog').show()"/>
-                    <p:commandButton title="Delete" action="#{deleteUser.selectedUser(employee)}" icon="pi pi-times" styleClass="bg-r square pill" update="deleteUserForm" onsuccess="PF('deleteUserDialog').show()"/>
+                <p:column headerText="Actions" rendered="#{checkPermission.hasPermission('EDIT_EMPLOYEE','DELETE_EMPLOYEE')}">
+                    <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_EMPLOYEE')}" action="#{updateEmployee.selectedUser(employee)}" icon="pi pi-pencil" styleClass="bg-g square pill mr" update="updateUserForm" onsuccess="PF('updateUserDialog').show()"/>
+                    <p:commandButton title="Delete" rendered="#{checkPermission.hasPermission('DELETE_EMPLOYEE')}" action="#{deleteUser.selectedUser(employee)}" icon="pi pi-times" styleClass="bg-r square pill" update="deleteUserForm" onsuccess="PF('deleteUserDialog').show()"/>
                 </p:column>
             </p:dataTable>
 
@@ -131,8 +132,8 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="ro_le" value="Role" styleClass="label"/>
-                        <p:selectCheckboxMenu id="ro_le" value="#{updateEmployee.userRoles}" required="true" styleClass="selectMenu" label="Select Roles">
-                            <f:selectItems value="#{updateEmployee.rolesFromDatabase}" var="role" itemLabel="#{role.name}" itemValue="#{role}"/>
+                        <p:selectCheckboxMenu id="ro_le" value="#{updateEmployee.roleNames}" required="true" styleClass="selectMenu" label="Select Roles">
+                            <f:selectItems value="#{updateEmployee.rolesFromDatabase}" var="dbRole" itemLabel="#{dbRole}" itemValue="#{dbRole}"/>
                         </p:selectCheckboxMenu>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">

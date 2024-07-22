@@ -72,28 +72,22 @@
             <p:column headerText="Amount requested">
                 <h:outputText value="#{requisition.estimatedAmount}"/>
             </p:column>
-            <p:column headerText="Amount granted">
+            <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
                 <h:outputText value="#{requisition.amountGranted}"/>
             </p:column>
-            <p:column headerText="Edit Status" rendered="#{allRequisitions.tabId.equals('pendingTab')}">
+            <p:column headerText="Edit Status" rendered="#{allRequisitions.tabId.equals('pendingTab') and checkPermission.hasPermission('APPROVE_REQUISITION','REJECT_REQUISITION')}">
                 <h:form>
                     <p:commandButton styleClass="pill square bg-y text-blk" icon="pi pi-flag-fill" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
-                </h:form>
-            </p:column>
-            <p:column rendered="#{allRequisitions.tabId.equals('pendingTab')||allRequisitions.tabId.equals('completed')}" headerText="Actions">
-                <h:form>
-                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{allRequisitions.tabId.equals('completed')}" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onsuccess="PF('accountabilityDialog').show()" update="accountability_section" styleClass="mb mr pill square"/>
-                    <p:commandButton title="Delete" onclick="PF('confirmDeleteDialog').show()" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
             <p:column headerText="Creation Date">
                 <h:outputText value="#{con.formatDate(requisition.dateCreated)}"/>
             </p:column>
-            <p:column headerText="Needed By">
+            <p:column headerText="Needed By" rendered="#{allRequisitions.tabId.equals('pendingTab')}">
                 <h:outputText value="#{con.formatDate(requisition.maxDateNeeded)}"/>
             </p:column>
 
-            <p:column headerText="Review" rendered="#{allRequisitions.tabId.equals('approvedTab') || allRequisitions.tabId.equals('rejectedTab') || allRequisitions.tabId.equals('Paid')}">
+            <p:column headerText="Review" rendered="#{allRequisitions.tabId.equals('approvedTab') || allRequisitions.tabId.equals('rejectedTab') || allRequisitions.tabId.equals('paid') || allRequisitions.tabId.equals('completed')}">
                 <h:outputText value="#{requisition.review_comments}"/>
             </p:column>
 
@@ -103,6 +97,12 @@
 
             <p:column headerText="Approval Date" rendered="#{allRequisitions.tabId.equals('approvedTab')}">
                 <h:outputText value="#{(requisition.dateApproved!=null) ? con.formatDate(requisition.dateApproved): ''}"/>
+            </p:column>
+            <p:column rendered="#{checkPermission.hasPermission('DELETE_REQUISITION','VIEW_ACCOUNTABILITY') and (allRequisitions.tabId.equals('pendingTab')||allRequisitions.tabId.equals('completed'))}" headerText="Actions">
+                <h:form>
+                    <p:commandButton title="View Accountability" icon="pi pi-file-edit" rendered="#{checkPermission.hasPermission('VIEW_ACCOUNTABILITY') and allRequisitions.tabId.equals('completed')}" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onsuccess="PF('accountabilityDialog').show()" update="accountability_section" styleClass="mb mr pill square"/>
+                    <p:commandButton title="Delete" onclick="PF('confirmDeleteDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION') and (allRequisitions.tabId.equals('completed') or allRequisitions.tabId.equals('pendingTab'))}" action="#{deleteRequisition.selectSpecificRequisition(requisition)}" icon="pi pi-times" styleClass="bg-r pill square"/>
+                </h:form>
             </p:column>
 
         </p:dataTable>

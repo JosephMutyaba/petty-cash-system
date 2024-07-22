@@ -7,8 +7,8 @@
     <ui:define name="main-content">
         <h2 class="mb">Roles</h2>
         <h:form class="mb mt pad1">
-            <p:commandButton value="Add New" onclick="PF('new_role').show()" icon="pi pi-plus" styleClass="mr pill"/>
-            <p:commandButton value="Delete All" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
+            <p:commandButton value="Add New" rendered="#{checkPermission.hasPermission('ADD_ROLE')}" onclick="PF('new_role').show()" icon="pi pi-plus" styleClass="mr pill"/>
+            <p:commandButton value="Delete All" rendered="#{checkPermission.hasPermission('DELETE_ROLE')}" onclick="PF('confirm_all_dialog').show()" icon="pi pi-trash" styleClass="bg-r pill"/>
         </h:form>
         <p:messages globalOnly="true"/>
         <h:form class="bg-white pad1">
@@ -24,10 +24,10 @@
             <p:column headerText="Description">
                 <h:outputText value="#{role.description}"/>
             </p:column>
-            <p:column headerText="Actions">
+            <p:column headerText="Actions" rendered="#{checkPermission.hasPermission('EDIT_ROLE','DELETE_ROLE')}">
                 <h:form>
-                    <p:commandButton rendered="#{role.name!='USER'}" title="Edit" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
-                    <p:commandButton rendered="#{role.name!='USER'}" title="Delete" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
+                    <p:commandButton title="Edit" rendered="#{role.name!='USER' and checkPermission.hasPermission('EDIT_ROLE')}" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
+                    <p:commandButton title="Delete" rendered="#{role.name!='USER' and checkPermission.hasPermission('DELETE_ROLE')}" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -118,7 +118,7 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_viewPermissions" value="Miscellaneous"/>
-                        <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.permissionsPermissions}" label="Select Permissions">
+                        <p:selectCheckboxMenu id="edit_viewPermissions" value="#{updateRole.miscellaneousPermissions}" label="Select Permissions">
                             <f:selectItems value="#{permEnum.permissions}" var="perm" itemLabel="#{perm.definition}" itemValue="#{perm}" />
                         </p:selectCheckboxMenu>
                     </h:panelGroup>

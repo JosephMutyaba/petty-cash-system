@@ -8,39 +8,45 @@
     <ui:define name="title">Admin Dashboard</ui:define>
     <ui:define name="main-content">
         <h1>Dashboard</h1>
-        <div class="fillW">
-            <p:panelGrid columns="3" layout="grid">
-                <p:panel>
-                    <f:facet name="header">
-                        <i class="pi pi-money-bill"/>
-                        <h:outputText value="Pending Requisitions"/>
-                    </f:facet>
-                    <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
-                </p:panel>
-                <p:panel>
-                    <f:facet name="header">
-                        <i class="pi pi-briefcase"/>
-                        <h:outputText value="Pending BudgetLines"/>
-                    </f:facet>
-                    <h:outputText value="#{allBudgetLines.pendingBudgetLines.size()}" styleClass="stat-value"/>
-                </p:panel>
-                <p:panel>
-                    <f:facet name="header">
-                        <i class="pi pi-users"/>
-                        <h:outputText value="Users"/>
-                    </f:facet>
-                    <h:outputText value="#{createEmployee.userCount()}" styleClass="stat-value"/>
-                </p:panel>
-            </p:panelGrid>
-        </div>
-        <h3>Charts</h3>
-        <div class="charts">
-            <div class="bar-chart pad1">
-                <p:pieChart model="#{adminChart.pieChart}" styleClass="custom-chart"/>
-            </div>
-            <div class="pie-chart pad1">
-                <p:pieChart model="#{budgetLineChart.pieModel}" styleClass="custom-chart"/>
-            </div>
-        </div>
+        <p:accordionPanel>
+            <p:tab title="Cards">
+                <p:panelGrid columns="3" layout="grid">
+                    <p:panel>
+                        <f:facet name="header">
+                            <i class="pi pi-money-bill"/>
+                            <h:outputText value="Pending Requisitions"/>
+                        </f:facet>
+                        <h:outputText value="#{allRequisitions.pendingRequisitions.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel>
+                        <f:facet name="header">
+                            <i class="pi pi-briefcase"/>
+                            <h:outputText value="Pending BudgetLines"/>
+                        </f:facet>
+                        <h:outputText value="#{allBudgetLines.pendingBudgetLines.size()}" styleClass="stat-value"/>
+                    </p:panel>
+                    <p:panel>
+                        <f:facet name="header">
+                            <i class="pi pi-users"/>
+                            <h:outputText value="Users"/>
+                        </f:facet>
+                        <h:outputText value="#{createEmployee.userCount()}" styleClass="stat-value"/>
+                    </p:panel>
+                </p:panelGrid>
+            </p:tab>
+        </p:accordionPanel>
+
+        <p:accordionPanel>
+            <p:tab title="Charts">
+                <div class="charts">
+                    <div class="bar-chart pad1">
+                        <p:pieChart model="#{adminChart.pieChart}" styleClass="custom-chart"/>
+                    </div>
+                    <div class="pie-chart pad1">
+                        <p:pieChart model="#{budgetLineChart.pieModel}" styleClass="custom-chart"/>
+                    </div>
+                </div>
+            </p:tab>
+        </p:accordionPanel>
     </ui:define>
 </ui:composition>
