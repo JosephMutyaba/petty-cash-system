@@ -31,8 +31,10 @@
                         <p:password id="password" placeholder="Password" value="#{loginBean.userPassword}"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
-                        <p:outputLabel for="role" value="Role"/>
-                        <p:inputText id="role" placeholder="Role" readonly="true" value="#{loginBean.role.name}"/>
+                        <p:outputLabel for="role" value="Roles"/>
+                        <ui:repeat id="role" value="#{loginBean.roles}" var="myRole" varStatus="status">
+                            #{myRole.name}#{status.last?"":","}
+                        </ui:repeat>
                     </h:panelGroup>
                 </p:panelGrid>
 
