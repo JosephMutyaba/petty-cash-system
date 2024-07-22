@@ -81,7 +81,7 @@
 
 
 
-            <p:column headerText="Review" rendered="#{(allBudgetLines.tabId.equals('editLineTab')||allBudgetLines.tabId.equals('approvedTab')||allBudgetLines.tabId.equals('rejectedTab')) and checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE')}">
+            <p:column headerText="Review" rendered="#{(allBudgetLines.tabId.equals('editLineTab')||allBudgetLines.tabId.equals('approvedTab')||allBudgetLines.tabId.equals('rejectedTab')) and checkPermission.hasPermission('APPROVE_BUDGETLINE','REJECT_BUDGETLINE','MAKE_BUDGETLINE')}">
                 <h:outputText value="#{budgetLine.review_comments}"/>
             </p:column>
 
