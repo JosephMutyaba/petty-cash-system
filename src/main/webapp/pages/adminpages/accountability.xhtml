@@ -125,7 +125,7 @@
                 <p:outputLabel value="User Roles" for="roles"/>
                 <p:outputLabel id="roles">
                     <ui:repeat value="#{confirmBalanceReturn.user.roles}" var="roleOfUser" varStatus="status">
-                        #{roleOfUser}#{status.last?"":","}
+                        #{roleOfUser.name}#{status.last?"":","}
                     </ui:repeat>
                 </p:outputLabel>
 
