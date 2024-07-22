@@ -180,6 +180,7 @@ public class CreateAccountability implements Serializable {
 
         }else {
             System.out.println("\nAcc not null.............!!!!!\n");
+            this.accountabilityId=null;
             this.accountability =new Accountability();
             this.description=null;
             this.accountabilityStatus=null;

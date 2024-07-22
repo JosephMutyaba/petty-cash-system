@@ -45,6 +45,7 @@
             <p:column headerText="Balance returned">
                 <p:outputLabel value="#cleared" rendered="#{accountability.balanceIsReturned}"/>
                 <p:commandButton value="Confirm Balance Return" rendered="#{!accountability.balanceIsReturned}" action="#{confirmBalanceReturn.selectAccountability(accountability)}" onsuccess="PF('confirm_balance_return_dialog').show()" update="confirm_balance_return_dialog_form"/>
+                <p:commandButton value="Send Reminder" rendered="#{!accountability.balanceIsReturned}" action="#{sendEmailReminder.selectCredentials(accountability,accountability.requisition.user, accountability.requisition )}" onsuccess="PF('send_reminder_email_dialog').show()" update="send_reminder_email_dialog_form"/>
             </p:column>
 
             <p:column headerText="Description">
@@ -87,6 +88,23 @@
                                      oncomplete="if (!args.validationFailed) PF('confirm_balance_return_dialog').hide(); updateAccountability_table();" />
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('confirm_balance_return_dialog').hide(); return false;"/>
                 </div>
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog widgetVar="send_reminder_email_dialog" modal="true" header="Confirm Return of Balance" width="500px">
+            <h:form id="send_reminder_email_dialog_form">
+                <p:panelGrid columns="1">
+                    <p:outputLabel value="Mail text" for="email_text"/>
+                    <p:inputTextarea id="email_text" value="#{sendEmailReminder.emailMessage}"/>
+                </p:panelGrid>
+                <div class="mt">
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Send" actionListener="#{sendEmailReminder.sendReminderMessage}"
+                                     oncomplete="if (!args.validationFailed) PF('send_reminder_email_dialog').hide(); updateAccountability_table();" update="gl_messsages" />
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('send_reminder_email_dialog').hide(); return false;"/>
+                </div>
+                <p:messages id="gl_messsages" globalOnly="true" closable="true"/>
+
             </h:form>
         </p:dialog>
 
