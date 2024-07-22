@@ -129,7 +129,7 @@ public class LoginBean implements Serializable {
             loadPermissions();
 
             // Set loginBean in session
-            EXTERNAL_CONTEXT.getSessionMap().put("loginBean", this);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginBean", this);
 
             boolean dashboard = false;
             for (Permission p:loggedInUser.getPermissions())
