@@ -67,13 +67,14 @@ public class DisburseCash implements Serializable {
 
         Double budgetLineAccBal=requisition.getBudgetline().getBalance();
 
-        userAccBal=userAccBal+amountGranted;
-        budgetLineAccBal=budgetLineAccBal-amountGranted;
+        Double newUserAccBal=userAccBal+amountGranted;
+
+        Double newBudgetLineAccBal=budgetLineAccBal-amountGranted;
 
         try {
             // updating acc_balances
-            user.setAccountBalance(userAccBal);
-            budgetLine.setBalance(budgetLineAccBal);
+            user.setAccountBalance(newUserAccBal);
+            budgetLine.setBalance(newBudgetLineAccBal);
 
             requisitionService.validateBeforeDisbursement(budgetLineAccBal,budgetLine.getDescription());
 
@@ -97,8 +98,6 @@ public class DisburseCash implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
             context.validationFailed();
         }
-
-
 
         //clearing the requisition
         requisition=new Requisition();
