@@ -85,6 +85,9 @@ span.flex.column > .selectMenu {
     margin-bottom: 8px;
 }
 
+li.ui-widget.ui-menuitem.ui-corner-all.ui-menu-parent>a.ui-menuitem-link
+{border-bottom-left-radius: 10000px!important;border-top-left-radius: 10000px!important}
+
 .route {
     background: #e9ecef
 }
@@ -104,7 +107,6 @@ span.flex.column > .selectMenu {
 .pad2 {padding:calc(var(--pad)*2) !important}
 .noPad {padding:0!important}
 .pill, body .ui-inputfield:not(.ui-inputtextarea)
-,li.ui-widget.ui-menuitem.ui-corner-all.ui-menu-parent>a.ui-menuitem-link
 {border-radius: 10000px!important}
 
 .rad1 {border-radius: 12px!important}
