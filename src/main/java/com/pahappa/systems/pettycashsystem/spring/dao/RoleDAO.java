@@ -48,8 +48,8 @@ public class RoleDAO {
             Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
 
             for (User user : users) {
-                if (user.getRoles().size()==1 && user.getRoles().remove(role)) {
-                    user.getRoles().add(defaultRole);
+                if (user.getRoles().remove(role)) {
+                    if (user.getRoles().isEmpty()) user.getRoles().add(defaultRole);
                     sessionFactory.getCurrentSession().update(user);
                 }
             }
