@@ -4,7 +4,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <f:event type="preRenderView" listener="#{myRequisitionHandler.selectRequisition}"/>
-    <ui:define name="title">My Requisitions</ui:define>
+    <ui:define name="title">
+        My Requisitions
+        #{con.setRoute('newreq')}
+    </ui:define>
     <ui:define name="main-content">
         <p:tabView id="bigTab">
             <p:tab title="Current">
@@ -13,7 +16,7 @@
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="budgetline" value="Budget Line"/>
-                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}">
+                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}" disabled="#{not myRequisitionHandler.status.equals('Draft')}">
                                 <f:selectItem value="#{null}" itemDisabled="true" itemLabel="Choose Budgetline" />
                                 <f:selectItems value="#{myRequisitionHandler.budgetLines}" var="budgetline" itemValue="#{budgetline.id}" itemLabel="#{budgetline.description}"/>
                             </p:selectOneMenu>
@@ -24,15 +27,15 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{(createRequisition.budgetLine ne null) and not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
+                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{(myRequisitionHandler.budgetLine ne null) and (not myRequisitionHandler.status.equals('Draft'))}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="date_needed" value="Date Needed"/>
-                            <p:calendar navigator="true" styleClass="fillW" id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
+                            <p:calendar navigator="true" styleClass="fillW" id="date_needed" mindate="t" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}" disabled="#{not myRequisitionHandler.status.equals('Draft')}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="justification" value="Justification"/>
-                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
+                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not myRequisitionHandler.status.equals('Draft')}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column" rendered="#{myRequisitionHandler.status.equals('Approved') or myRequisitionHandler.status.equals('Paid')}">
                             <p:outputLabel for="amountGranted" value="Amount Granted"/>
@@ -44,12 +47,11 @@
                                       rendered="#{myRequisitionHandler.status.equals('Pending')}"/>
                         <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
-                        <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                        <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill mr" actionListener="#{myRequisitionHandler.updateRequisition}"
+                                         update=" @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
 
-                        <p:commandButton value="Save Draft" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.saveOrUpdateDraftRequisition}"
-                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
-                        <p:messages globalOnly="true" id="globalMessages" closable="true"/>
+                        <p:commandButton value="Save Draft" icon="pi pi-save" styleClass="mt pill bg-none text-blk" actionListener="#{myRequisitionHandler.saveOrUpdateDraftRequisition}"
+                                         update=" @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                     </div>
                 </h:form>
                 <h:panelGroup id="accountability_section" rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
@@ -67,21 +69,21 @@
                                 <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
                             </h:panelGroup>
                         </h:panelGroup>
-                        <div>
+                        <div class="mb">
                             <p:panel header="Upload Image">
-                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" dragDropSupport="true" auto="true" update="imagePreview messages" />
+                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" dragDropSupport="true" auto="true" update="imagePreview " />
 
                                 <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
                             </p:panel>
                         </div>
 
-                        <div>
-                            <p:commandButton value="Save Draft" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.saveOrUpdateAccountabilityDraft}" styleClass="mt pill"/>
-                            <p:commandButton value="Submit Accountability" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
-                            <p:messages globalOnly="true" id="messages" closable="true"/>
+                        <div class="mt">
+                            <p:commandButton value="Submit Accountability" update=" bigTab" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mr pill"/>
+                            <p:commandButton value="Save Draft" update=" bigTab" icon="pi pi-save" action="#{createAccountability.saveOrUpdateAccountabilityDraft}" styleClass="pill bg-none text-blk"/>
                         </div>
                     </h:form>
                 </h:panelGroup>
+                <p:growl globalOnly="true"/>
             </p:tab>
             <p:tab title="History">
                 <h:form id="history_form">

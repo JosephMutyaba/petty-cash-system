@@ -9,20 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Set;
 
-@ManagedBean
+@Named
 @SessionScoped
 @Component
 public class LoginBean implements Serializable {
-    private final UserService userService;
+    private UserService userService;
     private User loggedInUser;
+
+    public LoginBean(){}
 
     @Autowired
     public LoginBean(UserService userService) {
@@ -115,9 +117,10 @@ public class LoginBean implements Serializable {
 
     public void loginUser() throws Exception {
         loggedInUser = userService.findUserByUsernameAndPassword(username, userPassword);
+        FacesContext ctx = FacesContext.getCurrentInstance();
         if (loggedInUser == null) {
-            System.out.println("User not found");
-            redirect("/pages/auth/login.xhtml");
+            ctx.addMessage(null,new FacesMessage("User not found!"));
+//            redirect("/pages/auth/login.xhtml");
         } else {
             this.email = loggedInUser.getEmail();
             this.roles = loggedInUser.getRoles();
@@ -129,7 +132,7 @@ public class LoginBean implements Serializable {
             loadPermissions();
 
             // Set loginBean in session
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginBean", this);
+            ctx.getExternalContext().getSessionMap().put("loginBean", this);
 
             boolean dashboard = false;
             for (Permission p:loggedInUser.getPermissions())
@@ -150,6 +153,7 @@ public class LoginBean implements Serializable {
     public void logoutUser() throws Exception {
         loggedInUser = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Logged out Successfully!",null));
         ExternalContext externalContext = facesContext.getExternalContext();
         externalContext.invalidateSession(); // Invalidate current session
         redirect("/pages/auth/login.xhtml"); // Redirect to login page

@@ -16,22 +16,27 @@
             <p:outputLabel value="@#{loginBean.loggedInUser.username}"/>
         </h:panelGroup>
 
-        <p:tieredMenu styleClass="no-border fillW">
-            <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home" rendered="#{checkPermission.hasPermission('VIEW_DASHBOARD')}"/>
-            <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase" rendered="#{checkPermission.hasPermission('VIEW_ROLES')}"/>
-            <p:menuitem value="Employees" outcome="/pages/adminpages/admin-employees" icon="pi pi-users" rendered="#{checkPermission.hasPermission('VIEW_EMPLOYEES')}"/>
-            <p:submenu label="Budgetlines" icon="pi pi-chart-bar" rendered="#{checkPermission.hasPermission('VIEW_BUDGETLINES')}">
-                <p:menuitem value="Categories" outcome="/pages/adminpages/admin-budgetline-categories" icon="pi pi-filter" rendered="#{checkPermission.hasPermission('VIEW_EMPLOYEES')}"/>
-                <p:menuitem value="List" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-bars"/>
+        <p:tieredMenu styleClass="no-border fillW" style="cursor:pointer">
+            <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard"
+                        icon="pi pi-home" rendered="#{checkPermission.hasPermission('VIEW_DASHBOARD')}" styleClass="pill mb #{con.routeIs('dash')}"/>
+            <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles"
+                        icon="pi pi-briefcase" rendered="#{checkPermission.hasPermission('VIEW_ROLES')}" styleClass="pill mb #{con.routeIs('roles')}"/>
+            <p:menuitem value="Employees" outcome="/pages/adminpages/admin-employees"
+                        icon="pi pi-users" rendered="#{checkPermission.hasPermission('VIEW_EMPLOYEES')}" styleClass="pill mb #{con.routeIs('empl')}"/>
+            <p:submenu label="Budgetlines" icon="pi pi-chart-bar"
+                       rendered="#{checkPermission.hasPermission('VIEW_BUDGETLINES')}" styleClass="pill mb #{con.routeIs('bline')} #{con.routeIs('blcat')}">
+                <p:menuitem value="Categories" outcome="/pages/adminpages/admin-budgetline-categories" icon="pi pi-filter" styleClass="#{con.routeIs('blcat')}"/>
+                <p:menuitem value="List" outcome="/pages/adminpages/admin-budgetlines" icon="pi pi-bars" styleClass="#{con.routeIs('bline')}"/>
             </p:submenu>
-            <p:menuitem value="My Requisitions" outcome="/pages/adminpages/admin-create-requisition" icon="pi pi-plus-circle" rendered="#{checkPermission.hasPermission('MAKE_REQUISITION')}"/>
-            <p:menuitem value="Requisitions" outcome="/pages/adminpages/admin-requisitions" icon="pi pi-file" rendered="#{checkPermission.hasPermission('VIEW_REQUISITIONS')}"/>
+            <p:menuitem value="My Requisitions" outcome="/pages/adminpages/admin-create-requisition"
+                        icon="pi pi-plus-circle" rendered="#{checkPermission.hasPermission('MAKE_REQUISITION')}" styleClass="pill mb #{con.routeIs('newreq')}"/>
+            <p:menuitem value="Requisitions" outcome="/pages/adminpages/admin-requisitions"
+                        icon="pi pi-file" rendered="#{checkPermission.hasPermission('VIEW_REQUISITIONS')}" styleClass="pill mb #{con.routeIs('requ')}"/>
 
-            <h:panelGroup class="flex column">
-            </h:panelGroup>
-            <p:menuitem value="Accountability" outcome="/pages/adminpages/accountability" icon="pi pi-file-edit" rendered="#{checkPermission.hasPermission('VIEW_ACCOUNTABILITY')}"/>
-            <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog"/>
-            <p:menuitem value="Logout" action="#{loginBean.logoutUser}" icon="pi pi-sign-out"/>
+            <p:menuitem value="Accountability" outcome="/pages/adminpages/accountability"
+                        icon="pi pi-file-edit" rendered="#{checkPermission.hasPermission('VIEW_ACCOUNTABILITY')}" styleClass="pill mb #{con.routeIs('acct')}"/>
+            <p:menuitem value="Settings" outcome="/pages/adminpages/admin-settings" icon="pi pi-cog" styleClass="pill mb #{con.routeIs('sett')}"/>
+            <p:menuitem value="Logout" outcome="/pages/auth/login.xhtml" action="#{loginBean.logoutUser}" icon="pi pi-sign-out" styleClass="pill"/>
         </p:tieredMenu>
     </div>
 </ui:composition>

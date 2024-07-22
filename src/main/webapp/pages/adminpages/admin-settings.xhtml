@@ -4,7 +4,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
-    <ui:define name="title">Settings</ui:define>
+    <ui:define name="title">
+        Settings
+        #{con.setRoute('sett')}
+    </ui:define>
     <ui:define name="main-content">
         <div class="main-content">
             <h2>Settings</h2>

@@ -7,20 +7,23 @@
     <h:outputStylesheet name="css/petty.css"/>
 </h:head>
 <h:body>
-    <h:form>
-        <p:panel header="Login" styleClass="login m-auto">
-            <p:panelGrid columns="2" cellpadding="5" layout="tabular">
-                <h:outputLabel for="username" value="Username:" />
-                <p:inputText id="username" value="#{loginBean.username}" required="true" label="Username"/>
+    <h:form styleClass="login m-auto">
+        <p:panel header="Login">
+            <p:panelGrid columns="2" layout="grid">
+                <h:panelGroup styleClass="flex column pad1">
+                    <h:outputLabel for="username" value="Username" />
+                    <p:inputText id="username" value="#{loginBean.username}" required="true" placeholder="Username"/>
+                </h:panelGroup>
 
-                <h:outputLabel for="password" value="Password:" />
-                <p:password id="password" value="#{loginBean.userPassword}" required="true" label="Password"/>
+                <h:panelGroup styleClass="flex column pad1">
+                    <h:outputLabel for="password" value="Password" />
+                    <p:password id="password" value="#{loginBean.userPassword}" required="true" placeholder="Password"/>
+                </h:panelGroup>
 
-                <h:outputText />
                 <p:commandButton value="Login" action="#{loginBean.loginUser}" icon="pi pi-check" styleClass="pill"/>
             </p:panelGrid>
+            <p:messages globalOnly="true" life="3000"/>
         </p:panel>
-        <p:growl/>
     </h:form>
 </h:body>
 </html>

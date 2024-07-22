@@ -4,7 +4,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Employees</ui:define>
+    <ui:define name="title">
+        Employees
+        #{con.setRoute('empl')}
+    </ui:define>
     <ui:define name="main-content">
         #{getEmployees.init()}
         <h2 class="mb">Employees</h2>

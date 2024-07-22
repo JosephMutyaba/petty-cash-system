@@ -4,7 +4,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:define name="title">Budget Line Categories</ui:define>
+    <ui:define name="title">
+        Budget Line Categories
+        #{con.setRoute('blcat')}
+    </ui:define>
     <ui:define name="main-content">
         <h2>BudgetLine Categories</h2>
 

@@ -170,6 +170,6 @@ public class Requisition {
 
     @Override
     public String toString() {
-        return "Requisition" + justification;
+        return "Requisition: " + justification;
     }
 }

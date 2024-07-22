@@ -85,6 +85,10 @@ span.flex.column > .selectMenu {
     margin-bottom: 8px;
 }
 
+.route {
+    background: #e9ecef
+}
+
 /*Styles*/
 /*Margins*/
 .mr {margin-right:var(--mar)!important}
@@ -99,7 +103,10 @@ span.flex.column > .selectMenu {
 .pad1 {padding:var(--pad) !important}
 .pad2 {padding:calc(var(--pad)*2) !important}
 .noPad {padding:0!important}
-.pill, body .ui-inputfield:not(.ui-inputtextarea) {border-radius: 10000px!important}
+.pill, body .ui-inputfield:not(.ui-inputtextarea)
+,li.ui-widget.ui-menuitem.ui-corner-all.ui-menu-parent>a.ui-menuitem-link
+{border-radius: 10000px!important}
+
 .rad1 {border-radius: 12px!important}
 .rad2 {border-radius: 24px!important}
 

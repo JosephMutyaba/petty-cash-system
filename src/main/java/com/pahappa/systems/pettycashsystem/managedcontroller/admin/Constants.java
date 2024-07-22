@@ -13,6 +13,8 @@ import java.util.Date;
 @ApplicationScoped
 @Component
 public class Constants implements Serializable {
+    private String route = "";
+
     public String getNameRegex() {
         return "[a-zA-Z]{2,30}";
     }
@@ -41,5 +43,10 @@ public class Constants implements Serializable {
         FacesMessage message = new FacesMessage(msg);
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
         FacesContext.getCurrentInstance().addMessage(null,message);
+    }
+
+    public void setRoute(String s) {route = s;}
+    public String routeIs(String s) {
+        return route.equalsIgnoreCase(s) ? " route " : "";
     }
 }

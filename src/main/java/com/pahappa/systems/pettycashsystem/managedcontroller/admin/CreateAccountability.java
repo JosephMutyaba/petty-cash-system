@@ -244,7 +244,7 @@ public class CreateAccountability implements Serializable {
 
             requisitionService.updateRequisition(requisition);  // this automatically creates
 
-            FacesMessage message = new FacesMessage("Accountability saved/updated successfully. ", "success");
+            FacesMessage message = new FacesMessage("Accountability submitted successfully. ", "success");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),null));

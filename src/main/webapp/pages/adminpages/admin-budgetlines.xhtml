@@ -3,7 +3,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Budget Lines</ui:define>
+    <ui:define name="title">
+        Budget Lines
+        #{con.setRoute('bline')}
+    </ui:define>
     <ui:define name="main-content">
         <h2 class="mb">BudgetLines</h2>
         <div class="stats mt">

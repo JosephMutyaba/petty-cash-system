@@ -3,7 +3,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Roles</ui:define>
+    <ui:define name="title">
+        Roles
+        #{con.setRoute('roles')}
+    </ui:define>
     <ui:define name="main-content">
         <h2 class="mb">Roles</h2>
         <h:form class="mb mt pad1">
