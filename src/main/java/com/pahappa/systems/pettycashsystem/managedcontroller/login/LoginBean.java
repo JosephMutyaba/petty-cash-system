@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.login;
 
+import com.pahappa.systems.pettycashsystem.spring.dao.PermissionDAO;
+import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.UserService;
@@ -124,7 +126,9 @@ public class LoginBean implements Serializable {
             // Set loginBean in session
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginBean", this);
 
-            return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
+            if (loggedInUser.getPermissions().contains(new PermissionDAO().findByName(Perm.VIEW_DASHBOARD)))
+                return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
+            return "/pages/adminpages/admin-settings.xhtml?faces-redirect=true";
         }
     }
     public void loadPermissions() {

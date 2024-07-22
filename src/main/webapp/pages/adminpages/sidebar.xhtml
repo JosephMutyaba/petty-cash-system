@@ -17,7 +17,7 @@
         </h:panelGroup>
 
         <p:tieredMenu styleClass="no-border fillW">
-            <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home"/>
+            <p:menuitem value="Dashboard" outcome="/pages/adminpages/admin-dashboard" icon="pi pi-home" rendered="#{checkPermission.hasPermission('VIEW_DASHBOARD')}"/>
             <p:menuitem value="Roles" outcome="/pages/adminpages/admin-roles" icon="pi pi-briefcase" rendered="#{checkPermission.hasPermission('VIEW_ROLES')}"/>
             <p:menuitem value="Employees" outcome="/pages/adminpages/admin-employees" icon="pi pi-users" rendered="#{checkPermission.hasPermission('VIEW_EMPLOYEES')}"/>
             <p:submenu label="Budgetlines" icon="pi pi-chart-bar" rendered="#{checkPermission.hasPermission('VIEW_BUDGETLINES')}">
