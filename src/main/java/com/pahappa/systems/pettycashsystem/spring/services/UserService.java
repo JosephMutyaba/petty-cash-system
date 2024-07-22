@@ -2,6 +2,7 @@ package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
+import com.pahappa.systems.pettycashsystem.network.InternetChecker;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -39,14 +40,16 @@ public class UserService {
 
 
 
-        // Send registration email
-        String subject = "Registration Successful";
-        String message = "Dear " + user.getFirstname() + ",\n\n" +
-                "Your registration is successful.Use the following to login to your account\n"
-                +"Username : " + user.getUsername() + "\n" +
-                "Password : " + user.getPassword() + "\n" +
-                "Regards,\nAdmin";
-        emailService.sendSimpleMessage(user.getEmail(), subject, message);
+        if (InternetChecker.isInternetAvailable()){
+            // Send registration email
+            String subject = "Registration Successful";
+            String message = "Dear " + user.getFirstname() + ",\n\n" +
+                    "Your registration is successful.Use the following to login to your account\n"
+                    +"Username : " + user.getUsername() + "\n" +
+                    "Password : " + user.getPassword() + "\n" +
+                    "Regards,\nAdmin";
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+        }
     }
 
     // Read operation: Get user by ID
@@ -70,15 +73,18 @@ public class UserService {
         userDAO.updateUser(user);
 
 
+        if (InternetChecker.isInternetAvailable()){
+            // Send update email
+            String subject = "Registration Successful";
+            String message = "Dear " + user.getFirstname() + ",\n\n" +
+                    "Your registration is successful.Use the following to login to your account\n"
+                    +"Username : " + user.getUsername() + "\n" +
+                    "Password : " + user.getPassword() + "\n" +
+                    "Regards,\nAdmin";
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+        }
 
-// Send registration email
-        String subject = "Registration Successful";
-        String message = "Dear " + user.getFirstname() + ",\n\n" +
-                "Your registration is successful.Use the following to login to your account\n"
-                +"Username : " + user.getUsername() + "\n" +
-                "Password : " + user.getPassword() + "\n" +
-                "Regards,\nAdmin";
-        emailService.sendSimpleMessage(user.getEmail(), subject, message);
+
     }
 
     // Delete operation
