@@ -207,6 +207,7 @@ public class MyRequisitionHandler implements Serializable {
             // For example, you could initialize the fields to default values or handle accordingly
             System.out.println("Null section");
             this.status = "Draft";
+            this.id=null;
             this.budgetLineId = null;
             this.justification = "";
             this.maxDate = null;

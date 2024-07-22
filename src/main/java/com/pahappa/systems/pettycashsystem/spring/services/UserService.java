@@ -11,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -27,6 +25,9 @@ public class UserService {
     private Constants con;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
@@ -35,6 +36,17 @@ public class UserService {
     public void createUser(User user) throws Exception {
         validateUser(user, "create");
         userDAO.createUser(user);
+
+
+
+        // Send registration email
+        String subject = "Registration Successful";
+        String message = "Dear " + user.getFirstname() + ",\n\n" +
+                "Your registration is successful.Use the following to login to your account\n"
+                +"Username : " + user.getUsername() + "\n" +
+                "Password : " + user.getPassword() + "\n" +
+                "Regards,\nAdmin";
+        emailService.sendSimpleMessage(user.getEmail(), subject, message);
     }
 
     // Read operation: Get user by ID
@@ -56,6 +68,17 @@ public class UserService {
     public void updateUser(User user) throws Exception {
         validateUser(user, "update");
         userDAO.updateUser(user);
+
+
+
+// Send registration email
+        String subject = "Registration Successful";
+        String message = "Dear " + user.getFirstname() + ",\n\n" +
+                "Your registration is successful.Use the following to login to your account\n"
+                +"Username : " + user.getUsername() + "\n" +
+                "Password : " + user.getPassword() + "\n" +
+                "Regards,\nAdmin";
+        emailService.sendSimpleMessage(user.getEmail(), subject, message);
     }
 
     // Delete operation
