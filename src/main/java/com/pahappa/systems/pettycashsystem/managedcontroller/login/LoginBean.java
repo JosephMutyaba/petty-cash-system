@@ -1,6 +1,5 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.login;
 
-import com.pahappa.systems.pettycashsystem.spring.dao.PermissionDAO;
 import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -16,11 +15,13 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.Set;
 
 @ManagedBean
 @SessionScoped
 @Component
 public class LoginBean implements Serializable {
+    public static final ExternalContext EXTERNAL_CONTEXT = FacesContext.getCurrentInstance().getExternalContext();
     private final UserService userService;
     private User loggedInUser;
 
@@ -40,7 +41,7 @@ public class LoginBean implements Serializable {
     private String firstname;
     private String lastname;
     private String email;
-    private Role role;
+    private Set<Role> roles;
 
     private Double acc_bal;
 
@@ -84,12 +85,12 @@ public class LoginBean implements Serializable {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Double getAcc_bal() {
@@ -109,14 +110,19 @@ public class LoginBean implements Serializable {
         this.loggedInUser = loggedInUser;
     }
 
-    public String loginUser() {
+    public ExternalContext getExternalContext() {return EXTERNAL_CONTEXT;}
+    public static void redirect(String url) throws Exception {
+        EXTERNAL_CONTEXT.redirect(EXTERNAL_CONTEXT.getRequestContextPath() + url);
+    }
+
+    public void loginUser() throws Exception {
         loggedInUser = userService.findUserByUsernameAndPassword(username, userPassword);
         if (loggedInUser == null) {
             System.out.println("User not found");
-            return "/pages/auth/login.xhtml?faces-redirect=true";
+            redirect("/pages/auth/login.xhtml");
         } else {
             this.email = loggedInUser.getEmail();
-//            this.role = loggedInUser.getRole();
+            this.roles = loggedInUser.getRoles();
             this.username = loggedInUser.getUsername();
             this.userPassword = loggedInUser.getPassword();
             this.acc_bal = loggedInUser.getAccountBalance();
@@ -125,31 +131,37 @@ public class LoginBean implements Serializable {
             loadPermissions();
 
             // Set loginBean in session
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginBean", this);
+            EXTERNAL_CONTEXT.getSessionMap().put("loginBean", this);
 
+            boolean dashboard = false;
             for (Permission p:loggedInUser.getPermissions())
-                if (p.getName() == Perm.VIEW_DASHBOARD)
-                    return "/pages/adminpages/admin-dashboard.xhtml?faces-redirect=true";
-            return "/pages/adminpages/admin-settings.xhtml?faces-redirect=true";
+                if (p.getName() == Perm.VIEW_DASHBOARD) {
+                    dashboard = true;
+                    break;
+                }
+            if (dashboard)
+                redirect("/pages/adminpages/admin-dashboard.xhtml");
+            else
+                redirect("/pages/adminpages/admin-settings.xhtml");
         }
     }
     public void loadPermissions() {
         userService.loadPermissions(loggedInUser);
     }
 
-    public String logoutUser() {
+    public void logoutUser() throws Exception {
         loggedInUser = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         externalContext.invalidateSession(); // Invalidate current session
-        return "/pages/auth/login.xhtml?faces-redirect=true"; // Redirect to login page
+        redirect("/pages/auth/login.xhtml"); // Redirect to login page
     }
 
     public void updateLoggedInUser() {
         loggedInUser.setFirstname(firstname);
         loggedInUser.setLastname(lastname);
         loggedInUser.setEmail(email);
-//        loggedInUser.setRole(role);
+        loggedInUser.setRoles(roles);
         loggedInUser.setUsername(username);
         loggedInUser.setPassword(userPassword);
         userService.loadPermissions(loggedInUser);

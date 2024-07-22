@@ -98,6 +98,7 @@ span.flex.column > .selectMenu {
 /*Radii & Padding*/
 .pad1 {padding:var(--pad) !important}
 .pad2 {padding:calc(var(--pad)*2) !important}
+.noPad {padding:0!important}
 .pill, body .ui-inputfield:not(.ui-inputtextarea) {border-radius: 10000px!important}
 .rad1 {border-radius: 12px!important}
 .rad2 {border-radius: 24px!important}
@@ -120,3 +121,4 @@ span.flex.column > .selectMenu {
 .row {flex-direction:row}
 .column {flex-direction:column}
 .square {width: 36px!important;height: 36px!important;}
+.justify-c {justify-content:center}
