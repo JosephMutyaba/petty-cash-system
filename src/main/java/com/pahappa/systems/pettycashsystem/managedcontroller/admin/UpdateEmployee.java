@@ -81,6 +81,7 @@ public class UpdateEmployee implements Serializable {
     }
 
     public List<String> getRolesFromDatabase() {
+        setRolesFromDatabase();
         return rolesFromDatabase;
     }
 

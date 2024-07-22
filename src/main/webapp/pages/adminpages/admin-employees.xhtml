@@ -7,7 +7,6 @@
     <ui:define name="title">Employees</ui:define>
     <ui:define name="main-content">
         #{getEmployees.init()}
-        #{updateEmployee.setRolesFromDatabase()}
         <h2 class="mb">Employees</h2>
         <h:form class="pad1 mt">
             <p:commandButton value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('addUserDialog').show()" rendered="#{checkPermission.hasPermission('ADD_EMPLOYEE')}"/>

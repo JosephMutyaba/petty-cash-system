@@ -45,7 +45,7 @@ public class CreateEmployee implements Serializable {
 
     @PostConstruct
     public void init() {
-        rolesFromDB=roleService.getAllRoles();
+        setRolesFromDB();
 //        role = new Role();
     }
 
@@ -91,11 +91,12 @@ public class CreateEmployee implements Serializable {
 
 
     public List<Role> getRolesFromDB() {
+        setRolesFromDB();
         return rolesFromDB;
     }
 
-    public void setRolesFromDB(List<Role> rolesFromDB) {
-        this.rolesFromDB = rolesFromDB;
+    public void setRolesFromDB() {
+        this.rolesFromDB = roleService.getAllRoles();
     }
 
     public Set<Role> getRoles() {
