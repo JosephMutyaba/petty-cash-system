@@ -21,7 +21,6 @@ import java.util.Set;
 @SessionScoped
 @Component
 public class LoginBean implements Serializable {
-    public static final ExternalContext EXTERNAL_CONTEXT = FacesContext.getCurrentInstance().getExternalContext();
     private final UserService userService;
     private User loggedInUser;
 
@@ -43,7 +42,6 @@ public class LoginBean implements Serializable {
     private String email;
     private Set<Role> roles;
 
-    private Double acc_bal;
 
     public String getUsername() {
         return username;
@@ -93,14 +91,14 @@ public class LoginBean implements Serializable {
         this.roles = roles;
     }
 
-    public Double getAcc_bal() {
+    /*public Double getAcc_bal() {
         this.acc_bal = userService.getUserById(loggedInUser.getId()).getAccountBalance();
         return userService.getUserById(loggedInUser.getId()).getAccountBalance();
     }
 
     public void setAcc_bal(Double acc_bal) {
         this.acc_bal = acc_bal;
-    }
+    }*/
 
     public User getLoggedInUser() {
         return loggedInUser;
@@ -110,9 +108,9 @@ public class LoginBean implements Serializable {
         this.loggedInUser = loggedInUser;
     }
 
-    public ExternalContext getExternalContext() {return EXTERNAL_CONTEXT;}
     public static void redirect(String url) throws Exception {
-        EXTERNAL_CONTEXT.redirect(EXTERNAL_CONTEXT.getRequestContextPath() + url);
+        ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
+        ectx.redirect(ectx.getRequestContextPath() + url);
     }
 
     public void loginUser() throws Exception {
@@ -125,13 +123,13 @@ public class LoginBean implements Serializable {
             this.roles = loggedInUser.getRoles();
             this.username = loggedInUser.getUsername();
             this.userPassword = loggedInUser.getPassword();
-            this.acc_bal = loggedInUser.getAccountBalance();
+//            this.acc_bal = loggedInUser.getAccountBalance();
             this.firstname = loggedInUser.getFirstname();
             this.lastname = loggedInUser.getLastname();
             loadPermissions();
 
             // Set loginBean in session
-            EXTERNAL_CONTEXT.getSessionMap().put("loginBean", this);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginBean", this);
 
             boolean dashboard = false;
             for (Permission p:loggedInUser.getPermissions())

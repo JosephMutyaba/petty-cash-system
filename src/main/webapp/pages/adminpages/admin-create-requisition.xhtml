@@ -13,7 +13,7 @@
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="budgetline" value="Budget Line"/>
-                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}">
+                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}">
                                 <f:selectItem value="#{null}" itemDisabled="true" itemLabel="Choose Budgetline" />
                                 <f:selectItems value="#{myRequisitionHandler.budgetLines}" var="budgetline" itemValue="#{budgetline.id}" itemLabel="#{budgetline.description}"/>
                             </p:selectOneMenu>
@@ -24,19 +24,19 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{createRequisition.budgetLine ne null}"/>
+                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{(createRequisition.budgetLine ne null) and not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="date_needed" value="Date Needed"/>
-                            <p:calendar navigator="true" styleClass="fillW" id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}"/>
+                            <p:calendar navigator="true" styleClass="fillW" id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="justification" value="Justification"/>
-                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}"/>
+                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column" rendered="#{myRequisitionHandler.status.equals('Approved') or myRequisitionHandler.status.equals('Paid')}">
                             <p:outputLabel for="amountGranted" value="Amount Granted"/>
-                            <p:inputTextarea id="amountGranted" value="#{myRequisitionHandler.amountGranted}"/>
+                            <p:outputLabel id="amountGranted" value="#{myRequisitionHandler.amountGranted}"/>
                         </h:panelGroup>
                     </p:panelGrid>
                     <div>
