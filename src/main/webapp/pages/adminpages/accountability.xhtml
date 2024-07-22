@@ -122,8 +122,12 @@
                 <p:outputLabel value="Email" for="email"/>
                 <p:inputText id="email" value="#{confirmBalanceReturn.user.email}" readonly="true"/>
 
-                <p:outputLabel value="User Role" for="role"/>
-                <p:inputText id="role" value="#{confirmBalanceReturn.user.role.name}" readonly="true"/>
+                <p:outputLabel value="User Roles" for="roles"/>
+                <p:outputLabel id="roles">
+                    <ui:repeat value="#{confirmBalanceReturn.user.roles}" var="roleOfUser" varStatus="status">
+                        #{roleOfUser}#{status.last?"":","}
+                    </ui:repeat>
+                </p:outputLabel>
 
             </p:panelGrid>
         </p:dialog>
