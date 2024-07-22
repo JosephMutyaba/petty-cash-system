@@ -57,7 +57,7 @@ public class RequisitionDAO {
 
     public Requisition getRequisitionByUserIdAndStatusAndMaxDateNotExpired(Long userId) {
         return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status IN (:statuses) AND user_id = :userId AND maxDateNeeded >= CURRENT_DATE")
-                .setParameterList("statuses", Arrays.asList("Draft","Pending", "Approved", "Paid"))
+                .setParameterList("statuses", Arrays.asList("Draft","Pending", "Approved", "Paid", "Accepted"))
                 .setParameter("userId", userId)
                 .uniqueResult();
     }
@@ -65,7 +65,7 @@ public class RequisitionDAO {
     public List<Requisition> getAllRequisitionsExpiredButNotRejectedAndNotCompleted(Long userId) {
         return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:userId AND maxDateNeeded<CURRENT_DATE AND status IN (:statuses) ORDER BY maxDateNeeded ASC")
                 .setParameter("userId",userId)
-                .setParameter("statuses", Arrays.asList("Pending", "Approved", "Paid"))
+                .setParameter("statuses", Arrays.asList("Pending", "Approved", "Paid", "Accepted"))
                 .getResultList();
     }
 
@@ -78,7 +78,7 @@ public class RequisitionDAO {
 
     public List<Requisition> getAllExpiredRequisitions() {
         return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE maxDateNeeded<CURRENT_DATE AND status IN (:statuses) ORDER BY maxDateNeeded ASC")
-                .setParameter("statuses", Arrays.asList("Pending", "Approved"))
+                .setParameter("statuses", Arrays.asList("Pending", "Approved", "Accepted"))
                 .getResultList();
     }
 

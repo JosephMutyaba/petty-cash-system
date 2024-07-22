@@ -25,14 +25,14 @@ public class  AdminChart implements Serializable {
         PieChartDataSet ds = new PieChartDataSet();
         PieChartModel pcm = new PieChartModel();
 
-        List<Number> values = List.of(allRequisitions.getPendingRequisitions().size(),allRequisitions.getApprovedRequisitions().size(),allRequisitions.getPaidRequisitions().size(), allRequisitions.getRejectedRequisitions().size(), allRequisitions.getCompletedRequisitions().size(), allRequisitions.getExpiredRequisitions().size());
+        List<Number> values = List.of(allRequisitions.getPendingRequisitions().size(),allRequisitions.getApprovedRequisitions().size(),allRequisitions.getPaidRequisitions().size(), allRequisitions.getRejectedRequisitions().size(), allRequisitions.getCompletedRequisitions().size(), allRequisitions.getExpiredRequisitions().size(), allRequisitions.getAcceptedRequisitions().size());
         ds.setData(values);
 
-        List<String> colors = List.of("#faa","#aaf","#c7e", "#00FFFF","#15D33B", "#F50E34");
+        List<String> colors = List.of("#faa","#aaf","#c7e", "#00FFFF","#15D33B", "#F50E34", "#DBE5DF");
         ds.setBackgroundColor(colors);
 
         cd.addChartDataSet(ds);
-        List<String> labels = List.of("Pending","Approved","Paid Out", "Rejected", "Completed", "Expired");
+        List<String> labels = List.of("Pending","Approved","Paid Out", "Rejected", "Completed", "Expired", "Accepted");
         cd.setLabels(labels);
         pcm.setData(cd);
 

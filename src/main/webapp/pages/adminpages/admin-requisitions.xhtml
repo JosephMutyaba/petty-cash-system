@@ -29,6 +29,9 @@
                             <p:panel header="Expired" styleClass="stat-panel">
                                 <h:outputText value="#{allRequisitions.expiredRequisitions.size()}" styleClass="stat-value"/>
                             </p:panel>
+                            <p:panel header="Accepted" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.acceptedRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
                         </p:panelGrid>
                     </p:tab>
                 </p:accordionPanel>
@@ -41,7 +44,8 @@
             <p:tabView id="tabView" activeIndex="#{allRequisitions.activeTab}">
                 <p:ajax event="tabChange" listener="#{allRequisitions.onTabChange}" update=":requisition_table"/>
                 <p:tab id="pendingTab" title="Pending"/>
-                <p:tab id="approvedTab" title="Approved"/>
+                <p:tab id="accepted" title="Accepted" rendered="#{checkPermission.hasPermission('ACCEPT_REQUISITION', 'APPROVE_REQUISITION')}"/>
+                <p:tab id="approvedTab" title="Approved" />
                 <p:tab id="rejectedTab" title="Rejected"/>
                 <p:tab id="paid" title="Paid"/>
                 <p:tab id="completed" title="Completed"/>
@@ -75,7 +79,7 @@
             <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
                 <h:outputText value="#{requisition.amountGranted}"/>
             </p:column>
-            <p:column headerText="Edit Status" rendered="#{allRequisitions.tabId.equals('pendingTab') and checkPermission.hasPermission('APPROVE_REQUISITION','REJECT_REQUISITION')}">
+            <p:column headerText="Edit Status" rendered="#{allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('accepted') and checkPermission.hasPermission('APPROVE_REQUISITION','REJECT_REQUISITION')}">
                 <h:form>
                     <p:commandButton styleClass="pill square bg-y text-blk" icon="pi pi-flag-fill" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
                 </h:form>
@@ -171,7 +175,7 @@
                         <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
                         <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_REQUISITION')}" itemLabel="Approve" itemValue="Approved"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accept"/>
+                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accepted"/>
 <!--                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>-->
                     </p:selectOneMenu>
                 </h:panelGroup>
