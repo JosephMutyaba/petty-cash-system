@@ -154,10 +154,10 @@ public class LoginBean implements Serializable {
     public void logoutUser() throws Exception {
         loggedInUser = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Logged out Successfully!",null));
+//        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Logged out Successfully!",null));
         ExternalContext externalContext = facesContext.getExternalContext();
         externalContext.invalidateSession(); // Invalidate current session
-        redirect("/pages/auth/login.xhtml"); // Redirect to login page
+//        redirect("/pages/auth/login.xhtml"); // Redirect to login page
     }
 
     public void updateLoggedInUser() {
