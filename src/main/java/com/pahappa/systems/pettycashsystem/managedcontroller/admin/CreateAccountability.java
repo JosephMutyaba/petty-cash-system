@@ -162,7 +162,9 @@ public class CreateAccountability implements Serializable {
 
     public void initialiseAccountability(){
 //        Requisition requisition = new Requisition();
-        requisition=myRequisitionHandler.getRequisition();
+//        requisition=myRequisitionHandler.getRequisition();
+        requisition = requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
+
 //        requisition=requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
         if(requisition!=null){
             System.out.println("\nAcc not null\n");
@@ -176,16 +178,26 @@ public class CreateAccountability implements Serializable {
                 this.amountSpent=accountability.getAmountSpent();
                 this.dateSubmitted=accountability.getDateSubmitted();
                 this.receiptImage=accountability.getReceiptImage();
+            }else {
+                System.out.println("\nAcc is null.............!!!!!\n");
+                this.accountabilityId=null;
+                this.accountability =new Accountability();
+                this.description=null;
+                this.accountabilityStatus=null;
+                this.extraClaims=null;
+                this.amountSpent=0.0;
+                this.dateSubmitted=new Date();
+                this.receiptImage=new byte[]{};
             }
 
         }else {
-            System.out.println("\nAcc not null.............!!!!!\n");
+            System.out.println("\nAcc is null.............!!!!!\n");
             this.accountabilityId=null;
             this.accountability =new Accountability();
             this.description=null;
             this.accountabilityStatus=null;
             this.extraClaims=null;
-            this.amountSpent=10.0;
+            this.amountSpent=0.0;
             this.dateSubmitted=new Date();
             this.receiptImage=null;
         }
