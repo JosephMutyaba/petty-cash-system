@@ -144,7 +144,7 @@ public class CreateAccountability implements Serializable {
 //            this.receiptImage = input.readAllBytes();
             this.receiptImage = toByteArray(input);  // Use the alternative method
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not process file: " + e.getMessage(),null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not process file", e.getMessage()));
             context.validationFailed();
         }
     }

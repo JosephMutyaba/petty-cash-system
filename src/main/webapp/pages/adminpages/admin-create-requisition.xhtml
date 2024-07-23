@@ -55,14 +55,16 @@
                     </div>
                 </h:form>
                 <h:panelGroup id="accountability_section" rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
-                    <f:event type="preRenderView" listener="#{createAccountability.initialiseAccountability}"/>
+                    #{createAccountability.initialiseAccountability()}
 
                     <h3 class="mb">Accountability</h3>
                     <h:form styleClass="flex column pad2">
                         <h:panelGroup styleClass="flex row pad1">
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
+                                <p:message for="ac_amt_used" />
+                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt"
+                                               value="#{createAccountability.amountSpent}" maxValue="#{(myRequisitionHandler.amountGranted!=null) ? myRequisitionHandler.amountGranted : 0}" required="true"/>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
@@ -71,9 +73,10 @@
                         </h:panelGroup>
                         <div class="mb">
                             <p:panel header="Upload Image">
-                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="advanced" dragDropSupport="true" auto="true" update="imagePreview " />
-
-                                <p:graphicImage cache="false" id="imagePreview" value="#{createAccountability.imageStream}" width="500"/>
+                                <p:fileUpload styleClass="flex column" listener="#{createAccountability.handleFileUpload}" mode="advanced" dragDropSupport="true" auto="true" update="imagePreview ">
+                                    <div class="pad2 m pill" style="border:dashed 1px #aaa">Drag an image here to upload</div>
+                                    <p:graphicImage styleClass="m-auto pad2 rad2" cache="false" id="imagePreview" value="#{createAccountability.imageStream}" width="500"/>
+                                </p:fileUpload>
                             </p:panel>
                         </div>
 
@@ -83,7 +86,7 @@
                         </div>
                     </h:form>
                 </h:panelGroup>
-                <p:growl globalOnly="true"/>
+                <p:growl globalOnly="true"><p:autoUpdate/></p:growl>
             </p:tab>
             <p:tab title="History">
                 <h:form id="history_form">
