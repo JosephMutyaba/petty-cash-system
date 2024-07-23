@@ -119,7 +119,8 @@ public class LoginBean implements Serializable {
         loggedInUser = userService.findUserByUsernameAndPassword(username, userPassword);
         FacesContext ctx = FacesContext.getCurrentInstance();
         if (loggedInUser == null) {
-            ctx.addMessage(null,new FacesMessage("User not found!"));
+            ctx.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"User not found!",null));
+            ctx.validationFailed();
 //            redirect("/pages/auth/login.xhtml");
         } else {
             this.email = loggedInUser.getEmail();

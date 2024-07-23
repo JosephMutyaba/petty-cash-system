@@ -71,9 +71,9 @@
                         </h:panelGroup>
                         <div class="mb">
                             <p:panel header="Upload Image">
-                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" dragDropSupport="true" auto="true" update="imagePreview " />
+                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="advanced" dragDropSupport="true" auto="true" update="imagePreview " />
 
-                                <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
+                                <p:graphicImage cache="false" id="imagePreview" value="#{createAccountability.imageStream}" width="500"/>
                             </p:panel>
                         </div>
 

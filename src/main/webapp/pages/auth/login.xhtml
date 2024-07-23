@@ -20,9 +20,9 @@
                     <p:password id="password" value="#{loginBean.userPassword}" required="true" placeholder="Password"/>
                 </h:panelGroup>
 
-                <p:commandButton value="Login" action="#{loginBean.loginUser}" icon="pi pi-check" styleClass="pill"/>
+                <p:commandButton value="Login" action="#{loginBean.loginUser}" icon="pi pi-check" styleClass="pill" update="messages"/>
             </p:panelGrid>
-            <p:messages globalOnly="true" life="3000"/>
+            <p:messages id="messages" globalOnly="true" closable="true" life="3000"/>
         </p:panel>
     </h:form>
 </h:body>
