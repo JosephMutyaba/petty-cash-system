@@ -19,7 +19,7 @@ public class Constants implements Serializable {
         return "[a-zA-Z]{2,30}";
     }
     public String getEmailRegex() {
-        return "^[a-zA-Z0-9]{1,}@[a-zA-Z0-9_]{2,}.[a-zA-Z]{2,}$";
+        return "^[a-zA-Z0-9_]{1,}@[a-zA-Z0-9_]{2,}.[a-zA-Z]{2,}$";
     }
     public String getUsernameRegex() {
         return "^[a-zA-Z0-9_]{4,20}$";

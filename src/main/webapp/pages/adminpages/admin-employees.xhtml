@@ -69,7 +69,6 @@
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="email" value="Email" styleClass="label"/>
                         <p:inputText id="email" value="#{createEmployee.email}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
-                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
                         </p:inputText>
                         <p:message for="email"/>
                     </h:panelGroup>
@@ -123,7 +122,6 @@
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="emai_l" value="Email" styleClass="label"/>
                         <p:inputText id="emai_l" value="#{updateEmployee.email}" required="true" styleClass="input">
-                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
                         </p:inputText>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">

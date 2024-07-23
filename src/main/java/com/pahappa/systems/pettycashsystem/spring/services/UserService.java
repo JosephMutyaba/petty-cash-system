@@ -135,7 +135,7 @@ public class UserService {
         }
 
         if (!user.getEmail().matches(con.getEmailRegex())) {
-            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
+            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), underscores (_) and periods (.) are allowed.");
         }
 
         if (!user.getPassword().matches(con.getPasswordRegex())) {
