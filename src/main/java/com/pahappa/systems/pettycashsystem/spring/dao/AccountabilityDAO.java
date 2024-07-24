@@ -27,7 +27,7 @@ public class AccountabilityDAO {
 
     public List<Accountability> getAllAccountabilities() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Accountability WHERE status='Submitted' ORDER BY id DESC")
+                .createQuery("FROM Accountability WHERE status='Submitted' ORDER BY balanceIsReturned ASC")
                 .getResultList();
     }
 
