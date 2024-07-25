@@ -5,26 +5,27 @@
 <h:head>
     <title>Login</title>
     <h:outputStylesheet name="css/petty.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
 </h:head>
 <h:body>
     #{loginBean.logoutUser()}
-    <h:form styleClass="login m-auto">
-        <p:panel header="Login">
-            <p:panelGrid columns="2" layout="grid">
-                <h:panelGroup styleClass="flex column pad1">
-                    <h:outputLabel for="username" value="Username" />
-                    <p:inputText id="username" value="#{loginBean.username}" required="true" placeholder="Username"/>
-                </h:panelGroup>
+    <h:form styleClass="login md:w-30rem sm:w-24rem">
+        <div class="flex align-items-center justify-content-center">
+            <div class="surface-card p-4 shadow-2 border-round">
+                <div class="text-center mb-5">
+                    <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
+                </div>
 
-                <h:panelGroup styleClass="flex column pad1">
-                    <h:outputLabel for="password" value="Password" />
-                    <p:password id="password" value="#{loginBean.userPassword}" required="true" placeholder="Password"/>
-                </h:panelGroup>
+                <div>
+                    <label for="username1" class="block text-900 font-medium mb-2">Username</label>
+                    <p:inputText id="username1" styleClass="w-full mb-3 pill" value="#{loginBean.username}" placeholder="Username"/>
+                    <label for="password1" class="block text-900 font-medium mb-2">Password</label>
+                    <p:password id="password1" styleClass="w-full mb-3 pill" value="#{loginBean.userPassword}" placeholder="Password"/>
 
-                <p:commandButton value="Login" action="#{loginBean.loginUser}" icon="pi pi-check" styleClass="pill" update="messages"/>
-            </p:panelGrid>
-            <p:messages id="messages" globalOnly="true" closable="true" life="3000"/>
-        </p:panel>
+                    <p:commandButton action="#{loginBean.loginUser}" value="Sign In" icon="pi pi-check" styleClass="w-full pill" update="@form"/>
+                </div>
+            </div>
+        </div>
     </h:form>
 </h:body>
 </html>
