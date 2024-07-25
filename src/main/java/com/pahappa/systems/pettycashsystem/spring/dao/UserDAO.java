@@ -34,7 +34,9 @@ public class UserDAO {
 
     // Read operation: Get all users
     public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("FROM User u ORDER BY id DESC", User.class).list();
+        return getCurrentSession().createQuery("FROM User u WHERE u.username != :admin ORDER BY u.id DESC", User.class)
+                .setParameter("admin", "admin")
+                .list();
     }
 
     // Update operation

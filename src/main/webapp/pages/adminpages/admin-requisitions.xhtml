@@ -59,7 +59,7 @@
 
         <div class="bg-white pad1">
             <h:form id="action_buttons_button">
-                <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r pill" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION')}"/>
+                <p:commandButton value="Delete All" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" icon="pi pi-trash" styleClass="bg-r pill" rendered="#{checkPermission.hasPermission('DELETE_REQUISITION') and allRequisitions.tabId.equals('pendingTab')}"/>
             </h:form>
         </div>
         <h:form class="bg-white pad1">
