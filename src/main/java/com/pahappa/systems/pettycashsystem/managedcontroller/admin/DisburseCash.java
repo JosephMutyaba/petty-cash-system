@@ -1,7 +1,5 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
-import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
-import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
@@ -46,6 +44,10 @@ public class DisburseCash implements Serializable {
         requisition = new Requisition();
     }
 
+    public Requisition getRequisition() {
+        return requisition;
+    }
+
     public void selectRequisition(Requisition selectedRequisition){
         this.requisition = selectedRequisition;
     }
@@ -67,13 +69,14 @@ public class DisburseCash implements Serializable {
 
         Double budgetLineAccBal=requisition.getBudgetline().getBalance();
 
-        userAccBal=userAccBal+amountGranted;
-        budgetLineAccBal=budgetLineAccBal-amountGranted;
+        Double newUserAccBal=userAccBal+amountGranted;
+
+        Double newBudgetLineAccBal=budgetLineAccBal-amountGranted;
 
         try {
             // updating acc_balances
-            user.setAccountBalance(userAccBal);
-            budgetLine.setBalance(budgetLineAccBal);
+            user.setAccountBalance(newUserAccBal);
+            budgetLine.setBalance(newBudgetLineAccBal);
 
             requisitionService.validateBeforeDisbursement(budgetLineAccBal,budgetLine.getDescription());
 
@@ -98,12 +101,8 @@ public class DisburseCash implements Serializable {
             context.validationFailed();
         }
 
-
-
         //clearing the requisition
         requisition=new Requisition();
     }
-
-
 
 }

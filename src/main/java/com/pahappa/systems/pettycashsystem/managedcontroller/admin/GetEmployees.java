@@ -61,8 +61,7 @@ public class GetEmployees implements Serializable {
                             user.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) ||
                                     String.valueOf(user.getUsername()).toLowerCase().contains(searchTerm.toLowerCase()) ||
                                     String.valueOf(user.getLastname()).toLowerCase().contains(searchTerm.toLowerCase()) ||
-                                    String.valueOf(user.getEmail()).toLowerCase().contains(searchTerm.toLowerCase()) ||
-                                    String.valueOf(user.getRole().getName()).toLowerCase().contains(searchTerm.toLowerCase()))
+                                    String.valueOf(user.getEmail()).toLowerCase().contains(searchTerm.toLowerCase()))
                     .collect(Collectors.toList());
         }
     }

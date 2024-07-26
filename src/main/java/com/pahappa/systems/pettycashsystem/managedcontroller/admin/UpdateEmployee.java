@@ -1,6 +1,5 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
-import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.RoleService;
@@ -14,8 +13,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Base64;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped
@@ -32,16 +34,18 @@ public class UpdateEmployee implements Serializable {
     private String lastName;
     private String email;
     private String password;
-    private Role role;
-    private String roleName;
-    private List<Role> roles;
+//    private Role role;
+    private Set<Role> userRoles;
+    private List<String> roleNames;
+    private List<String> rolesFromDatabase;
     private String username;
     private User user;
 
     @PostConstruct
     public void init() {
-        roles=roleService.getAllRoles();
-        role = new Role();
+        setRolesFromDatabase();
+        userRoles = new HashSet<>();
+        roleNames = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -76,20 +80,14 @@ public class UpdateEmployee implements Serializable {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public List<String> getRolesFromDatabase() {
+        setRolesFromDatabase();
+        return rolesFromDatabase;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public List<Role> getRoles() {
-        return roleService.getAllRoles();
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRolesFromDatabase() {
+        rolesFromDatabase = roleService.getAllRoles().stream()
+                .map(Role::getName).collect(Collectors.toList());
     }
 
     public String getUsername() {
@@ -108,12 +106,20 @@ public class UpdateEmployee implements Serializable {
         this.user = user;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public List<String> getRoleNames() {
+        return roleNames;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoleNames(List<String> roleNames) {
+        this.roleNames = roleNames;
+    }
+
+    public Set<Role> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<Role> userRoles) {
+        this.userRoles = userRoles;
     }
 
     public void updateEmployee() {
@@ -123,9 +129,10 @@ public class UpdateEmployee implements Serializable {
         user.setUsername(username);
         user.setPassword(password);
 
-        role=roleService.findByName(roleName);
+        for (String roleName:roleNames)
+            userRoles.add(roleService.findByName(roleName));
 
-        user.setRole(role);
+        user.setRoles(userRoles);
         user.setFirstname(firstName);
         user.setLastname(lastName);
         user.setEmail(email);
@@ -134,13 +141,8 @@ public class UpdateEmployee implements Serializable {
             userService.updateUser(user);
 
             //clear the fields
-            this.role=null;
-            this.roleName=null;
-            this.firstName=null;
-            this.lastName=null;
-            this.email=null;
-            this.password=null;
-            this.username=null;
+//            this.role=null;
+            clearVariables();
 
             FacesMessage message = new FacesMessage("User updated successfully", "Success");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -151,9 +153,21 @@ public class UpdateEmployee implements Serializable {
         }
     }
 
+    private void clearVariables() {
+        userRoles.clear();
+        roleNames.clear();
+        firstName=null;
+        lastName=null;
+        email=null;
+        password=null;
+        username=null;
+    }
+
     public void selectedUser(User userSelected){
+        clearVariables();
         this.user=userSelected;
-        this.role=user.getRole();
+        for (Role r:user.getRoles())
+            roleNames.add(r.getName());
         this.firstName=user.getFirstname();
         this.lastName=user.getLastname();
         this.email=user.getEmail();

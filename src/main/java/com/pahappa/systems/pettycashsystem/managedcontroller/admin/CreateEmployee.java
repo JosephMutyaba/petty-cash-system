@@ -17,6 +17,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 
 @Named
 @ViewScoped
@@ -34,9 +35,9 @@ public class CreateEmployee implements Serializable {
     private String lastName;
     private String email;
     private String password;
-    private Role role;
     private String roleName;
-    private List<Role> roles;
+    private List<Role> rolesFromDB;
+    private Set<Role> roles;
     private String username;
     private User user;
 
@@ -44,8 +45,8 @@ public class CreateEmployee implements Serializable {
 
     @PostConstruct
     public void init() {
-        roles=roleService.getAllRoles();
-        role = new Role();
+        setRolesFromDB();
+//        role = new Role();
     }
 
     public String getFirstName() {
@@ -53,7 +54,7 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -61,7 +62,7 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.trim();
     }
 
     public String getEmail() {
@@ -69,7 +70,7 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.trim();
     }
 
     public String getPassword() {
@@ -77,22 +78,24 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password.trim();
     }
 
-    public Role getRole() {
-        return role;
+
+    public List<Role> getRolesFromDB() {
+        setRolesFromDB();
+        return rolesFromDB;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRolesFromDB() {
+        this.rolesFromDB = roleService.getAllRoles();
     }
 
-    public List<Role> getRoles() {
-        return roleService.getAllRoles();
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -124,20 +127,7 @@ public class CreateEmployee implements Serializable {
 
         FacesContext context= FacesContext.getCurrentInstance();
 
-        User user=new User();
-        user.setUsername(username);
-        user.setPassword(password);
-
-//        // Encrypt the password using BCrypt before saving it
-//        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
-//        user.setPassword(encodedPassword);
-
-        role=roleService.findByName(roleName);
-
-        user.setRole(role);
-        user.setFirstname(firstName);
-        user.setLastname(lastName);
-        user.setEmail(email);
+        User user = makeUser();
 
         try {
             userService.createUser(user);
@@ -146,7 +136,7 @@ public class CreateEmployee implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
 
             //clear the fields
-            this.role=null;
+//            this.role=null;
             this.roleName=null;
             this.firstName=null;
             this.lastName=null;
@@ -158,6 +148,17 @@ public class CreateEmployee implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             context.validationFailed();
         }
+    }
+
+    private User makeUser() {
+        User user=new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRoles(roles);
+        user.setFirstname(firstName);
+        user.setLastname(lastName);
+        user.setEmail(email);
+        return user;
     }
 
     public int userCount(){

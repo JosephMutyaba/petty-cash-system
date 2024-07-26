@@ -4,7 +4,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
-    <ui:define name="title">Settings</ui:define>
+    <ui:define name="title">
+        Settings
+        #{con.setRoute('sett')}
+    </ui:define>
     <ui:define name="main-content">
         <div class="main-content">
             <h2>Settings</h2>
@@ -31,8 +34,10 @@
                         <p:password id="password" placeholder="Password" value="#{loginBean.userPassword}"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
-                        <p:outputLabel for="role" value="Role"/>
-                        <p:inputText id="role" placeholder="Role" readonly="true" value="#{loginBean.role.name}"/>
+                        <p:outputLabel for="role" value="Roles"/>
+                        <ui:repeat id="role" value="#{loginBean.roles}" var="myRole" varStatus="status">
+                            #{myRole.name}#{status.last?"":","}
+                        </ui:repeat>
                     </h:panelGroup>
                 </p:panelGrid>
 

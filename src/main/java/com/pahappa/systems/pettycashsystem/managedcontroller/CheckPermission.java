@@ -17,13 +17,13 @@ public class CheckPermission implements Serializable {
 
     public boolean hasPermission(Perm permission) {
         User user = loginBean.getLoggedInUser();
-        return user.getRole().getPermissions().stream()
+        return user.getPermissions().stream()
                 .anyMatch(p -> p.getName() == permission);
     }
     public boolean hasPermission(Perm... permissions) {
         User user = loginBean.getLoggedInUser();
         for (Perm perm:permissions) {
-            if (user.getRole().getPermissions().stream()
+            if (user.getPermissions().stream()
                     .anyMatch(p -> p.getName() == perm))
                 return true;
         }

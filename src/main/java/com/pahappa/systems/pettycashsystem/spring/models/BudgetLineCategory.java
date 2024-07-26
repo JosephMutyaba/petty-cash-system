@@ -14,7 +14,7 @@ public class BudgetLineCategory {
     private String name;
 
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "budgetLineCategory")
     private List<BudgetLine> budgetLines;
 
     public BudgetLineCategory() {

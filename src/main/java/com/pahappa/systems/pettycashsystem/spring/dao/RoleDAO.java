@@ -41,15 +41,17 @@ public class RoleDAO {
 
         if (role != null) {
 
-            List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User WHERE role_id = :roleId")
+            List<User> users = sessionFactory.getCurrentSession().createQuery("select u FROM User u left join u.roles r where r.id = :roleId",User.class)
                     .setParameter("roleId",id)
                     .getResultList();
 
             Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
 
             for (User user : users) {
-                user.setRole(defaultRole);
-                sessionFactory.getCurrentSession().update(user);
+                if (user.getRoles().size()==1 && user.getRoles().remove(role)) {
+                    user.getRoles().add(defaultRole);
+                    sessionFactory.getCurrentSession().update(user);
+                }
             }
 
             ////////////////////////////////
@@ -65,17 +67,18 @@ public class RoleDAO {
     public void deleteAllRoles() {
 //        sessionFactory.getCurrentSession().createQuery("DELETE FROM User").executeUpdate();
 
-        List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User")
+        List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User",User.class)
                 .getResultList();
 
         Role defaultRole= (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name='USER'").uniqueResult();
 
         for (User user : users) {
-            user.setRole(defaultRole);
+            user.getRoles().clear();
+            user.getRoles().add(defaultRole);
             sessionFactory.getCurrentSession().update(user);
         }
 
-        List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role").getResultList();
+        List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role",Role.class).getResultList();
         for (Role role : roles) {
             if (!role.getName().equals("USER")) {
                 sessionFactory.getCurrentSession().delete(role);

@@ -2,15 +2,19 @@ package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
+import com.pahappa.systems.pettycashsystem.network.InternetChecker;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
+import com.pahappa.systems.pettycashsystem.spring.models.Permission;
+import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -22,6 +26,9 @@ public class UserService {
     private Constants con;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
@@ -30,6 +37,29 @@ public class UserService {
     public void createUser(User user) throws Exception {
         validateUser(user, "create");
         userDAO.createUser(user);
+
+
+
+        if (InternetChecker.isInternetAvailable()){
+            // Send registration email
+            String subject = "Registration Successful";
+//            String message = "Dear " + user.getFirstname() + ",\n\n" +
+//                    "Your registration is successful.Use the following to login to your account\n"
+//                    +"Username : " + user.getUsername() + "\n" +
+//                    "Password : " + user.getPassword() + "\n" +
+//                    "Regards,\nAdmin";
+
+
+            String message = "Dear " + user.getFirstname() + ",\n\n" +
+                    "Your registration is successful. Use the following to login to your account\n" +
+                    "Username: " + user.getUsername() + "\n" +
+                    "Password: " + user.getPassword() + "\n\n" +
+                    "You can login using the following link:\n" +
+                    "http://localhost:8356/PCS/pages/auth/login.xhtml\n\n" +
+                    "Regards,\nAdmin";
+
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+        }
     }
 
     // Read operation: Get user by ID
@@ -51,6 +81,32 @@ public class UserService {
     public void updateUser(User user) throws Exception {
         validateUser(user, "update");
         userDAO.updateUser(user);
+
+
+        if (InternetChecker.isInternetAvailable()){
+            // Send update email
+            String subject = "Registration Successful";
+//            String message = "Dear " + user.getFirstname() + ",\n\n" +
+//                    "Your registration is successful.Use the following to login to your account\n"
+//                    +"Username : " + user.getUsername() + "\n" +
+//                    "Password : " + user.getPassword() + "\n" +
+//                    "Regards,\nAdmin";
+
+
+            String message = "Dear " + user.getFirstname() + ",\n\n" +
+                    "Your registration is successful. Use the following to login to your account\n" +
+                    "Username: " + user.getUsername() + "\n" +
+                    "Password: " + user.getPassword() + "\n\n" +
+                    "You can login using the following link:\n" +
+                    "http://localhost:8356/PCS/pages/auth/login.xhtml\n\n" +
+                    "Regards,\nAdmin";
+
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+
+
+        }
+
+
     }
 
     // Delete operation
@@ -101,7 +157,7 @@ public class UserService {
         }
 
         if (!user.getEmail().matches(con.getEmailRegex())) {
-            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
+            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), underscores (_) and periods (.) are allowed.");
         }
 
         if (!user.getPassword().matches(con.getPasswordRegex())) {
@@ -118,6 +174,20 @@ public class UserService {
 
     public User getByUsername(String username) {
         return userDAO.getUserByUsername(username);
+    }
+
+//    @Transactional
+    public void loadPermissions(User user) {
+        Set<Permission> permissions = new HashSet<>();
+        Hibernate.initialize(user.getRoles());
+        for (Role r:user.getRoles()) {
+            permissions.addAll(r.getPermissions());
+        }
+        user.setPermissions(permissions);
+    }
+
+    public void addRoleToUser(User user, Role role) {
+        user.getRoles().add(role);
     }
 }
 

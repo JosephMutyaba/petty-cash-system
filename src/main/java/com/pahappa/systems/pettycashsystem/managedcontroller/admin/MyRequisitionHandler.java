@@ -1,6 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.managedcontroller.login.LoginBean;
+import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
@@ -207,6 +208,7 @@ public class MyRequisitionHandler implements Serializable {
             // For example, you could initialize the fields to default values or handle accordingly
             System.out.println("Null section");
             this.status = "Draft";
+            this.id=null;
             this.budgetLineId = null;
             this.justification = "";
             this.maxDate = null;
@@ -223,87 +225,158 @@ public class MyRequisitionHandler implements Serializable {
     public void updateRequisition() {
         FacesContext context = FacesContext.getCurrentInstance();
 
+        Requisition latestCompletedRequisition = new Requisition();
+        latestCompletedRequisition=requisitionService.retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(loginBean.getLoggedInUser().getId());
 
-        requisition =new Requisition();
+        if (latestCompletedRequisition != null) {
+            Accountability acc = new Accountability();
+            acc = latestCompletedRequisition.getAccountability();
+            if (!acc.getBalanceIsReturned()) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "First return the balance off the previous requisition before making another requisition", "Error"));
+                context.validationFailed();
+            }else {
+                requisition =new Requisition();
 
-        requisition.setId(id);
+                requisition.setId(id);
 
-        requisition.setJustification(justification);
-        requisition.setUser(loginBean.getLoggedInUser());
+                requisition.setJustification(justification);
+                requisition.setUser(loginBean.getLoggedInUser());
 
-        budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
+                budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
 
-        requisition.setBudgetline(budgetLine);
+                requisition.setBudgetline(budgetLine);
 
-        requisition.setStatus("Pending");
+                requisition.setStatus("Pending");
 
-        requisition.setEstimatedAmount(requestedAmount);
-//        requisition.setAmountGranted(requestedAmount);
+                requisition.setEstimatedAmount(requestedAmount);
 
-//        requisition.setAmountGranted(amountGranted);
+                requisition.setMaxDateNeeded(maxDate);
+                requisition.setDateCreated(new Date());
 
-//        requisition.setReview_comments(reviewComments);
+                try {
+                    requisitionService.createRequisition(requisition);
 
-//        requisition.setStatus(status);
+                    allRequisitions.update();
+                    selectRequisition();
 
-        requisition.setMaxDateNeeded(maxDate);
-        requisition.setDateCreated(new Date());
+                    FacesMessage message = new FacesMessage("Requisition created/updated successfully", "Success");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
 
-        try {
-            requisitionService.createRequisition(requisition);
+                } catch (Exception e) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                    context.validationFailed();
+                }
 
-            allRequisitions.update();
-            selectRequisition();
+            }
+        }else {
+            requisition =new Requisition();
 
-            FacesMessage message = new FacesMessage("Requisition created/updated successfully", "Success");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            requisition.setId(id);
 
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
-            context.validationFailed();
+            requisition.setJustification(justification);
+            requisition.setUser(loginBean.getLoggedInUser());
+
+            budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
+
+            requisition.setBudgetline(budgetLine);
+
+            requisition.setStatus("Pending");
+
+            requisition.setEstimatedAmount(requestedAmount);
+
+            requisition.setMaxDateNeeded(maxDate);
+            requisition.setDateCreated(new Date());
+
+            try {
+                requisitionService.createRequisition(requisition);
+
+                allRequisitions.update();
+                selectRequisition();
+
+                FacesMessage message = new FacesMessage("Requisition created/updated successfully", "Success");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+
+            } catch (Exception e) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                context.validationFailed();
+            }
+
         }
-
 
     }
 
     public void saveOrUpdateDraftRequisition() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        requisition =new Requisition();
-        requisition.setId(id);
-        requisition.setJustification(justification);
-        requisition.setUser(loginBean.getLoggedInUser());
+        Requisition latestCompletedRequisition = new Requisition();
+        latestCompletedRequisition=requisitionService.retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(loginBean.getLoggedInUser().getId());
 
-        budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
+        if (latestCompletedRequisition != null) {
+            Accountability acc = new Accountability();
+            acc = latestCompletedRequisition.getAccountability();
+            if (!acc.getBalanceIsReturned()) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "First return the balance off the previous requisition before making another requisition", "Error"));
+                context.validationFailed();
+            }else {
+                requisition =new Requisition();
+                requisition.setId(id);
+                requisition.setJustification(justification);
+                requisition.setUser(loginBean.getLoggedInUser());
 
-        requisition.setBudgetline(budgetLine);
+                budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
 
-        requisition.setStatus("Draft");
+                requisition.setBudgetline(budgetLine);
 
-        requisition.setEstimatedAmount(requestedAmount);
-//        requisition.setAmountGranted(requestedAmount);
+                requisition.setStatus("Draft");
 
-//        requisition.setAmountGranted(amountGranted);
+                requisition.setEstimatedAmount(requestedAmount);
 
-//        requisition.setReview_comments(reviewComments);
+                requisition.setMaxDateNeeded(maxDate);
+                requisition.setDateCreated(new Date());
 
-//        requisition.setStatus(status);
-        requisition.setMaxDateNeeded(maxDate);
-        requisition.setDateCreated(new Date());
+                try {
+                    requisitionService.createRequisition(requisition);
+                    allRequisitions.update();
+                    selectRequisition();
 
-        try {
-            requisitionService.createRequisition(requisition);
-            allRequisitions.update();
-            selectRequisition();
+                    FacesMessage message = new FacesMessage("Draft saved/updated successfully", "Success");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
 
-            FacesMessage message = new FacesMessage("Draft saved/updated successfully", "Success");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+                } catch (Exception e) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                    context.validationFailed();
+                }
+            }
+        }else {
+            requisition =new Requisition();
+            requisition.setId(id);
+            requisition.setJustification(justification);
+            requisition.setUser(loginBean.getLoggedInUser());
 
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
-            context.validationFailed();
+            budgetLine= budgetLineService.getBudgetLineById(budgetLineId);
+
+            requisition.setBudgetline(budgetLine);
+
+            requisition.setStatus("Draft");
+
+            requisition.setEstimatedAmount(requestedAmount);
+
+            requisition.setMaxDateNeeded(maxDate);
+            requisition.setDateCreated(new Date());
+
+            try {
+                requisitionService.createRequisition(requisition);
+                allRequisitions.update();
+                selectRequisition();
+
+                FacesMessage message = new FacesMessage("Draft saved/updated successfully", "Success");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+
+            } catch (Exception e) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                context.validationFailed();
+            }
         }
-
 
     }
 

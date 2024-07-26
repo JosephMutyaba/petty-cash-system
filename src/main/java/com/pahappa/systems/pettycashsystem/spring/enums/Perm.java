@@ -28,7 +28,6 @@ public enum Perm {
     VIEW_ROLES("View Roles"),
     VIEW_REQUISITIONS("View Requisitions"),
     VIEW_BUDGETLINES("View BudgetLines"),
-    VIEW_PERMISSIONS("View Permissions"),
 
     REQUEST_CHANGES("Request Changes"),
 

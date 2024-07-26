@@ -1,8 +1,5 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
-import com.pahappa.systems.pettycashsystem.exceptions.MinimumLengthException;
-import com.pahappa.systems.pettycashsystem.exceptions.NameExistsException;
-import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -166,23 +163,22 @@ public class CreateUserRole implements Serializable {
             roleService.createRole(role);
             allRoles.init();
 
-            FacesMessage message = new FacesMessage("BudgetLine saved successfully", "Success");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesMessage message = new FacesMessage("Role Created Successfully", "Success");
+            context.addMessage(null, message);
+            context.responseComplete();
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(),"Error"));
             context.validationFailed();
         }finally {
-            this.role = new Role();
-            this.roleName = null;
-            this.roleDescription = null;
-            this.viewEmployeesPermissions.clear();
-            this.viewRolesPermissions.clear();
-            this.viewRequisitionsPermissions.clear();
-            this.viewBudgetLinesPermissions.clear();
-            this.viewPermissions.clear();
+            role = new Role();
+            roleName = null;
+            roleDescription = null;
+            viewEmployeesPermissions.clear();
+            viewRolesPermissions.clear();
+            viewRequisitionsPermissions.clear();
+            viewBudgetLinesPermissions.clear();
+            viewPermissions.clear();
+            allPermissions.clear();
         }
-
-
-
     }
 }

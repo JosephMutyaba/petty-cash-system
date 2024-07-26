@@ -81,7 +81,7 @@ public class RequisitionService {
         }
 
         if (requisition.getEstimatedAmount()>requisition.getBudgetline().getBalance()){
-            throw new NullFieldException("You cannot requisite more than"+requisition.getBudgetline().getBalance());
+            throw new NullFieldException("You cannot request for more than "+requisition.getBudgetline().getBalance());
         }
 
         if (requisition.getAmountGranted()>requisition.getEstimatedAmount()) {
@@ -121,5 +121,9 @@ public class RequisitionService {
         if (budgetLineBalance<0) {
             throw new MinimumLengthException("Insufficient Balance on the "+name+"to cash this requisition");
         }
+    }
+
+    public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
+        return requisitionDAO.retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(loggedInUserId);
     }
 }

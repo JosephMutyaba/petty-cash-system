@@ -34,11 +34,10 @@ public class BudgetLine {
     @Column(nullable = false)
     private String status="Pending";  // DRAFT/ APPROVED
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "budgetline")
     private List<Requisition> requisitions;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "budgetLineCategory_id", nullable = false)
+    @ManyToOne
     private BudgetLineCategory budgetLineCategory;
 
     public BudgetLine() {}

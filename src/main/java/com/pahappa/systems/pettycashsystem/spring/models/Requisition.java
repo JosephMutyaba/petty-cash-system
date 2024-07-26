@@ -13,15 +13,14 @@ public class Requisition {
     private String justification;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Accountability accountability;
 
+    private Date dateAccountabilityWasSubmitted;
 
     @ManyToOne
-    @JoinColumn(name = "budgetline_id", nullable = false)
     private BudgetLine budgetline;
 
     private String review_comments;
@@ -46,9 +45,10 @@ public class Requisition {
     public Requisition() {
     }
 
-    private Requisition(Long id, String justification, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
+    private Requisition(Long id, String justification, Date dateAccountabilityWasSubmitted, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
         this.id = id;
         this.justification = justification;
+        this.dateAccountabilityWasSubmitted=dateAccountabilityWasSubmitted;
         this.user = user;
         this.accountability = accountability;
         this.budgetline = budgetline;
@@ -75,6 +75,14 @@ public class Requisition {
 
     public void setJustification(String justification) {
         this.justification = justification;
+    }
+
+    public Date getDateAccountabilityWasSubmitted() {
+        return dateAccountabilityWasSubmitted;
+    }
+
+    public void setDateAccountabilityWasSubmitted(Date dateAccountabilityWasSubmitted) {
+        this.dateAccountabilityWasSubmitted = dateAccountabilityWasSubmitted;
     }
 
     public User getUser() {
@@ -172,6 +180,6 @@ public class Requisition {
 
     @Override
     public String toString() {
-        return "Requisition" + justification;
+        return "#REQ-" + id;
     }
 }
