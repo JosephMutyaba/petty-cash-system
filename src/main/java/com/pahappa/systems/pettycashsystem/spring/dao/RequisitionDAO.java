@@ -1,7 +1,9 @@
 package com.pahappa.systems.pettycashsystem.spring.dao;
 
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -88,5 +90,27 @@ public class RequisitionDAO {
 
     public List<Requisition> getAllCompletedRequisitionsByStatus() {
         return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status='Completed' ORDER BY maxDateNeeded ASC").getResultList();
+    }
+
+//    public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
+//        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:loggedInUserId AND status='Completed' ORDER BY dateAccountabilityWasSubmitted DESC")
+//                .setParameter("loggedInUserId",loggedInUserId)
+//                .setMaxResults(1);
+//    }
+
+    public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
+        Session session = null;
+        Requisition latestRequisition = null;
+        try {
+            session = sessionFactory.getCurrentSession();
+            String hql = "FROM Requisition WHERE user.id = :loggedInUserId AND status = 'Completed' ORDER BY dateAccountabilityWasSubmitted DESC";
+            Query<Requisition> query = session.createQuery(hql, Requisition.class);
+            query.setParameter("loggedInUserId", loggedInUserId);
+            query.setMaxResults(1);
+            latestRequisition = query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return latestRequisition;
     }
 }

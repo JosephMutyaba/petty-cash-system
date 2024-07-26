@@ -29,7 +29,7 @@
             <p:column headerText="No" width="16px">#{index + 1}</p:column>
 
             <p:column headerText="Requisition">
-                <p:commandLink value="#{accountability.requisition.justification}" update="viewRequisitionDialog_panel" action="#{confirmBalanceReturn.selectRequisition(accountability.requisition)}" onsuccess="PF('viewRequisitionDialog').show()"/>
+                <p:commandLink value="#{accountability.requisition}" update="viewRequisitionDialog_panel" action="#{confirmBalanceReturn.selectRequisition(accountability.requisition)}" onsuccess="PF('viewRequisitionDialog').show()"/>
             </p:column>
             <p:column headerText="Amount Granted">
                 <p:outputLabel value="#{accountability.requisition.amountGranted}"/>

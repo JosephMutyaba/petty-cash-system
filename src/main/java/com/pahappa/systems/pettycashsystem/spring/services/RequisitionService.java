@@ -122,4 +122,8 @@ public class RequisitionService {
             throw new MinimumLengthException("Insufficient Balance on the "+name+"to cash this requisition");
         }
     }
+
+    public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
+        return requisitionDAO.retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(loggedInUserId);
+    }
 }

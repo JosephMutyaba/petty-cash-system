@@ -43,8 +43,8 @@ public class SendEmailReminder implements Serializable {
         this.user=selectedUser;
         this.requisition=selectedRequisition;
 
-        this.emailMessage="Dear "+user.getFirstname()+",\n\n You are kindly reminded to return a balance of Shs."+(requisition.getAmountGranted()-accountability.getAmountSpent())
-                +" off the requisition \""+requisition.getJustification()+"\"\n\nKind regards\nFinance";
+        this.emailMessage="Dear "+user.getFirstname()+",\n\nYou are kindly reminded to return a balance of Shs."+(requisition.getAmountGranted()-accountability.getAmountSpent())
+                +" off the requisition \""+requisition+"\"\n\nKind regards\nFinance";
         setEmailMessage(emailMessage);
     }
 

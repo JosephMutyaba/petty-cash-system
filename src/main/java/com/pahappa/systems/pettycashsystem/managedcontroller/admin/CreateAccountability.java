@@ -69,9 +69,6 @@ public class CreateAccountability implements Serializable {
 //        initialiseAccountability();
     }
 
-//    public CreateAccountability() {
-//        initialiseAccountability();
-//    }
 
     public Long getAccountabilityId() {
         return accountabilityId;
@@ -219,34 +216,13 @@ public class CreateAccountability implements Serializable {
 
             //setting status to completed
             requisition.setStatus("Completed");
+            requisition.setDateAccountabilityWasSubmitted(new Date());
 
             accountabilityService.validateAccountability(accountability, requisition);
 
-
-//            //balancing books
-//            User user=loginBean.getLoggedInUser();
-//
-//            BudgetLine budgetLine=requisition.getBudgetline();
-//
-//            Double budgetlineBal=budgetLine.getBalance();
-//
             Double requisitionAmountGranted = requisition.getAmountGranted();
-//
-//            Double userAccBal = user.getAccountBalance();
-//
-            Double expenditureBalance = requisitionAmountGranted-amountSpent;
-//
-//            Double newUserAccBal=userAccBal-expenditureBalance;
-//
-//            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
-//
-//            user.setAccountBalance(newUserAccBal);
-//            budgetLine.setBalance(newBudgetLineBal);
-//
-//            //accountabilityService.createAccountability(accountability);
-//            userService.updateUser(user);
 
-//            budgetLineService.updateBudgetLine(budgetLine);
+            Double expenditureBalance = requisitionAmountGranted-amountSpent;
 
             if (expenditureBalance ==0.0) {
                 accountability.setBalanceIsReturned(true);
