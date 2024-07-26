@@ -10,6 +10,7 @@
     </ui:define>
     <ui:define name="main-content">
         <h2 class="mb">Accountability</h2>
+        <p:messages id="gl_messages" closable="true" globalOnly="true" severity="info"/>
 
         <h:form class="bg-white pad1">
             <p:inputText styleClass="pill fillW mt" value="#{allAccountability.searchTerm}" placeholder="Search">
@@ -104,10 +105,10 @@
                 </h:panelGroup>
                 <div class="mt">
                     <p:commandButton icon="pi pi-envelope" styleClass="pill mr" value="Send" actionListener="#{sendEmailReminder.sendReminderMessage}"
-                                     oncomplete="if (!args.validationFailed) PF('send_reminder_email_dialog').hide(); updateAccountability_table();" update="gl_messsages" />
+                                     oncomplete="if (!args.validationFailed) PF('send_reminder_email_dialog').hide(); updateAccountability_table();" update="gls_messsages, gl_messages" />
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('send_reminder_email_dialog').hide(); return false;"/>
                 </div>
-                <p:messages id="gl_messsages" globalOnly="true" closable="true"/>
+                <p:messages id="gls_messsages" globalOnly="true" closable="true"/>
 
             </h:form>
         </p:dialog>
