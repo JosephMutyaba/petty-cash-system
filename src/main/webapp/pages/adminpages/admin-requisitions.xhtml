@@ -82,7 +82,7 @@
             <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
                 <h:outputText value="#{requisition.amountGranted}"/>
             </p:column>
-            <p:column headerText="Edit Status" rendered="#{allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('accepted') and checkPermission.hasPermission('APPROVE_REQUISITION','REJECT_REQUISITION')}">
+            <p:column headerText="Edit Status" rendered="#{(allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('accepted')) and checkPermission.hasPermission('APPROVE_REQUISITION','ACCEPT_REQUISITION','REJECT_REQUISITION')}">
                 <h:form>
                     <p:commandButton styleClass="pill square bg-y text-blk" icon="pi pi-flag-fill" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
                 </h:form>
@@ -176,7 +176,7 @@
                     <p:outputLabel for="status" value="Status:"/>
                     <p:selectOneMenu id="status" value="#{updateRequisition.status}" required="true">
                         <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
-                        <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
+                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REJECT_REQUISITION')}" itemLabel="Reject" itemValue="Rejected"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_REQUISITION')}" itemLabel="Approve" itemValue="Approved"/>
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accepted"/>
 <!--                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>-->

@@ -51,7 +51,7 @@
                 <p:commandButton rendered="#{allBudgetLines.activeTab == 0 and checkPermission.hasPermission('MAKE_BUDGETLINE')}" value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
                     <p:autoUpdate/>
                 </p:commandButton>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" rendered="#{allBudgetLines.activeTab == 0 and checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
         <h:form class="bg-white pad1">

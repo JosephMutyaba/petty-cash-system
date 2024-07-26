@@ -29,7 +29,7 @@
             </p:column>
             <p:column headerText="Actions" rendered="#{checkPermission.hasPermission('EDIT_ROLE','DELETE_ROLE')}">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{role.name!='USER' and checkPermission.hasPermission('EDIT_ROLE')}" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
+                    <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_ROLE')}" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
                     <p:commandButton title="Delete" rendered="#{role.name!='USER' and checkPermission.hasPermission('DELETE_ROLE')}" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>

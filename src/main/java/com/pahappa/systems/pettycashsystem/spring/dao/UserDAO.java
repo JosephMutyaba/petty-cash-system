@@ -46,6 +46,8 @@ public class UserDAO {
     public void deleteUser(Long userId) {
         User user = getCurrentSession().load(User.class, userId);
         if (user != null) {
+            user.getRequisition().clear();
+
             getCurrentSession().delete(user);
         }
     }
