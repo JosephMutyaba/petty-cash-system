@@ -34,3 +34,6 @@ build/
 ### Mac OS ###
 .DS_Store
 .smarttomcat/
+
+### ignoring the war file
+/PCS_WarFile/PCS.war
