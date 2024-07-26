@@ -81,14 +81,6 @@ public class CreateEmployee implements Serializable {
         this.password = password.trim();
     }
 
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
-
 
     public List<Role> getRolesFromDB() {
         setRolesFromDB();

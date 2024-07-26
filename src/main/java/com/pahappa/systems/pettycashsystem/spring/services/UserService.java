@@ -43,11 +43,21 @@ public class UserService {
         if (InternetChecker.isInternetAvailable()){
             // Send registration email
             String subject = "Registration Successful";
+//            String message = "Dear " + user.getFirstname() + ",\n\n" +
+//                    "Your registration is successful.Use the following to login to your account\n"
+//                    +"Username : " + user.getUsername() + "\n" +
+//                    "Password : " + user.getPassword() + "\n" +
+//                    "Regards,\nAdmin";
+
+
             String message = "Dear " + user.getFirstname() + ",\n\n" +
-                    "Your registration is successful.Use the following to login to your account\n"
-                    +"Username : " + user.getUsername() + "\n" +
-                    "Password : " + user.getPassword() + "\n" +
+                    "Your registration is successful. Use the following to login to your account\n" +
+                    "Username: " + user.getUsername() + "\n" +
+                    "Password: " + user.getPassword() + "\n\n" +
+                    "You can login using the following link:\n" +
+                    "http://localhost:8356/PCS/pages/auth/login.xhtml\n\n" +
                     "Regards,\nAdmin";
+
             emailService.sendSimpleMessage(user.getEmail(), subject, message);
         }
     }
@@ -76,12 +86,24 @@ public class UserService {
         if (InternetChecker.isInternetAvailable()){
             // Send update email
             String subject = "Registration Successful";
+//            String message = "Dear " + user.getFirstname() + ",\n\n" +
+//                    "Your registration is successful.Use the following to login to your account\n"
+//                    +"Username : " + user.getUsername() + "\n" +
+//                    "Password : " + user.getPassword() + "\n" +
+//                    "Regards,\nAdmin";
+
+
             String message = "Dear " + user.getFirstname() + ",\n\n" +
-                    "Your registration is successful.Use the following to login to your account\n"
-                    +"Username : " + user.getUsername() + "\n" +
-                    "Password : " + user.getPassword() + "\n" +
+                    "Your registration is successful. Use the following to login to your account\n" +
+                    "Username: " + user.getUsername() + "\n" +
+                    "Password: " + user.getPassword() + "\n\n" +
+                    "You can login using the following link:\n" +
+                    "http://localhost:8356/PCS/pages/auth/login.xhtml\n\n" +
                     "Regards,\nAdmin";
+
             emailService.sendSimpleMessage(user.getEmail(), subject, message);
+
+
         }
 
 
