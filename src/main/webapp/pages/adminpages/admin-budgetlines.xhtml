@@ -205,14 +205,14 @@
                         <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REQUEST_CHANGES')}" itemLabel="Request changes" itemValue="RequestEdit"/>
                     </p:selectOneMenu>
                 </h:panelGroup>
-                <p:message for="status" closable="true"/>
+                <h:message styleClass="err-msg" for="status" closable="true"/>
                 <h:panelGroup class="flex column">
                     <p:outputLabel value="Comment" for="comment"/>
                     <p:inputTextarea id="comment" value="#{updateBudgetLine.review_comments}" />
                 </h:panelGroup>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
-                                     onsuccess="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+                                     onsuccess="if (!args.validationFailed) PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
                 </div>
             </h:form>

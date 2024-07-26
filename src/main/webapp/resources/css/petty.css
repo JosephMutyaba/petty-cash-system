@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Playwrite+NG+Modern:wght@100..400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://unpkg.com/primeflex@latest/primeflex.css');
 * {box-sizing: border-box;margin: 0;padding: 0;font-family:'Work Sans',Arsenal,sans-serif}
 :root {
     --mar: 4px;
@@ -90,6 +91,12 @@ li.ui-widget.ui-menuitem.ui-corner-all.ui-menu-parent>a.ui-menuitem-link
 
 .route {
     background: #e9ecef
+}
+
+.err-msg {
+    font-size: 0.75rem !important;
+    color: var(--red-600) !important;
+    margin-left: 1rem !important;
 }
 
 /*Styles*/
