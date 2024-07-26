@@ -44,6 +44,10 @@ public class DisburseCash implements Serializable {
         requisition = new Requisition();
     }
 
+    public Requisition getRequisition() {
+        return requisition;
+    }
+
     public void selectRequisition(Requisition selectedRequisition){
         this.requisition = selectedRequisition;
     }

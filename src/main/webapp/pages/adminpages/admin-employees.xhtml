@@ -58,40 +58,41 @@
                         <p:inputText id="firstname" value="#{createEmployee.firstName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="2" maximum="30"/>
                         </p:inputText>
+                        <h:message for="firstname" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="lastname" value="Last Name" styleClass="label"/>
                         <p:inputText id="lastname" value="#{createEmployee.lastName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="2" maximum="30"/>
                         </p:inputText>
-                        <p:message for="lastname"/>
+                        <h:message styleClass="err-msg" for="lastname"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="email" value="Email" styleClass="label"/>
                         <p:inputText id="email" value="#{createEmployee.email}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                         </p:inputText>
-                        <p:message for="email"/>
+                        <h:message styleClass="err-msg" for="email"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="password" value="Password" styleClass="label"/>
                         <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="6" maximum="20"/>
                         </p:password>
-                        <p:message for="password"/>
+                        <h:message for="password" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="role" value="Role" styleClass="label"/>
                         <p:selectCheckboxMenu id="role" value="#{createEmployee.roles}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="selectMenu" label="Select Roles">
                             <f:selectItems value="#{createEmployee.rolesFromDB}" var="role" itemLabel="#{role.name}" itemValue="#{role}"/>
                         </p:selectCheckboxMenu>
-                        <p:message for="role"/>
+                        <h:message for="role" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="username" value="Username" styleClass="label"/>
                         <p:inputText id="username" value="#{createEmployee.username}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="4" maximum="20"/>
                         </p:inputText>
-                        <p:message for="username"/>
+                        <h:message for="username" styleClass="err-msg"/>
                     </h:panelGroup>
                 </p:panelGrid>
 <!--                <p:growl globalOnly="true" life="3000" />-->
