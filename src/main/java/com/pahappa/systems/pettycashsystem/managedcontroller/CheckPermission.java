@@ -12,8 +12,12 @@ import java.io.Serializable;
 @Named
 @SessionScoped
 public class CheckPermission implements Serializable {
-    @Autowired
     private LoginBean loginBean;
+
+    @Autowired
+    public CheckPermission (LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
 
     public boolean hasPermission(Perm permission) {
         User user = loginBean.getLoggedInUser();

@@ -46,12 +46,12 @@
         <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allRequisitions.activeTab}">
                 <p:ajax event="tabChange" listener="#{allRequisitions.onTabChange}" update=":requisition_table"/>
-                <p:tab id="pendingTab" title="Pending"/>
-                <p:tab id="accepted" title="Accepted" rendered="#{checkPermission.hasPermission('ACCEPT_REQUISITION', 'APPROVE_REQUISITION')}"/>
-                <p:tab id="approvedTab" title="Approved" />
-                <p:tab id="rejectedTab" title="Rejected"/>
-                <p:tab id="paid" title="Paid"/>
-                <p:tab id="completed" title="Completed"/>
+                <p:tab id="pendingTab" title="Pending" rendered="#{checkPermission.hasPermission('ACCEPT_REQUISITION', 'REJECT_REQUISITION')}"/>
+                <p:tab id="accepted" title="Reviewed" rendered="#{checkPermission.hasPermission('ACCEPT_REQUISITION', 'APPROVE_REQUISITION')}"/>
+                <p:tab id="approvedTab" title="Approved"/>
+                <p:tab id="rejectedTab" title="Rejected" rendered="#{checkPermission.hasPermission('REJECT_REQUISITION')}"/>
+                <p:tab id="paid" title="Paid" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION')}"/>
+                <p:tab id="completed" title="Completed" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION')}"/>
                 <p:tab id="expired" title="Expired"/>
             </p:tabView>
         </h:form>
@@ -77,10 +77,14 @@
                 <h:outputText value="#{requisition.budgetline.description}"/>
             </p:column>
             <p:column headerText="Amount requested">
-                <h:outputText value="#{requisition.estimatedAmount}"/>
+                <h:outputText value="#{requisition.estimatedAmount}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </h:outputText>
             </p:column>
             <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
-                <h:outputText value="#{requisition.amountGranted}"/>
+                <h:outputText value="#{requisition.amountGranted}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </h:outputText>
             </p:column>
             <p:column headerText="Edit Status" rendered="#{(allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('accepted')) and checkPermission.hasPermission('APPROVE_REQUISITION','ACCEPT_REQUISITION','REJECT_REQUISITION')}">
                 <h:form>
@@ -120,7 +124,9 @@
                 <p:panelGrid columns="2" layout="grid">
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_amount_requested" value="Amount Requested:"/>
-                        <p:inputText id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false"/>
+                        <p:inputNumber id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false">
+                            <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                        </p:inputNumber>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_date_needed" value="Date Needed:"/>
@@ -173,13 +179,9 @@
         <p:dialog widgetVar="modify_status_dialog" header="Modify status" modal="true">
             <h:form id="modify_status_form">
                 <h:panelGroup class="flex column">
-                    <p:outputLabel for="status" value="Status:"/>
+                    <p:outputLabel for="status" value="Status"/>
                     <p:selectOneMenu id="status" value="#{updateRequisition.status}" required="true" requiredMessage="#{con.requiredMessage}">
-                        <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REJECT_REQUISITION')}" itemLabel="Reject" itemValue="Rejected"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_REQUISITION')}" itemLabel="Approve" itemValue="Approved"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accepted"/>
-<!--                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>-->
+                        <f:selectItems value="#{updateRequisition.statusSet}" var="modify" itemValue="#{modify.status}" itemLabel="#{modify.description}"/>
                     </p:selectOneMenu>
                     <h:message for="status" styleClass="err-msg"/>
                 </h:panelGroup>
@@ -189,7 +191,9 @@
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="granted_amount" value="Granted Amount"/>
-                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}" required="true" requiredMessage="#{con.requiredMessage}">
+                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    </p:inputNumber>
                     <h:message for="granted_amount" styleClass="err-msg"/>
                     <p:outputLabel value="Max: #{updateRequisition.requestedAmount}" style="color:cornflowerblue;font-size:0.8rem;padding-left:16px"/>
                 </h:panelGroup>
@@ -206,7 +210,9 @@
                 <h:form styleClass="pad1">
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true"/>
+                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
+                            <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                        </p:inputNumber>
                     </h:panelGroup>
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>

@@ -2,6 +2,9 @@ package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
+import com.pahappa.systems.pettycashsystem.managedcontroller.CheckPermission;
+import com.pahappa.systems.pettycashsystem.spring.enums.ModifyStatus;
+import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLineCategory;
 import com.pahappa.systems.pettycashsystem.spring.services.BudgetLineCategoryService;
@@ -16,7 +19,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 @Named
 @ViewScoped
@@ -31,6 +36,9 @@ public class UpdateBudgetLine implements Serializable {
     @Autowired
     AllBudgetLines allBudgetLines;
 
+    @Autowired
+    private CheckPermission checkPermission;
+
     private String description;
     private Date startDate;
     private Date endDate;
@@ -39,6 +47,8 @@ public class UpdateBudgetLine implements Serializable {
     private BudgetLine budgetLine;
 
     private String status;
+
+    private Set<ModifyStatus> statusSet;
 
     private String review_comments;
 
@@ -55,6 +65,14 @@ public class UpdateBudgetLine implements Serializable {
         budgetLineCategories = budgetLineCategoryService.getAllBudgetLineCategories();
     }
 
+    private void setupStatusSet() {
+//        CheckPermission checkPermission = new CheckPermission();
+        statusSet = EnumSet.of(ModifyStatus.Null);
+        if (checkPermission.hasPermission(Perm.valueOf("APPROVE_BUDGETLINE"))) statusSet.add(ModifyStatus.APPROVE);
+        if (checkPermission.hasPermission(Perm.valueOf("REJECT_BUDGETLINE"))) statusSet.add(ModifyStatus.REJECT);
+        if (checkPermission.hasPermission(Perm.valueOf("REQUEST_CHANGES"))) statusSet.add(ModifyStatus.REQUEST_CHANGES);
+    }
+
     public String getReview_comments() {
         return review_comments;
     }
@@ -62,7 +80,7 @@ public class UpdateBudgetLine implements Serializable {
     public void setReview_comments(String review_comments) {
         this.review_comments = review_comments;
     }
-
+ 
     public Date getToday() {
         return today;
     }
@@ -99,6 +117,11 @@ public class UpdateBudgetLine implements Serializable {
         this.amount = amount;
     }
 
+    public Set<ModifyStatus> getStatusSet() {
+        setupStatusSet();
+        return statusSet;
+    }
+    
     public String getStatus() {
         return status;
     }

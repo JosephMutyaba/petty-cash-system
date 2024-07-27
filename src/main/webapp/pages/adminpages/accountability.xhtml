@@ -32,18 +32,24 @@
                 <p:commandLink value="#{accountability.requisition}" update="viewRequisitionDialog_panel" action="#{confirmBalanceReturn.selectRequisition(accountability.requisition)}" onsuccess="PF('viewRequisitionDialog').show()"/>
             </p:column>
             <p:column headerText="Amount Granted">
-                <p:outputLabel value="#{accountability.requisition.amountGranted}"/>
+                <p:outputLabel value="#{accountability.requisition.amountGranted}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </p:outputLabel>
             </p:column>
             <p:column headerText="Amount Spent">
-                <p:outputLabel value="#{accountability.amountSpent}"/>
+                <p:outputLabel value="#{accountability.amountSpent}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </p:outputLabel>
             </p:column>
 
             <p:column headerText="Balance">
-                <p:outputLabel value="#{accountability.requisition.amountGranted-accountability.amountSpent}"/>
+                <p:outputLabel value="#{accountability.requisition.amountGranted-accountability.amountSpent}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </p:outputLabel>
             </p:column>
 
             <p:column headerText="Balance returned">
-                <p:outputLabel value="#cleared" rendered="#{accountability.balanceIsReturned}"/>
+                <p:outputLabel value="#cleared" rendered="#{accountability.balanceIsReturned}" styleClass="text-g"/>
                 <p:commandButton icon="pi pi-wallet" title="Confirm Balance Return" rendered="#{!accountability.balanceIsReturned}"
                                  action="#{confirmBalanceReturn.selectAccountability(accountability)}" onsuccess="PF('confirm_balance_return_dialog').show()"
                                  update="confirm_balance_return_dialog_form" styleClass="pill square mr"/>
@@ -121,15 +127,19 @@
                 </h:panelGroup>
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel value="Reason" for="reason"/>
-                    <p:inputText id="reason" value="#{confirmBalanceReturn.requisition.justification}" readonly="true"/>
+                    <p:inputTextarea id="reason" value="#{confirmBalanceReturn.requisition.justification}" readonly="true"/>
                 </h:panelGroup>
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel value="Amount Requested" for="requested"/>
-                    <p:inputText id="requested" value="#{confirmBalanceReturn.requisition.estimatedAmount}" readonly="true"/>
+                    <p:inputText id="requested" value="#{confirmBalanceReturn.requisition.estimatedAmount}" readonly="true">
+                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    </p:inputText>
                 </h:panelGroup>
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel value="Amount Granted" for="granted"/>
-                    <p:inputText id="granted" value="#{confirmBalanceReturn.requisition.amountGranted}" readonly="true"/>
+                    <p:inputText id="granted" value="#{confirmBalanceReturn.requisition.amountGranted}" readonly="true">
+                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    </p:inputText>
                 </h:panelGroup>
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel value="Max Date needed" for="date_needed"/>

@@ -28,7 +28,9 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{(myRequisitionHandler.budgetLine ne null) and (not myRequisitionHandler.status.equals('Draft'))}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}"
+                                           disabled="#{(myRequisitionHandler.budgetLine ne null) and (not myRequisitionHandler.status.equals('Draft'))}"
+                                           required="true" requiredMessage="#{con.requiredMessage}" decimalPlaces="0"/>
                             <h:message for="amount" styleClass="err-msg"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
@@ -38,12 +40,14 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="justification" value="Justification"/>
-                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not myRequisitionHandler.status.equals('Draft')}"/>
+                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not myRequisitionHandler.status.equals('Draft')}" required="true"/>
                             <h:message for="justification" styleClass="err-msg"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column" rendered="#{myRequisitionHandler.status.equals('Approved') or myRequisitionHandler.status.equals('Paid')}">
                             <p:outputLabel for="amountGranted" value="Amount Granted"/>
-                            <p:outputLabel id="amountGranted" value="#{myRequisitionHandler.amountGranted}"/>
+                            <p:outputLabel id="amountGranted" value="#{myRequisitionHandler.amountGranted}">
+                                <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                            </p:outputLabel>
                         </h:panelGroup>
                     </p:panelGrid>
                     <div>
@@ -118,7 +122,9 @@
                             #{requisition.estimatedAmount}
                         </p:column>
                         <p:column headerText="Granted">
-                            #{requisition.amountGranted}
+                            <h:outputText value="#{requisition.amountGranted}">
+                                <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Budget Line">
                             #{requisition.budgetline.description}
@@ -138,7 +144,9 @@
                         <h:form styleClass="pad1">
                             <h:panelGroup styleClass="flex column">
                                 <p:outputLabel for="amount_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="amount_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true"/>
+                                <p:inputNumber id="amount_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
+                                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                                </p:inputNumber>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column">
                                 <p:outputLabel for="acdescription" value="Description" styleClass="mt"/>
