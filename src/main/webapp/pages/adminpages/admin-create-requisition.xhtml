@@ -134,7 +134,7 @@
                         </p:column>
 
                         <p:column rendered="#{requisition.status == 'Completed'}" headerText="Accountability">
-                            <p:commandButton icon="pi pi-file-edit" action="#{handleOneAccountability.selectAccountability(requisition.id)}" onsuccess="PF('accountabilityDialog').show()" update="bigTab:accountabilityDialogPanel" />
+                            <p:commandButton icon="pi pi-file-edit" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onsuccess="PF('accountabilityDialog').show()" update="bigTab:accountabilityDialogPanel" />
                         </p:column>
                     </p:dataTable>
                 </h:form>
@@ -144,9 +144,9 @@
                         <h:form styleClass="pad1">
                             <h:panelGroup styleClass="flex column">
                                 <p:outputLabel for="amount_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="amount_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
-                                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
-                                </p:inputNumber>
+                                <p:inputText id="amount_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
+                                    <f:convertNumber type="currency" currencySymbol="UGX " integerOnly="true" maxFractionDigits="2"/>
+                                </p:inputText>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column">
                                 <p:outputLabel for="acdescription" value="Description" styleClass="mt"/>
