@@ -38,6 +38,7 @@
         <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allBudgetLines.activeTab}">
                 <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budgetlines_table :add_delete_buttons"/>
+                <p:tab id="draftTab" title="Drafts" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','APPROVE_BUDGETLINE', 'REJECT_BUDGETLINE')}"/>
                 <p:tab id="pendingTab" title="Pending" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','APPROVE_BUDGETLINE', 'REJECT_BUDGETLINE')}"/>
                 <p:tab id="approvedTab" title="Approved"/>
                 <p:tab id="rejectedTab" title="Rejected" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','REJECT_BUDGETLINE')}"/>
@@ -99,8 +100,9 @@
                     <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="pill square bg-y text-blk" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
-            <p:column headerText="Actions" rendered="#{(allBudgetLines.tabId.equals('pendingTab')||allBudgetLines.tabId.equals('editLineTab')) and checkPermission.hasPermission('EDIT_BUDGETLINE','DELETE_BUDGETLINE')}">
+            <p:column headerText="Actions" rendered="#{(allBudgetLines.tabId.equals('draftTab') || allBudgetLines.tabId.equals('pendingTab') ||allBudgetLines.tabId.equals('editLineTab')) and checkPermission.hasPermission('EDIT_BUDGETLINE','DELETE_BUDGETLINE')}">
                 <h:form>
+                    <p:commandButton title="Edit Draft" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE') and budgetLine.status.equals('Draft')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_in_draft_dialog').show()" update="edit_budgetline_in_draft_form"/>
                     <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE') and budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                     <p:commandButton title="Delete" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE') and not (budgetLine.status.equals('Expired')||budgetLine.status.equals('Rejected')||budgetLine.status.equals('Approved'))}" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
@@ -142,6 +144,9 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt">
+                    <p:commandButton icon="pi pi-file" styleClass="pill mr" value="save Draft" actionListener="#{createBudgetLine.saveDraftBudgetLine}"
+                                     oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
+
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
@@ -181,11 +186,55 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Update" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
                                      update=":tabForm:tabView, m_essages, :new_budgetline_form, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </div>
                 <p:messages globalOnly="true" closable="true" id="m_essages"/>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog id="edit_budgetline_in_draft_dialog" widgetVar="edit_budgetline_in_draft_dialog" header="Edit Budgetline" modal="true">
+            <h:form id="edit_budgetline_in_draft_form">
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="descr" value="Description"/>
+                        <p:inputText id="descr" value="#{updateBudgetLine.description}" required="true" requiredMessage="#{con.requiredMessage}" autocomplete="false"/>
+                        <h:message for="desc" styleClass="err-msg"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="startingdte" value="Start Date"/>
+                        <p:calendar navigator="true" id="startingdte" value="#{updateBudgetLine.startDate}" required="true" requiredMessage="#{con.requiredMessage}" showButtonPanel="true" />
+                        <h:message for="startdte" styleClass="err-msg"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="ending_date" value="End Date"/>
+                        <p:calendar navigator="true" id="ending_date" value="#{updateBudgetLine.endDate}" required="true" requiredMessage="#{con.requiredMessage}" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+                        <h:message for="end_date" styleClass="err-msg"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="am_ounting" value="Amount"/>
+                        <p:inputNumber id="am_ounting" value="#{updateBudgetLine.amount}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="categorie_y" value="Category"/>
+                        <p:selectOneMenu id="categorie_y" value="#{updateBudgetLine.budgetLineCategoryName}">
+                            <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <div class="mt">
+
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Update Draft" actionListener="#{updateBudgetLine.updateDraftBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                                     update=":tabForm:tabView, me_essages, :new_budgetline_form, @form"/>
+
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateDraftBudgetLineToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                                     update=":tabForm:tabView, me_essages, :new_budgetline_form, @form"/>
+
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
+                </div>
+                <p:messages globalOnly="true" closable="true" id="me_essages"/>
             </h:form>
         </p:dialog>
 

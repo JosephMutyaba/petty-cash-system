@@ -185,6 +185,19 @@ public class UpdateBudgetLine implements Serializable {
 
 
     public void updateBudgetLineFromEditLineStatusToPending() {
+        updateFunction("Pending");
+    }
+
+    public void updateDraftBudgetLine() {
+        updateFunction("Draft");
+    }
+
+    public void updateDraftBudgetLineToPending() {
+        updateFunction("Pending");
+    }
+
+
+    private void updateFunction(String updateStatus){
         FacesContext context = FacesContext.getCurrentInstance();
 
         System.out.println("\nUpdating budgetLine.........\n");
@@ -197,7 +210,7 @@ public class UpdateBudgetLine implements Serializable {
         budgetLineCategory=budgetLineCategoryService.getBudgetLineCategoryByName(budgetLineCategoryName);
         budgetLine.setBudgetLineCategory(budgetLineCategory);
 
-        budgetLine.setStatus("Pending");
+        budgetLine.setStatus(updateStatus);
 
         try {
             budgetLineService.updateBudgetLine(budgetLine);
@@ -211,15 +224,12 @@ public class UpdateBudgetLine implements Serializable {
             context.validationFailed();
         }
 
-//        return "/pages/auth/login.xhtml?faces-redirect=true";
         setAmount(null);
         setDescription(null);
         setEndDate(null);
         setStartDate(null);
         setReview_comments(null);
     }
-
-
 
 
     public String getBudgetLineCategoryName() {

@@ -104,6 +104,17 @@ public class CreateBudgetLine implements Serializable {
 
     public void saveBudgetLine() {
         System.out.println("\nSaving budgetLine.........\n");
+        saveOrUpdateBudgetLine("Pending");
+    }
+
+    public void saveDraftBudgetLine() {
+        System.out.println("\nSaving budgetLine.........\n");
+        saveOrUpdateBudgetLine("Draft");
+    }
+
+    private void saveOrUpdateBudgetLine(String givenStatus){
+        budgetLine.setStatus(givenStatus);
+
         budgetLine.setAmount(amount);
         budgetLine.setDescription(description);
         budgetLine.setStartDate(startDate);
