@@ -42,6 +42,9 @@ public class CreateAccountability implements Serializable {
     @Autowired
     private LoginBean loginBean;
 
+    @Autowired
+    private MyRequisitions myRequisitions;
+
     private Long accountabilityId;
 
     private String description;
@@ -232,6 +235,8 @@ public class CreateAccountability implements Serializable {
 
             requisitionService.updateRequisition(requisition);  // this automatically creates
 
+            myRequisitions.update();
+
             FacesMessage message = new FacesMessage("Accountability submitted successfully. ", "success");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
@@ -257,39 +262,14 @@ public class CreateAccountability implements Serializable {
             accountability.setStatus("Draft");
             accountability.setId(accountabilityId);
 
-            //setting status to completed
-//            requisition.setStatus("Completed");
-
             accountabilityService.validateAccountability(accountability, requisition);
 
             requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
-//            //balancing books
-//            User user=loginBean.getLoggedInUser();
-//
-//            BudgetLine budgetLine=requisition.getBudgetline();
-//
-//            Double budgetlineBal=budgetLine.getBalance();
-//
-//            Double requisitionAmountGranted = requisition.getAmountGranted();
-//
-//            Double userAccBal = user.getAccountBalance();
-//
-//            Double expenditureBalance = requisitionAmountGranted-amountSpent;
-//
-//            Double newUserAccBal=userAccBal-expenditureBalance;
-//
-//            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
-//
-//            user.setAccountBalance(newUserAccBal);
-//            budgetLine.setBalance(newBudgetLineBal);
-//
-//            //accountabilityService.createAccountability(accountability);
-//            userService.updateUser(user);
-//
-//            budgetLineService.updateBudgetLine(budgetLine);
-//
+
             requisitionService.updateRequisition(requisition);  // this automatically creates
+
+            myRequisitions.update();
 
             FacesMessage message = new FacesMessage("Accountability saved successfully.", "Success");
             FacesContext.getCurrentInstance().addMessage(null, message);
