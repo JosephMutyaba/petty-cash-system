@@ -21,13 +21,13 @@ public class AccountabilityDAO {
         sessionFactory.getCurrentSession().saveOrUpdate(accountability);
     }
 
-    public Accountability getAccountabilityById(Long id) {
-        return sessionFactory.getCurrentSession().get(Accountability.class, id);
-    }
+//    public Accountability getAccountabilityById(Long id) {
+//        return sessionFactory.getCurrentSession().get(Accountability.class, id);
+//    }
 
     public List<Accountability> getAllAccountabilities() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Accountability WHERE status='Submitted' ORDER BY balanceIsReturned ASC")
+                .createQuery("FROM Accountability WHERE deleted=false AND status='Submitted' ORDER BY balanceIsReturned ASC")
                 .getResultList();
     }
 

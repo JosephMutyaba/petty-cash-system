@@ -26,12 +26,13 @@ public class BudgetLineDAO {
     }
 
     public BudgetLine getBudgetLineById(Long id) {
-        return sessionFactory.getCurrentSession().get(BudgetLine.class, id);
+        return (BudgetLine) sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE deleted=false AND id=:id")
+                .setParameter("id", id).uniqueResult();
     }
 
     public List<BudgetLine> getAllBudgetLines() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM BudgetLine ORDER BY id DESC", BudgetLine.class)
+                .createQuery("FROM BudgetLine WHERE deleted=false ORDER BY id DESC", BudgetLine.class)
                 .getResultList();
     }
 
@@ -66,7 +67,7 @@ public class BudgetLineDAO {
     }
 
     public List<BudgetLine> getAllBudgetlinesByStatus(String budgetLineStatus) {
-        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status=:budgetlineStatus AND endDate>=CURRENT_DATE ORDER BY id DESC")
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE deleted=false AND status=:budgetlineStatus AND endDate>=CURRENT_DATE ORDER BY id DESC")
                 .setParameter("budgetlineStatus", budgetLineStatus)
                 .getResultList();
     }
@@ -105,12 +106,12 @@ public class BudgetLineDAO {
     }
 
     public List<BudgetLine> getAllExpiredBudgetLines() {
-        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE endDate<CURRENT_DATE AND status IN (:statuses) ORDER BY id DESC")
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE deleted=false AND endDate<CURRENT_DATE AND status IN (:statuses) ORDER BY id DESC")
                 .setParameter("statuses", Arrays.asList("Pending", "Approved", "RequestEdit"))
                 .getResultList();
     }
 
     public List<BudgetLine> getAllBudgetlinesByStatusRejected() {
-        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE status='Rejected' ORDER BY id DESC").getResultList();
+        return sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE deleted=false AND status='Rejected' ORDER BY id DESC").getResultList();
     }
 }

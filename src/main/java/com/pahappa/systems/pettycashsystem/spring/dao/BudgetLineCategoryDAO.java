@@ -25,12 +25,14 @@ public class BudgetLineCategoryDAO {
     }
 
     public BudgetLineCategory getBudgetLineCategoryById(Long id) {
-        return sessionFactory.getCurrentSession().get(BudgetLineCategory.class, id);
+        return (BudgetLineCategory) sessionFactory.getCurrentSession().createQuery("FROM BudgetLineCategory WHERE deleted=false AND id=:id")
+                .setParameter("id", id)
+                .uniqueResult();
     }
 
     public List<BudgetLineCategory> getAllBudgetLineCategories() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM BudgetLineCategory ORDER BY id DESC", BudgetLineCategory.class)
+                .createQuery("FROM BudgetLineCategory WHERE deleted=false ORDER BY id DESC", BudgetLineCategory.class)
                 .getResultList();
     }
 

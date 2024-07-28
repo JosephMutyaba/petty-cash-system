@@ -26,9 +26,9 @@ public class AccountabilityService {
         accountabilityDAO.createAccountability(accountability);
     }
 
-    public Accountability getAccountabilityById(Long id) {
-        return accountabilityDAO.getAccountabilityById(id);
-    }
+//    public Accountability getAccountabilityById(Long id) {
+//        return accountabilityDAO.getAccountabilityById(id);
+//    }
 
     public List<Accountability> getAllAccountabilities() {
         return accountabilityDAO.getAllAccountabilities();

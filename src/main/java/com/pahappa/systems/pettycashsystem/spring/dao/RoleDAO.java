@@ -28,7 +28,7 @@ public class RoleDAO {
 
     public List<Role> getAllRoles() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Role ORDER BY id DESC", Role.class)
+                .createQuery("FROM Role WHERE deleted= false ORDER BY id DESC", Role.class)
                 .getResultList();
     }
 
@@ -61,7 +61,7 @@ public class RoleDAO {
     }
 
     public Role findByName(String role_name) {
-        return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
+        return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE deleted=false AND name=:role_name")
                 .setParameter("role_name",role_name).uniqueResult();
     }
 
@@ -90,7 +90,7 @@ public class RoleDAO {
 
     public Role getRoleByName(String name) {
         return (Role) sessionFactory.getCurrentSession()
-                .createQuery("FROM Role WHERE name=:role_name")
+                .createQuery("FROM Role WHERE deleted=false AND name=:role_name")
                 .setParameter("role_name",name)
                 .uniqueResult();
     }

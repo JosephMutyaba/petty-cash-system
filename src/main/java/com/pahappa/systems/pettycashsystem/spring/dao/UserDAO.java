@@ -36,7 +36,7 @@ public class UserDAO {
 
     // Read operation: Get all users
     public List<User> getAllUsers() {
-        return getCurrentSession().createQuery("FROM User u ORDER BY id DESC", User.class).list();
+        return getCurrentSession().createQuery("FROM User u WHERE u.deleted=false ORDER BY id DESC", User.class).list();
     }
 
     // Update operation
@@ -72,7 +72,7 @@ public class UserDAO {
     }
 
     public User getUserUsernameAndRole(String username, String role) {
-        return (User) getCurrentSession().createQuery("select u from User u join u.roles r where u.username = :username and r.name = :role")
+        return (User) getCurrentSession().createQuery("select u from User u join u.roles r where u.username = :username and r.name = :role and u.deleted=false ")
                 .setParameter("username", username)
                 .setParameter("role", role)
                 .uniqueResult();
@@ -86,7 +86,7 @@ public class UserDAO {
 
         if (role != null) {
             // Fetch users with the role
-            return getCurrentSession().createQuery("select u FROM User u join u.roles r WHERE r=:role",User.class)
+            return getCurrentSession().createQuery("select u FROM User u join u.roles r WHERE u.deleted=false AND r=:role", User.class)
                     .setParameter("role", role)
                     .getResultList();
         } else {
@@ -95,7 +95,7 @@ public class UserDAO {
     }
 
     public User findUserByUsernameAndPassword(String username, String password) {
-        return (User) getCurrentSession().createQuery("from User where username=:username and Password=:password")
+        return (User) getCurrentSession().createQuery("from User where username=:username and Password=:password and deleted=false ")
                 .setParameter("username", username)
                 .setParameter("password", password)
                 .uniqueResult();
@@ -132,14 +132,14 @@ public class UserDAO {
 
     public User getUserByUsername(String username) {
         return (User) getCurrentSession()
-                .createQuery("from User where username=:username")
+                .createQuery("from User where deleted=false and username=:username")
                 .setParameter("username", username)
                 .uniqueResult();
     }
 
     public User getUserByUserEmail(String email) {
         return (User) getCurrentSession()
-                .createQuery("from User where Email=:userEmail")
+                .createQuery("from User where deleted=false and Email=:userEmail")
                 .setParameter("userEmail", email)
                 .uniqueResult();
     }

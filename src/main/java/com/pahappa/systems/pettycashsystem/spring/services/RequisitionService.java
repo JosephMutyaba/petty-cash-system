@@ -30,9 +30,6 @@ public class RequisitionService {
         requisitionDAO.createRequisition(requisition);
     }
 
-    public Requisition getRequisitionById(Long id) {
-        return requisitionDAO.getRequisitionById(id);
-    }
 
     public List<Requisition> getAllRequisitions() {
         return requisitionDAO.getAllRequisitions();
