@@ -17,7 +17,7 @@
                 <p:ajax event="keyup" update="accountability_table" listener="#{allAccountability.filterAccountabilities()}"/>
             </p:inputText>
         </h:form>
-        <p:dataTable rowIndexVar="index" id="accountability_table" value="#{allAccountability.accountabilities}" var="accountability" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
+        <p:dataTable rowIndexVar="index" id="accountability_table" value="#{allAccountability.requisitions}" var="requisition" paginator="true" rows="5" rowsPerPageTemplate="5,10,15">
 
             <f:facet name="header">
                 <p:commandButton value="Export to CSV" icon="pi pi-cloud-download" styleClass="pill">
@@ -29,46 +29,46 @@
             <p:column headerText="No" width="16px">#{index + 1}</p:column>
 
             <p:column headerText="Requisition">
-                <p:commandLink value="#{accountability.requisition}" update="viewRequisitionDialog_panel" action="#{confirmBalanceReturn.selectRequisition(accountability.requisition)}" onsuccess="PF('viewRequisitionDialog').show()"/>
+                <p:commandLink value="#{requisition}" update="viewRequisitionDialog_panel" action="#{confirmBalanceReturn.selectRequisition(requisition)}" onsuccess="PF('viewRequisitionDialog').show()"/>
             </p:column>
             <p:column headerText="Amount Granted">
-                <p:outputLabel value="#{accountability.requisition.amountGranted}">
+                <p:outputLabel value="#{requisition.amountGranted}">
                     <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
                 </p:outputLabel>
             </p:column>
             <p:column headerText="Amount Spent">
-                <p:outputLabel value="#{accountability.amountSpent}">
+                <p:outputLabel value="#{requisition.accountability.amountSpent}">
                     <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
                 </p:outputLabel>
             </p:column>
 
             <p:column headerText="Balance">
-                <p:outputLabel value="#{accountability.requisition.amountGranted-accountability.amountSpent}">
+                <p:outputLabel value="#{requisition.amountGranted-requisition.accountability.amountSpent}">
                     <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
                 </p:outputLabel>
             </p:column>
 
             <p:column headerText="Balance returned">
-                <p:outputLabel value="#cleared" rendered="#{accountability.balanceIsReturned}" styleClass="text-g"/>
-                <p:commandButton icon="pi pi-wallet" title="Confirm Balance Return" rendered="#{!accountability.balanceIsReturned}"
-                                 action="#{confirmBalanceReturn.selectAccountability(accountability)}" onsuccess="PF('confirm_balance_return_dialog').show()"
+                <p:outputLabel value="#cleared" rendered="#{requisition.accountability.balanceIsReturned}" styleClass="text-g"/>
+                <p:commandButton icon="pi pi-wallet" title="Confirm Balance Return" rendered="#{!requisition.accountability.balanceIsReturned}"
+                                 action="#{confirmBalanceReturn.selectAccountability(requisition.accountability)}" onsuccess="PF('confirm_balance_return_dialog').show()"
                                  update="confirm_balance_return_dialog_form" styleClass="pill square mr"/>
-                <p:commandButton icon="pi pi-bell" title="Send Reminder" rendered="#{!accountability.balanceIsReturned}" styleClass="bg-y text-blk pill square"
-                                 action="#{sendEmailReminder.selectCredentials(accountability,accountability.requisition.user, accountability.requisition )}"
+                <p:commandButton icon="pi pi-bell" title="Send Reminder" rendered="#{!requisition.accountability.balanceIsReturned}" styleClass="bg-y text-blk pill square"
+                                 action="#{sendEmailReminder.selectCredentials(requisition.accountability)}"
                                  onsuccess="PF('send_reminder_email_dialog').show()" update="send_reminder_email_dialog_form"/>
             </p:column>
 
             <p:column headerText="Description">
-                <p:outputLabel value="#{accountability.description}"/>
+                <p:outputLabel value="#{requisition.accountability.description}"/>
             </p:column>
 
             <p:column headerText="User">
-                <p:commandLink value="#{accountability.requisition.user.firstname}" action="#{confirmBalanceReturn.selectUser(accountability.requisition.user)}" onsuccess="PF('viewUserDialog').show()" update="viewUserDialog_panel"/>
+                <p:commandLink value="#{requisition.user.firstname}" action="#{confirmBalanceReturn.selectUser(requisition.user)}" onsuccess="PF('viewUserDialog').show()" update="viewUserDialog_panel"/>
             </p:column>
 
             <p:column headerText="Receipt">
-                <p:commandLink onsuccess="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(accountability)}" update="imagePanelForm">
-                    <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(accountability)}" />
+                <p:commandLink onsuccess="PF('imageDialog').show(); return false;" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" update="imagePanelForm">
+                    <h:graphicImage width="50px" value="data:image/png;base64,#{allAccountability.getReceiptImageBase64(requisition.accountability)}" />
                 </p:commandLink>
             </p:column>
 

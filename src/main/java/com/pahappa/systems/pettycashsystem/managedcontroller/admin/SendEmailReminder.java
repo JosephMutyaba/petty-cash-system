@@ -4,6 +4,7 @@ import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.EmailService;
+import com.pahappa.systems.pettycashsystem.spring.services.RequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,9 @@ import java.io.Serializable;
 public class SendEmailReminder implements Serializable {
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private RequisitionService requisitionService;
 
     private String emailMessage;
 
@@ -38,10 +42,10 @@ public class SendEmailReminder implements Serializable {
         this.emailMessage = emailMessage;
     }
 
-    public void selectCredentials(Accountability selectedAccountability, User selectedUser, Requisition selectedRequisition) {
+    public void selectCredentials(Accountability selectedAccountability) {
         this.accountability=selectedAccountability;
-        this.user=selectedUser;
-        this.requisition=selectedRequisition;
+        this.requisition=requisitionService.getRequisitionByAccountabilityId(accountability.getId());
+        this.user=requisition.getUser();
 
         this.emailMessage="Dear "+user.getFirstname()+",\n\nYou are kindly reminded to return a balance of Shs."+(requisition.getAmountGranted()-accountability.getAmountSpent())
                 +" off the requisition \""+requisition+"\"\n\nKind regards\nFinance";

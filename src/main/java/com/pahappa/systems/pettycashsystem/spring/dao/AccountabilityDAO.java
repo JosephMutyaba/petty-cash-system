@@ -42,9 +42,9 @@ public class AccountabilityDAO {
         }
     }
 
-    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
-        return (Accountability) sessionFactory.getCurrentSession().createQuery("FROM Accountability WHERE requisition_id = :requisitionId")
-                .setParameter("requisitionId", requisitionId)
-                .uniqueResult();
-    }
+//    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
+//        return (Accountability) sessionFactory.getCurrentSession().createQuery("FROM Accountability WHERE requisition_id = :requisitionId")
+//                .setParameter("requisitionId", requisitionId)
+//                .uniqueResult();
+//    }
 }

@@ -47,9 +47,9 @@ public class AccountabilityService {
             throw new NullFieldException("Invalid value for amount spent");
         }
 
-        if (accountability.getRequisition() ==null) {
-            throw new NullFieldException("requisition cannot be null");
-        }
+//        if (accountability.getRequisition() ==null) {
+//            throw new NullFieldException("requisition cannot be null");
+//        }
 
         if (accountability.getAmountSpent()>requisition.getAmountGranted()) {
             throw new IncompatibleValueException("Amount spent cannot be more than what was granted you.");
@@ -57,7 +57,7 @@ public class AccountabilityService {
 
     }
 
-    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
-        return accountabilityDAO.getAccountabilityByRequisitionId(requisitionId);
-    }
+//    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
+//        return accountabilityDAO.getAccountabilityByRequisitionId(requisitionId);
+//    }
 }

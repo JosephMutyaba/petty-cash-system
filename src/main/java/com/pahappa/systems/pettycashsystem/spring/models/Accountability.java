@@ -22,8 +22,8 @@ public class Accountability {
     @Column(nullable = false)
     private Double amountSpent;
 
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "requisition_id", nullable = false)
+    ///////////////////////// modified this such that requisition is the parent
+    @OneToOne(fetch = FetchType.EAGER)
     private Requisition requisition;
 
     @Temporal(TemporalType.DATE)

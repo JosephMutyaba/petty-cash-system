@@ -126,4 +126,12 @@ public class RequisitionService {
     public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
         return requisitionDAO.retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(loggedInUserId);
     }
+
+    public Requisition getRequisitionByAccountabilityId(Long accountabilityId) {
+        return requisitionDAO.getRequisitionByAccountabilityId(accountabilityId);
+    }
+
+    public List<Requisition> getRequisitionsWithSubmittedAccountability() {
+        return requisitionDAO.getRequisitionsWithSubmittedAccountability();
+    }
 }

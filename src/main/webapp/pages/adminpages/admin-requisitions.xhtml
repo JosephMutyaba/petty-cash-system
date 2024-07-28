@@ -103,7 +103,7 @@
             </p:column>
 
             <p:column headerText="Transact" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION') and allRequisitions.tabId.equals('approvedTab')}">
-                <p:commandButton icon="pi pi-dollar" styleClass="pill" action="#{disburseCash.selectRequisition(requisition)}" value="Pay" onclick="PF('disburse_money_dialog').show()" update="disburse_money_dialog"/>
+                <p:commandButton icon="pi pi-dollar" styleClass="pill" action="#{disburseCash.selectRequisition(requisition)}" value="Pay" onclick="PF('disburse_money_dialog').show()" update="disburse_money_form"/>
             </p:column>
 
             <p:column headerText="Approval Date" rendered="#{allRequisitions.tabId.equals('approvedTab')}">
@@ -162,10 +162,13 @@
         <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" message="Transfer Sh.#{disburseCash.requisition.amountGranted} from BudgetLine Acount? Balance in budgetline will be Sh.#{disburseCash.requisition.budgetline.balance - disburseCash.requisition.amountGranted}"
                          header="Disburse" icon="pi pi-exclamation-triangle">
 
-            <p:commandButton icon="pi pi-dollar" styleClass="pill" value="Transact" oncomplete="if (!args.validationFailed) PF('disburse_money_dialog').hide(); updateRequisitionsTable();"
-                             actionListener="#{disburseCash.disburseCash}" update="statsForm messages" />
-            <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
-            <p:messages globalOnly="true" id="messages"/>
+            <h:form id="disburse_money_form">
+                <p:commandButton icon="pi pi-dollar" styleClass="pill" value="Transact" oncomplete="if (!args.validationFailed) PF('disburse_money_dialog').hide(); updateRequisitionsTable();"
+                                 actionListener="#{disburseCash.disburseCash}" update="statsForm messages" />
+                <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
+                <p:messages globalOnly="true" id="messages"/>
+            </h:form>
+
         </p:confirmDialog>
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Requisitions?"

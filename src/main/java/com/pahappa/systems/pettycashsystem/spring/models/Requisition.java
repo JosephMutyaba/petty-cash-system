@@ -15,7 +15,9 @@ public class Requisition {
     @ManyToOne
     private User user;
 
+    //// MADE REQUISITION THE PARENT ENTITY FOR ACCOUNTABILITY
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "accountability_id")
     private Accountability accountability;
 
     private Date dateAccountabilityWasSubmitted;

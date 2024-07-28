@@ -90,7 +90,7 @@
                         </div>
 
                         <div class="mt">
-                            <p:commandButton value="Submit Accountability" update=" bigTab :bigtab:history_form" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mr pill"/>
+                            <p:commandButton value="Submit Accountability" update="bigTab, :bigTab:history_form" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mr pill"/>
                             <p:commandButton value="Save Draft" update=" bigTab" icon="pi pi-save" action="#{createAccountability.saveOrUpdateAccountabilityDraft}" styleClass="pill bg-none text-blk"/>
                         </div>
                     </h:form>

@@ -113,4 +113,20 @@ public class RequisitionDAO {
         }
         return latestRequisition;
     }
+
+    public Requisition getRequisitionByAccountabilityId(Long accountabilityId) {
+        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE accountability_id=:accId")
+                .setParameter("accId",accountabilityId)
+                .uniqueResult();
+    }
+
+
+
+
+    public List<Requisition> getRequisitionsWithSubmittedAccountability() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "FROM Requisition r WHERE r.accountability.id IS NOT NULL AND r.accountability.status = 'Submitted'";
+        Query<Requisition> query = session.createQuery(hql, Requisition.class);
+        return query.list();
+    }
 }

@@ -211,7 +211,7 @@ public class CreateAccountability implements Serializable {
             accountability.setExtraClaims(extraClaims);
             accountability.setDateSubmitted(new Date());
             accountability.setAmountSpent(amountSpent);
-            accountability.setRequisition(requisition);
+//            accountability.setRequisition(requisition);
             accountability.setReceiptImage(receiptImage);
 
             //setting status to completed
