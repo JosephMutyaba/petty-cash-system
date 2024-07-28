@@ -55,7 +55,8 @@ public class RoleDAO {
             }
 
             ////////////////////////////////
-            sessionFactory.getCurrentSession().delete(role);
+            role.setDeleted(true);
+            sessionFactory.getCurrentSession().update(role);
         }
     }
 
@@ -81,7 +82,8 @@ public class RoleDAO {
         List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role",Role.class).getResultList();
         for (Role role : roles) {
             if (!role.getName().equals("USER")) {
-                sessionFactory.getCurrentSession().delete(role);
+                role.setDeleted(true);
+                sessionFactory.getCurrentSession().update(role);
             }
         }
     }

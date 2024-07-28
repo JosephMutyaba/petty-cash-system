@@ -1,5 +1,6 @@
 package com.pahappa.systems.pettycashsystem.spring.dao;
 
+import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -41,7 +42,15 @@ public class RequisitionDAO {
     public void deleteRequisition(Long id) {
         Requisition requisition = sessionFactory.getCurrentSession().load(Requisition.class, id);
         if (requisition != null) {
-            sessionFactory.getCurrentSession().delete(requisition);
+            Accountability accountability = requisition.getAccountability();
+
+            if (accountability != null) {
+                accountability.setDeleted(true);
+                sessionFactory.getCurrentSession().update(accountability);
+            }
+
+            requisition.setDeleted(true);
+            sessionFactory.getCurrentSession().update(requisition);
         }
     }
 
@@ -52,7 +61,34 @@ public class RequisitionDAO {
     }
 
     public void deleteRequisitionsByStatus(String status) {
-        sessionFactory.getCurrentSession().createQuery("DELETE FROM Requisition WHERE status=:status")
+        List<Requisition> requisitions = sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE deleted=false AND status=:status")
+                .setParameter("status", status)
+                .getResultList();
+
+
+
+        if (requisitions != null) {
+
+            for (Requisition requisition:requisitions){
+                Accountability accountability = requisition.getAccountability();
+
+                if (accountability != null) {
+                    accountability.setDeleted(true);
+                    sessionFactory.getCurrentSession().update(accountability);
+                }
+
+            }
+
+            sessionFactory.getCurrentSession().createQuery("UPDATE Requisition SET deleted=true where status=:status")
+                    .setParameter("status", status)
+                    .executeUpdate();
+
+        }
+
+
+
+
+        sessionFactory.getCurrentSession().createQuery("UPDATE Requisition SET deleted= true WHERE status=:status")
                 .setParameter("status", status)
                 .executeUpdate();
     }
@@ -91,12 +127,6 @@ public class RequisitionDAO {
     public List<Requisition> getAllCompletedRequisitionsByStatus() {
         return sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE status='Completed' ORDER BY maxDateNeeded ASC").getResultList();
     }
-
-//    public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
-//        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE user_id=:loggedInUserId AND status='Completed' ORDER BY dateAccountabilityWasSubmitted DESC")
-//                .setParameter("loggedInUserId",loggedInUserId)
-//                .setMaxResults(1);
-//    }
 
     public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
         Session session = null;

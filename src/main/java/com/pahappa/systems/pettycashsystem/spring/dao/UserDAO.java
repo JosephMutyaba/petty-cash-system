@@ -1,5 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.dao;
 
+import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
+import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
 import com.pahappa.systems.pettycashsystem.spring.services.RoleService;
@@ -45,10 +47,22 @@ public class UserDAO {
     // Delete operation
     public void deleteUser(Long userId) {
         User user = getCurrentSession().load(User.class, userId);
-        if (user != null) {
-            user.getRequisition().clear();
 
-            getCurrentSession().delete(user);
+        List<Requisition> userRequisitions = sessionFactory.getCurrentSession()
+                .createQuery("FROM Requisition r WHERE r.deleted=false AND r.user.id= :id ")
+                .setParameter("id", user.getDeleted())
+                .getResultList();
+        if (userRequisitions != null) {
+            for (Requisition req: userRequisitions){
+                Accountability accountability= req.getAccountability();
+                if (accountability != null) {
+                    accountability.setDeleted(true);
+                    sessionFactory.getCurrentSession().update(accountability);
+                }
+            }
+            sessionFactory.getCurrentSession().createQuery("UPDATE Requisition r SET r.deleted=true WHERE r.user.id=:userId")
+                    .setParameter("userId",user.getDeleted())
+                    .executeUpdate();
         }
     }
 
@@ -89,7 +103,27 @@ public class UserDAO {
 
     public boolean deleteAllUsers() {
         try {
-            getCurrentSession().createQuery("delete from User").executeUpdate();
+            sessionFactory.getCurrentSession().createQuery("UPDATE Accountability SET deleted=true").executeUpdate();
+            sessionFactory.getCurrentSession().createQuery("UPDATE Requisition SET deleted=true").executeUpdate();
+            sessionFactory.getCurrentSession().createQuery("UPDATE User SET deleted=true").executeUpdate();
+
+
+//            List<User> users=getCurrentSession().createQuery("FROM User").getResultList();
+//            for (User user: users){
+//                List<Requisition> userRequisitions = user.getRequisition();
+//                if (userRequisitions != null) {
+//                    for (Requisition req: userRequisitions){
+//                        Accountability accountability= req.getAccountability();
+//                        if (accountability != null) {
+//                            accountability.setDeleted(true);
+//                        }
+//                    }
+//                    sessionFactory.getCurrentSession().createQuery("UPDATE Requisition SET deleted=true WHERE user_id=:userId")
+//                            .setParameter("userId",user.getDeleted())
+//                            .executeUpdate();
+//                }
+//            }
+
             return true;
         }catch (Exception e) {
             return false;

@@ -38,10 +38,6 @@ public class AccountabilityService {
         accountabilityDAO.updateAccountability(accountability);
     }
 
-    public void deleteAccountability(Long id) {
-        accountabilityDAO.deleteAccountability(id);
-    }
-
     public void validateAccountability(Accountability accountability, Requisition requisition) throws NullFieldException, IncompatibleValueException {
         if (accountability.getAmountSpent() == null || accountability.getAmountSpent() < 0) {
             throw new NullFieldException("Invalid value for amount spent");

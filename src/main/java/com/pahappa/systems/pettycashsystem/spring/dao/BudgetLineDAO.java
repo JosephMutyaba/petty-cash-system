@@ -1,6 +1,8 @@
 package com.pahappa.systems.pettycashsystem.spring.dao;
 
+import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
+import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,7 +42,26 @@ public class BudgetLineDAO {
     public void deleteBudgetLine(Long id) {
         BudgetLine budgetLine = sessionFactory.getCurrentSession().load(BudgetLine.class, id);
         if (budgetLine != null) {
-            sessionFactory.getCurrentSession().delete(budgetLine);
+
+            List<Requisition> requisitions = sessionFactory.getCurrentSession().createQuery("FROM Requisition r WHERE r.deleted=false AND r.budgetline.id=:id")
+                            .setParameter("id",budgetLine.getId()).getResultList();
+
+            if (requisitions != null) {
+                for (Requisition req: requisitions){
+                    Accountability acc = req.getAccountability();
+                    if (acc != null) {
+                        acc.setDeleted(true);
+                        sessionFactory.getCurrentSession().update(acc);
+                    }
+                }
+
+                sessionFactory.getCurrentSession().createQuery("UPDATE Requisition r SET r.deleted = true WHERE r.budgetline.id=:id")
+                        .setParameter("id", budgetLine.getId()).executeUpdate();
+            }
+
+
+            budgetLine.setDeleted(true);
+            sessionFactory.getCurrentSession().update(budgetLine);
         }
     }
 
@@ -51,9 +72,36 @@ public class BudgetLineDAO {
     }
 
     public void deleteBudgetLinesByStatus(String status) {
-        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE status=:status")
-                .setParameter("status", status)
-                .executeUpdate();
+        List<BudgetLine> budgetLines = sessionFactory.getCurrentSession().createQuery("FROM BudgetLine WHERE deleted=false AND status=:status").setParameter("status",status).getResultList();
+
+        if (budgetLines != null) {
+            for (BudgetLine budgetLine:budgetLines){
+                List<Requisition> requisitions = sessionFactory.getCurrentSession().createQuery("FROM Requisition r WHERE r.deleted=false AND r.budgetline.id=:id")
+                        .setParameter("id",budgetLine.getId())
+                        .getResultList();
+
+                if (requisitions != null) {
+                    for (Requisition req:requisitions){
+                        Accountability acc = req.getAccountability();
+                        if (acc != null) {
+                            acc.setDeleted(true);
+                            sessionFactory.getCurrentSession().update(acc);
+                        }
+                    }
+
+                    sessionFactory.getCurrentSession().createQuery("UPDATE Requisition r SET r.deleted=true WHERE r.budgetline.id =:id")
+                            .setParameter("id",budgetLine.getId())
+                            .executeUpdate();
+
+                }
+            }
+            sessionFactory.getCurrentSession().createQuery("UPDATE BudgetLine b SET b.deleted=true WHERE b.status =:status")
+                    .setParameter("status",status)
+                    .executeUpdate();
+        }
+//        sessionFactory.getCurrentSession().createQuery("DELETE FROM BudgetLine WHERE status=:status")
+//                .setParameter("status", status)
+//                .executeUpdate();
     }
 
     public List<BudgetLine> getAllExpiredBudgetLines() {

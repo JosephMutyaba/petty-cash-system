@@ -41,10 +41,4 @@ public class AccountabilityDAO {
             sessionFactory.getCurrentSession().delete(accountability);
         }
     }
-
-//    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
-//        return (Accountability) sessionFactory.getCurrentSession().createQuery("FROM Accountability WHERE requisition_id = :requisitionId")
-//                .setParameter("requisitionId", requisitionId)
-//                .uniqueResult();
-//    }
 }
