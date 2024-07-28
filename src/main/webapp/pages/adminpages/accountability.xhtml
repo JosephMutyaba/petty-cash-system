@@ -96,9 +96,10 @@
                 </h:panelGroup>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{confirmBalanceReturn.updateAccountabilityBalanceReturnStatus}"
-                                     oncomplete="if (!args.validationFailed) PF('confirm_balance_return_dialog').hide(); updateAccountability_table();" />
+                                     oncomplete="if (!args.validationFailed) PF('confirm_balance_return_dialog').hide(); updateAccountability_table();" update="glob_messages, gl_messages"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('confirm_balance_return_dialog').hide(); return false;"/>
                 </div>
+                <p:messages id="glob_messages" globalOnly="true" closable="true"/>
             </h:form>
         </p:dialog>
 
