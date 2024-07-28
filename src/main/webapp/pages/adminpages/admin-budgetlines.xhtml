@@ -240,6 +240,11 @@
 
         <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Budgetline?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+            <h3 style="color: red">
+                Warning! This may delete associated requisitions plus their accountabilities
+            </h3>
+            <p:outputLabel value="Proceed and Delete?"/>
+
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
                              actionListener="#{deleteBudgetlines.deleteSpecificBudgetLine}"
                              update=":statsForm, :budgetlines_table, :new_budgetline_form" />
@@ -248,6 +253,10 @@
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Budgetlines?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+            <h3 style="color: red">
+                Warning! This may delete associated requisitions plus their accountabilities
+            </h3>
+            <p:outputLabel value="Proceed and Delete?"/>
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
                              actionListener="#{deleteBudgetlines.deleteAllBudgetLinesOfStatus}"
             update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>

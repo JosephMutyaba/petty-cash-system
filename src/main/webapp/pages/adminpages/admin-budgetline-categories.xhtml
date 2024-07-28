@@ -64,16 +64,17 @@
 
         <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
             <h:form id="confirm_dialog_form">
-                <h2 style="color: red; ">Warning! Deleting this will delete all associated Budgetlines!</h2>
-                <p:outputLabel value="Delete this category?"/>
+                <h3 style="color: red; ">Warning! This will delete all associated budgetlines, requisions and accountabilities!</h3>
+                <p:outputLabel value="Delete this category?"/><br/>
                 <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" action="#{deleteBudgetLineCategory.deleteBudgetLineCategory}" value="Delete" oncomplete="PF('confirm_dialog').hide()" update="budgetlines_categories__table mainGrowl"/>
                 <p:commandButton icon="pi pi-times" styleClass="pill" value="Cancel" onclick="PF('confirm_dialog').hide()"/>
             </h:form>
         </p:dialog>
 
-        <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
+        <p:dialog widgetVar="confirm_all_dialog" header="Delete All Categories" modal="true">
             <h:form id="confirm_all_form" styleClass="flex column">
-                <p:outputLabel value="Do you wish to delete all categories?"/>
+                <h3 style="color: red">Warning! This will delete all associated budgetlines, requisions and accountabilities!</h3>
+                <p:outputLabel value="Proceed and delete all categories?"/>
                 <div class="row mt">
                     <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" value="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="budgetlines_categories__table mainGrowl"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill" value="Cancel" onclick="PF('confirm_all_dialog').hide()"/>

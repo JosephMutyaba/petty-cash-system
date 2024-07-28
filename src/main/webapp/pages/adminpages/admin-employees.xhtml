@@ -154,6 +154,10 @@
 
         <p:dialog header="Delete User" widgetVar="deleteUserDialog" modal="true" resizable="false">
             <h:form id="deleteUserForm" styleClass="flex column">
+                <h3 style="color: red">
+                    Warning! This will delete all associated requisitions plus their accountabilities
+                </h3>
+
                 <h:outputText value="Delete the user '#{deleteUser.user.username}'?" styleClass="mb"/>
                 <div class="flex row">
                     <p:commandButton value="Yes" icon="pi pi-trash" action="#{deleteUser.deleteUser}" update="globalM_essages" oncomplete="PF('deleteUserDialog').hide(); updateUsersTable();" styleClass="pill mr bg-r"/>
@@ -166,8 +170,12 @@
 
 
 
-        <p:dialog header="Delete All User" widgetVar="deleteAllUsersDialog" modal="true" resizable="false">
+        <p:dialog header="Delete All Users" widgetVar="deleteAllUsersDialog" modal="true" resizable="false">
             <h:form id="deleteAllUsersForm" styleClass="flex column">
+                <h3 style="color: red">
+                    Warning! This will delete associated requisitions plus their accountabilities
+                </h3>
+
                 <h:outputText value="Delete All users?" styleClass="mb"/>
                 <div class="flex row">
                     <p:commandButton value="Yes" icon="pi pi-trash" action="#{deleteUser.deleteAllUsers}" update="globalM_es_sages" oncomplete="PF('deleteUserDialog').hide(); updateUsersTable();" styleClass="pill mr bg-r"/>

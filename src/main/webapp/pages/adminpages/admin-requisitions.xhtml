@@ -153,6 +153,8 @@
 
         <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Requisition?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+            <p:outputLabel value="Proceed and Delete?"/>
+
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
                              actionListener="#{deleteRequisition.deleteSpecificRequisition}"
                              update="statsForm, :requisition_table" />
@@ -173,6 +175,12 @@
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Requisitions?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+
+            <h3 style="color: red">
+                Warning! This may also delete associated accountabilities
+            </h3>
+            <p:outputLabel value="Proceed and Delete?"/>
+
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
                              actionListener="#{deleteRequisition.deleteAllRequisitionsOfStatus}"
                              update="statsForm, :tabForm:tabView, :requisition_table"/>
