@@ -7,10 +7,11 @@ import java.util.Set;
 
 @Entity
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Boolean deleted= false;
 
     @Column(unique=true)
     private String name;
@@ -26,8 +27,9 @@ public class Role {
 
     public Role() {}
 
-    public Role(Long id, String name, String description, List<User> user, Set<Permission> permissions) {
+    public Role(Long id, Boolean deleted, String name, String description, List<User> user, Set<Permission> permissions) {
         this.id = id;
+        this.deleted = deleted;
         this.name = name;
         this.description = description;
         this.permissions = permissions;
@@ -39,6 +41,14 @@ public class Role {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getName() {

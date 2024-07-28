@@ -15,6 +15,8 @@ public class Accountability {
 
     private String description;
 
+    private Boolean deleted=false;
+
     private String status;
 
     private String extraClaims;
@@ -36,9 +38,10 @@ public class Accountability {
     public Accountability() {
     }
 
-    private Accountability(Long id, String description, Boolean balanceIsReturned, String extraClaims, Double amountSpent, Requisition requisition, Date dateSubmitted, byte[] receiptImage) {
+    private Accountability(Long id, Boolean deleted, String description, Boolean balanceIsReturned, String extraClaims, Double amountSpent, Requisition requisition, Date dateSubmitted, byte[] receiptImage) {
         this.id = id;
         this.description = description;
+        this.deleted = deleted;
         this.balanceIsReturned = balanceIsReturned;
         this.extraClaims = extraClaims;
         this.amountSpent = amountSpent;
@@ -53,6 +56,14 @@ public class Accountability {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Boolean getBalanceIsReturned() {

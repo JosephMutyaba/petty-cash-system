@@ -10,6 +10,8 @@ public class Requisition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Boolean deleted = false;
+
     private String justification;
 
     @ManyToOne
@@ -47,8 +49,9 @@ public class Requisition {
     public Requisition() {
     }
 
-    private Requisition(Long id, String justification, Date dateAccountabilityWasSubmitted, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
+    private Requisition(Long id, Boolean deleted, String justification, Date dateAccountabilityWasSubmitted, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
         this.id = id;
+        this.deleted=deleted;
         this.justification = justification;
         this.dateAccountabilityWasSubmitted=dateAccountabilityWasSubmitted;
         this.user = user;
@@ -65,6 +68,14 @@ public class Requisition {
 
     public Long getId() {
         return id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public void setId(Long id) {

@@ -13,6 +13,7 @@ public class BudgetLineCategory {
     @Column(nullable = false)
     private String name;
 
+    private Boolean deleted=false;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "budgetLineCategory")
     private List<BudgetLine> budgetLines;
@@ -20,8 +21,9 @@ public class BudgetLineCategory {
     public BudgetLineCategory() {
     }
 
-    private BudgetLineCategory(Long id, String name, List<BudgetLine> budgetLines) {
+    private BudgetLineCategory(Long id, Boolean deleted, String name, List<BudgetLine> budgetLines) {
         this.id = id;
+        this.deleted = deleted;
         this.name = name;
         this.budgetLines = budgetLines;
     }
@@ -32,6 +34,14 @@ public class BudgetLineCategory {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getName() {
