@@ -133,6 +133,7 @@
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="amount" value="Amount"/>
                         <p:inputNumber id="amount" value="#{createBudgetLine.amount}" required="true" />
+                        <h:message for="amount" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="category" value="Category"/>
@@ -177,6 +178,7 @@
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="am_ount" value="Amount"/>
                         <p:inputNumber id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
+                        <h:message for="am_ount" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="categor_y" value="Category"/>

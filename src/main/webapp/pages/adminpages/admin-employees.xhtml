@@ -75,7 +75,8 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="password" value="Password" styleClass="label"/>
-                        <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                        <p:password id="password" value="#{createEmployee.password}" required="true"
+                                    requiredMessage="#{con.requiredMessage}" styleClass="input fillW" toggleMask="true">
                             <f:validateLength minimum="6" maximum="20"/>
                         </p:password>
                         <h:message for="password" styleClass="err-msg"/>
@@ -127,7 +128,8 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="pass_word" value="Password" styleClass="label"/>
-                        <p:password id="pass_word" redisplay="true" value="#{updateEmployee.password}" required="true" styleClass="input">
+                        <p:password id="pass_word" value="#{updateEmployee.password}" redisplay="true"
+                                    required="true" styleClass="input fillW" toggleMask="true">
                             <f:validateLength minimum="6" maximum="20"/>
                         </p:password>
                     </h:panelGroup>

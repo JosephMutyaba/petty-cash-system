@@ -40,6 +40,7 @@ public class BudgetLine {
     @ManyToOne
     private BudgetLineCategory budgetLineCategory;
 
+    @Column(nullable = false)
     private Boolean deleted = false;
 
     public BudgetLine() {}
