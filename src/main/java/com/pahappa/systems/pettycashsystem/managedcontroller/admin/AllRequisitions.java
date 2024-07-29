@@ -26,7 +26,7 @@ public class AllRequisitions implements Serializable {
 
     private List<Requisition> pendingRequisitions;
     private List<Requisition> approvedRequisitions;
-    private List<Requisition> acceptedRequisitions;
+    private List<Requisition> reviewedRequisitions;
     private List<Requisition> rejectedRequisitions;
     private List<Requisition> paidRequisitions;
     private List<Requisition> completedRequisitions;
@@ -35,6 +35,7 @@ public class AllRequisitions implements Serializable {
 
     @PostConstruct
     public void init() {
+        reviewedRequisitions=requisitionService.getAllRequisitionsByStatus("Reviewed");
         paidRequisitions=requisitionService.getAllPaidRequisitionsByStatus();
         completedRequisitions=requisitionService.getAllCompletedRequisitionsByStatus();
         pendingRequisitions=requisitionService.getAllRequisitionsByStatus("Pending");
@@ -108,12 +109,12 @@ public class AllRequisitions implements Serializable {
         this.completedRequisitions = requisitionService.getAllCompletedRequisitionsByStatus();;
     }
 
-    public List<Requisition> getAcceptedRequisitions() {
-       return requisitionService.getAllRequisitionsByStatus("Accepted");
+    public List<Requisition> getReviewedRequisitions() {
+       return requisitionService.getAllRequisitionsByStatus("Reviewed");
     }
 
-    public void setAcceptedRequisitions(List<Requisition> acceptedRequisitions) {
-        this.acceptedRequisitions = requisitionService.getAllRequisitionsByStatus("Accepted");
+    public void setReviewedRequisitions(List<Requisition> reviewedRequisitions) {
+        this.reviewedRequisitions = requisitionService.getAllRequisitionsByStatus("Reviewed");
     }
 
     public boolean isStatus(String status, String compareTo) {
@@ -152,9 +153,9 @@ public class AllRequisitions implements Serializable {
                 activeTab = 5;
                 requisitionsForActiveTab = getCompletedRequisitions();
                 break;
-            case "accepted":
+            case "reviewed":
                 activeTab= 6;
-                requisitionsForActiveTab = getAcceptedRequisitions();
+                requisitionsForActiveTab = getReviewedRequisitions();
                 break;
         }
         filterRequisitionsForActiveTab();
@@ -183,7 +184,7 @@ public class AllRequisitions implements Serializable {
                 requisitionsForActiveTab = getCompletedRequisitions();
                 break;
             case 6:
-                requisitionsForActiveTab= getAcceptedRequisitions();
+                requisitionsForActiveTab= getReviewedRequisitions();
             default:
                 System.err.println("Error: Unknown activeTab - " + activeTab);
                 break;
@@ -231,7 +232,7 @@ public class AllRequisitions implements Serializable {
                     requisitionsForActiveTab = getCompletedRequisitions();
                     break;
                 case 6:
-                    requisitionsForActiveTab = getAcceptedRequisitions();
+                    requisitionsForActiveTab = getReviewedRequisitions();
                 default:
                     System.err.println("Error: Unknown activeTab - " + activeTab);
                     break;
