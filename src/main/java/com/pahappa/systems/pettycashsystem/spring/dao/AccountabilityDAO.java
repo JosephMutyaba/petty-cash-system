@@ -21,13 +21,13 @@ public class AccountabilityDAO {
         sessionFactory.getCurrentSession().saveOrUpdate(accountability);
     }
 
-    public Accountability getAccountabilityById(Long id) {
-        return sessionFactory.getCurrentSession().get(Accountability.class, id);
-    }
+//    public Accountability getAccountabilityById(Long id) {
+//        return sessionFactory.getCurrentSession().get(Accountability.class, id);
+//    }
 
     public List<Accountability> getAllAccountabilities() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Accountability WHERE status='Submitted' ORDER BY id DESC")
+                .createQuery("FROM Accountability WHERE deleted=false AND status='Submitted' ORDER BY balanceIsReturned ASC")
                 .getResultList();
     }
 
@@ -40,11 +40,5 @@ public class AccountabilityDAO {
         if (accountability != null) {
             sessionFactory.getCurrentSession().delete(accountability);
         }
-    }
-
-    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
-        return (Accountability) sessionFactory.getCurrentSession().createQuery("FROM Accountability WHERE requisition_id = :requisitionId")
-                .setParameter("requisitionId", requisitionId)
-                .uniqueResult();
     }
 }

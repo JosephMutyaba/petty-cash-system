@@ -4,7 +4,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:define name="title">Budget Line Categories</ui:define>
+    <ui:define name="title">
+        Budget Line Categories
+        #{con.setRoute('blcat')}
+    </ui:define>
     <ui:define name="main-content">
         <h2>BudgetLine Categories</h2>
 
@@ -40,8 +43,9 @@
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
+                    <h:message for="name" styleClass="err-msg"/>
                 </h:panelGroup>
-                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="if (!args.validationFailed) PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_budgetline_category').hide()"/>
             </h:form>
         </p:dialog>
@@ -51,24 +55,26 @@
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="cat_name" value="Name:"/>
                     <p:inputText id="cat_name" value="#{updateBudgetLineCategory.cat_name}" required="true" />
+                    <h:message for="cat_name" styleClass="err-msg"/>
                 </h:panelGroup>
-                <p:commandButton styleClass="mr pill" icon="pi pi-pencil" value="Save" oncomplete="PF('edit_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="mr pill" icon="pi pi-pencil" value="Save" oncomplete="if (!args.validationFailed) PF('edit_category').hide()" update="budgetlines_categories__table"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('edit_category').hide()"/>
             </h:form>
         </p:dialog>
 
         <p:dialog widgetVar="confirm_dialog" header="Confirm!" modal="true">
             <h:form id="confirm_dialog_form">
-                <h2 style="color: red; ">Warning! Deleting this will delete all associated Budgetlines!</h2>
-                <p:outputLabel value="Delete this category?"/>
+                <h3 style="color: red; ">Warning! This will delete all associated budgetlines, requisions and accountabilities!</h3>
+                <p:outputLabel value="Delete this category?"/><br/>
                 <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" action="#{deleteBudgetLineCategory.deleteBudgetLineCategory}" value="Delete" oncomplete="PF('confirm_dialog').hide()" update="budgetlines_categories__table mainGrowl"/>
                 <p:commandButton icon="pi pi-times" styleClass="pill" value="Cancel" onclick="PF('confirm_dialog').hide()"/>
             </h:form>
         </p:dialog>
 
-        <p:dialog widgetVar="confirm_all_dialog" header="Delete All!" modal="true">
+        <p:dialog widgetVar="confirm_all_dialog" header="Delete All Categories" modal="true">
             <h:form id="confirm_all_form" styleClass="flex column">
-                <p:outputLabel value="Do you wish to delete all categories?"/>
+                <h3 style="color: red">Warning! This will delete all associated budgetlines, requisions and accountabilities!</h3>
+                <p:outputLabel value="Proceed and delete all categories?"/>
                 <div class="row mt">
                     <p:commandButton icon="pi pi-trash" styleClass="bg-r mr pill" value="Delete" oncomplete="PF('confirm_all_dialog').hide()" update="budgetlines_categories__table mainGrowl"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill" value="Cancel" onclick="PF('confirm_all_dialog').hide()"/>

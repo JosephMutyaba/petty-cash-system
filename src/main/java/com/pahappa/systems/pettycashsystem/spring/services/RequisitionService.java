@@ -30,9 +30,6 @@ public class RequisitionService {
         requisitionDAO.createRequisition(requisition);
     }
 
-    public Requisition getRequisitionById(Long id) {
-        return requisitionDAO.getRequisitionById(id);
-    }
 
     public List<Requisition> getAllRequisitions() {
         return requisitionDAO.getAllRequisitions();
@@ -81,7 +78,7 @@ public class RequisitionService {
         }
 
         if (requisition.getEstimatedAmount()>requisition.getBudgetline().getBalance()){
-            throw new NullFieldException("You cannot requisite more than"+requisition.getBudgetline().getBalance());
+            throw new NullFieldException("You cannot request for more than "+requisition.getBudgetline().getBalance());
         }
 
         if (requisition.getAmountGranted()>requisition.getEstimatedAmount()) {
@@ -121,5 +118,17 @@ public class RequisitionService {
         if (budgetLineBalance<0) {
             throw new MinimumLengthException("Insufficient Balance on the "+name+"to cash this requisition");
         }
+    }
+
+    public Requisition retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(Long loggedInUserId) {
+        return requisitionDAO.retrieveLatestCompletedRequisitionOfCurrentlyLoggedInUser(loggedInUserId);
+    }
+
+    public Requisition getRequisitionByAccountabilityId(Long accountabilityId) {
+        return requisitionDAO.getRequisitionByAccountabilityId(accountabilityId);
+    }
+
+    public List<Requisition> getRequisitionsWithSubmittedAccountability() {
+        return requisitionDAO.getRequisitionsWithSubmittedAccountability();
     }
 }

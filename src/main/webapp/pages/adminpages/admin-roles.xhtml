@@ -3,7 +3,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Roles</ui:define>
+    <ui:define name="title">
+        Roles
+        #{con.setRoute('roles')}
+    </ui:define>
     <ui:define name="main-content">
         <h2 class="mb">Roles</h2>
         <h:form class="mb mt pad1">
@@ -26,7 +29,7 @@
             </p:column>
             <p:column headerText="Actions" rendered="#{checkPermission.hasPermission('EDIT_ROLE','DELETE_ROLE')}">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{role.name!='USER' and checkPermission.hasPermission('EDIT_ROLE')}" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
+                    <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_ROLE')}" action="#{updateRole.selectRole(role)}" onsuccess="PF('edit_role').show()" update="edit_role_form" icon="pi pi-pencil" styleClass="bg-g pill square mr"/>
                     <p:commandButton title="Delete" rendered="#{role.name!='USER' and checkPermission.hasPermission('DELETE_ROLE')}" action="#{deleteRole.selectRole(role)}" onsuccess="PF('confirm_dialog').show()" icon="pi pi-times" styleClass="bg-r pill square"/>
                 </h:form>
             </p:column>
@@ -37,11 +40,13 @@
                 <p:panelGrid columns="2" layout="grid">
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="name" value="Name"/>
-                        <p:inputText id="name" value="#{createUserRole.roleName}" required="true" />
+                        <p:inputText id="name" value="#{createUserRole.roleName}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                        <h:message for="name" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="description" value="Description"/>
-                        <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" />
+                        <p:inputText id="description" value="#{createUserRole.roleDescription}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                        <h:message for="description" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="viewEmployees" value="Employees"/>
@@ -75,7 +80,7 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt flex row">
-                    <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createUserRole.createRole}" oncomplete="PF('new_role').hide()" update="new_role_form role_table"/>
+                    <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createUserRole.createRole}" oncomplete="if (!args.validationFailed) PF('new_role').hide()" update="new_role_form role_table"/>
                     <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_role').hide()"/>
                 </div>
             </h:form>
@@ -86,11 +91,13 @@
                 <p:panelGrid columns="2" layout="grid">
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="role_name" value="Name"/>
-                        <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" />
+                        <p:inputText id="role_name" value="#{updateRole.roleName}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                        <h:message for="role_name" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="role_description" value="Description"/>
-                        <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" />
+                        <p:inputText id="role_description" value="#{updateRole.roleDescription}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                        <h:message for="role_description" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_viewEmployees" value="Employees"/>
@@ -124,7 +131,7 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt mb">
-                    <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{updateRole.updateRole}" oncomplete="PF('edit_role').hide()" update="role_table edit_role_form"/>
+                    <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{updateRole.updateRole}" oncomplete="if (!args.validationFailed) PF('edit_role').hide()" update="role_table edit_role_form"/>
                     <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" action="#{updateRole.clearVals}" update="edit_role_form" onclick="PF('edit_role').hide()"/>
                 </div>
             </h:form>

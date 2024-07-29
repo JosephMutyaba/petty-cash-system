@@ -14,14 +14,14 @@ public enum Perm {
     APPROVE_REQUISITION("Approve Requisition"),
     REJECT_REQUISITION("Reject Requisition"),
     EDIT_REQUISITION("Edit Requisition"),
-    DELETE_REQUISITION("Delete Requisition"),
+    DELETE_REQUISITION("Cancel Requisition"),
     CASHOUT_REQUISITION("Cash out Requisition"),
 
     MAKE_BUDGETLINE("Make BudgetLine"),
     APPROVE_BUDGETLINE("Approve BudgetLine"),
     REJECT_BUDGETLINE("Reject BudgetLine"),
     EDIT_BUDGETLINE("Edit BudgetLine"),
-    DELETE_BUDGETLINE("Delete BudgetLine"),
+    DELETE_BUDGETLINE("Cancel BudgetLine"),
 
 
     VIEW_EMPLOYEES("View Employees"),
@@ -31,7 +31,7 @@ public enum Perm {
 
     REQUEST_CHANGES("Request Changes"),
 
-    ACCEPT_REQUISITION("Accept Requisition"),
+    ACCEPT_REQUISITION("Review Requisitions"),
     VIEW_ACCOUNTABILITY("View Accountability"),
     VIEW_DASHBOARD("View Dashboard"),;
 

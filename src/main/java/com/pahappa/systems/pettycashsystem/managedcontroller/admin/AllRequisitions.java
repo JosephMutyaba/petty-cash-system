@@ -26,6 +26,7 @@ public class AllRequisitions implements Serializable {
 
     private List<Requisition> pendingRequisitions;
     private List<Requisition> approvedRequisitions;
+    private List<Requisition> acceptedRequisitions;
     private List<Requisition> rejectedRequisitions;
     private List<Requisition> paidRequisitions;
     private List<Requisition> completedRequisitions;
@@ -107,6 +108,14 @@ public class AllRequisitions implements Serializable {
         this.completedRequisitions = requisitionService.getAllCompletedRequisitionsByStatus();;
     }
 
+    public List<Requisition> getAcceptedRequisitions() {
+       return requisitionService.getAllRequisitionsByStatus("Accepted");
+    }
+
+    public void setAcceptedRequisitions(List<Requisition> acceptedRequisitions) {
+        this.acceptedRequisitions = requisitionService.getAllRequisitionsByStatus("Accepted");
+    }
+
     public boolean isStatus(String status, String compareTo) {
         return compareTo.equals(status);
     }
@@ -143,6 +152,10 @@ public class AllRequisitions implements Serializable {
                 activeTab = 5;
                 requisitionsForActiveTab = getCompletedRequisitions();
                 break;
+            case "accepted":
+                activeTab= 6;
+                requisitionsForActiveTab = getAcceptedRequisitions();
+                break;
         }
         filterRequisitionsForActiveTab();
     }
@@ -169,6 +182,8 @@ public class AllRequisitions implements Serializable {
             case 5:
                 requisitionsForActiveTab = getCompletedRequisitions();
                 break;
+            case 6:
+                requisitionsForActiveTab= getAcceptedRequisitions();
             default:
                 System.err.println("Error: Unknown activeTab - " + activeTab);
                 break;
@@ -215,6 +230,8 @@ public class AllRequisitions implements Serializable {
                 case 5:
                     requisitionsForActiveTab = getCompletedRequisitions();
                     break;
+                case 6:
+                    requisitionsForActiveTab = getAcceptedRequisitions();
                 default:
                     System.err.println("Error: Unknown activeTab - " + activeTab);
                     break;

@@ -3,7 +3,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Requisitions</ui:define>
+    <ui:define name="title">
+        Requisitions
+        #{con.setRoute('requ')}
+    </ui:define>
     <ui:define name="main-content">
         <h2 class="mb">Requisitions</h2>
         <div class="stats mt">
@@ -29,6 +32,9 @@
                             <p:panel header="Expired" styleClass="stat-panel">
                                 <h:outputText value="#{allRequisitions.expiredRequisitions.size()}" styleClass="stat-value"/>
                             </p:panel>
+                            <p:panel header="Accepted" styleClass="stat-panel">
+                                <h:outputText value="#{allRequisitions.acceptedRequisitions.size()}" styleClass="stat-value"/>
+                            </p:panel>
                         </p:panelGrid>
                     </p:tab>
                 </p:accordionPanel>
@@ -40,11 +46,12 @@
         <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allRequisitions.activeTab}">
                 <p:ajax event="tabChange" listener="#{allRequisitions.onTabChange}" update=":requisition_table"/>
-                <p:tab id="pendingTab" title="Pending"/>
+                <p:tab id="pendingTab" title="Pending" rendered="#{checkPermission.hasPermission('ACCEPT_REQUISITION', 'REJECT_REQUISITION')}"/>
+                <p:tab id="accepted" title="Reviewed" rendered="#{checkPermission.hasPermission('ACCEPT_REQUISITION', 'APPROVE_REQUISITION')}"/>
                 <p:tab id="approvedTab" title="Approved"/>
-                <p:tab id="rejectedTab" title="Rejected"/>
-                <p:tab id="paid" title="Paid"/>
-                <p:tab id="completed" title="Completed"/>
+                <p:tab id="rejectedTab" title="Rejected" rendered="#{checkPermission.hasPermission('REJECT_REQUISITION')}"/>
+                <p:tab id="paid" title="Paid" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION')}"/>
+                <p:tab id="completed" title="Completed" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION')}"/>
                 <p:tab id="expired" title="Expired"/>
             </p:tabView>
         </h:form>
@@ -70,12 +77,16 @@
                 <h:outputText value="#{requisition.budgetline.description}"/>
             </p:column>
             <p:column headerText="Amount requested">
-                <h:outputText value="#{requisition.estimatedAmount}"/>
+                <h:outputText value="#{requisition.estimatedAmount}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </h:outputText>
             </p:column>
             <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
-                <h:outputText value="#{requisition.amountGranted}"/>
+                <h:outputText value="#{requisition.amountGranted}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </h:outputText>
             </p:column>
-            <p:column headerText="Edit Status" rendered="#{allRequisitions.tabId.equals('pendingTab') and checkPermission.hasPermission('APPROVE_REQUISITION','REJECT_REQUISITION')}">
+            <p:column headerText="Edit Status" rendered="#{(allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('accepted')) and checkPermission.hasPermission('APPROVE_REQUISITION','ACCEPT_REQUISITION','REJECT_REQUISITION')}">
                 <h:form>
                     <p:commandButton styleClass="pill square bg-y text-blk" icon="pi pi-flag-fill" action="#{updateRequisition.selectRequisition(requisition)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form" />
                 </h:form>
@@ -92,7 +103,7 @@
             </p:column>
 
             <p:column headerText="Transact" rendered="#{checkPermission.hasPermission('CASHOUT_REQUISITION') and allRequisitions.tabId.equals('approvedTab')}">
-                <p:commandButton icon="pi pi-dollar" styleClass="pill" action="#{disburseCash.selectRequisition(requisition)}" value="Pay" onclick="PF('disburse_money_dialog').show()"/>
+                <p:commandButton icon="pi pi-dollar" styleClass="pill" action="#{disburseCash.selectRequisition(requisition)}" value="Pay" onclick="PF('disburse_money_dialog').show()" update="disburse_money_form"/>
             </p:column>
 
             <p:column headerText="Approval Date" rendered="#{allRequisitions.tabId.equals('approvedTab')}">
@@ -113,7 +124,9 @@
                 <p:panelGrid columns="2" layout="grid">
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_amount_requested" value="Amount Requested:"/>
-                        <p:inputText id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false"/>
+                        <p:inputNumber id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false">
+                            <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                        </p:inputNumber>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_date_needed" value="Date Needed:"/>
@@ -140,23 +153,34 @@
 
         <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Requisition?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+            <p:outputLabel value="Proceed and Delete?"/>
+
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
                              actionListener="#{deleteRequisition.deleteSpecificRequisition}"
                              update="statsForm, :requisition_table" />
             <p:commandButton icon="pi pi-times" styleClass="pill bg-g" value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
         </p:confirmDialog>
 
-        <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" message="Transfer funds from BudgetLine Acount?"
+        <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" message="Transfer Sh.#{disburseCash.requisition.amountGranted} from BudgetLine Acount? Balance in budgetline will be Sh.#{disburseCash.requisition.budgetline.balance - disburseCash.requisition.amountGranted}"
                          header="Disburse" icon="pi pi-exclamation-triangle">
 
-            <p:commandButton icon="pi pi-dollar" styleClass="pill" value="Transact" oncomplete="if (!args.validationFailed) PF('disburse_money_dialog').hide(); updateRequisitionsTable();"
-                             actionListener="#{disburseCash.disburseCash}" update="statsForm messages" />
-            <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
-            <p:messages globalOnly="true" id="messages"/>
+            <h:form id="disburse_money_form">
+                <p:commandButton icon="pi pi-dollar" styleClass="pill" value="Transact" oncomplete="if (!args.validationFailed) PF('disburse_money_dialog').hide(); updateRequisitionsTable();"
+                                 actionListener="#{disburseCash.disburseCash}" update="statsForm messages" />
+                <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="No" onclick="PF('disburse_money_dialog').hide()" type="button" />
+                <p:messages globalOnly="true" id="messages"/>
+            </h:form>
+
         </p:confirmDialog>
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Requisitions?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+
+            <h3 style="color: red">
+                Warning! This may also delete associated accountabilities
+            </h3>
+            <p:outputLabel value="Proceed and Delete?"/>
+
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
                              actionListener="#{deleteRequisition.deleteAllRequisitionsOfStatus}"
                              update="statsForm, :tabForm:tabView, :requisition_table"/>
@@ -166,14 +190,11 @@
         <p:dialog widgetVar="modify_status_dialog" header="Modify status" modal="true">
             <h:form id="modify_status_form">
                 <h:panelGroup class="flex column">
-                    <p:outputLabel for="status" value="Status:"/>
-                    <p:selectOneMenu id="status" value="#{updateRequisition.status}" required="true">
-                        <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
-                        <f:selectItem itemLabel="Reject" itemValue="Rejected"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_REQUISITION')}" itemLabel="Approve" itemValue="Approved"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('ACCEPT_REQUISITION')}"  itemLabel="Accept" itemValue="Accept"/>
-<!--                        <f:selectItem itemLabel="Request changes" itemValue="RequestEdit"/>-->
+                    <p:outputLabel for="status" value="Status"/>
+                    <p:selectOneMenu id="status" value="#{updateRequisition.status}" required="true" requiredMessage="#{con.requiredMessage}">
+                        <f:selectItems value="#{updateRequisition.statusSet}" var="modify" itemValue="#{modify.status}" itemLabel="#{modify.description}"/>
                     </p:selectOneMenu>
+                    <h:message for="status" styleClass="err-msg"/>
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel value="Comment" for="comment"/>
@@ -181,12 +202,15 @@
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="granted_amount" value="Granted Amount"/>
-                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}"/>
+                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}" required="true" requiredMessage="#{con.requiredMessage}">
+                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    </p:inputNumber>
+                    <h:message for="granted_amount" styleClass="err-msg"/>
                     <p:outputLabel value="Max: #{updateRequisition.requestedAmount}" style="color:cornflowerblue;font-size:0.8rem;padding-left:16px"/>
                 </h:panelGroup>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Modify" actionListener="#{updateRequisition.updateRequisition}"
-                                     onclick="PF('modify_status_dialog').hide()" update="statsForm, :tabForm:tabView, :requisition_table"/>
+                                     oncomplete="if (!args.validationFailed) PF('modify_status_dialog').hide()" update="statsForm, :tabForm:tabView, :requisition_table"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide()"/>
                 </div>
             </h:form>
@@ -197,7 +221,9 @@
                 <h:form styleClass="pad1">
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                        <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true"/>
+                        <p:inputText id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
+                            <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                        </p:inputText>
                     </h:panelGroup>
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>

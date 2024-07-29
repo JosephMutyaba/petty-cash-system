@@ -54,7 +54,7 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -62,7 +62,7 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.trim();
     }
 
     public String getEmail() {
@@ -70,7 +70,7 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.trim();
     }
 
     public String getPassword() {
@@ -78,16 +78,8 @@ public class CreateEmployee implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password.trim();
     }
-
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
 
 
     public List<Role> getRolesFromDB() {

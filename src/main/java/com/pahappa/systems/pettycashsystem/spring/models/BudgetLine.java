@@ -40,10 +40,14 @@ public class BudgetLine {
     @ManyToOne
     private BudgetLineCategory budgetLineCategory;
 
+    @Column(nullable = false)
+    private Boolean deleted = false;
+
     public BudgetLine() {}
 
-    private BudgetLine(Long id, String description, Date startDate, Date endDate, String review_comments, Double amount, Double balance, Date dateApproved, String status, List<Requisition> requisitions, BudgetLineCategory budgetLineCategory) {
+    private BudgetLine(Long id, Boolean deleted, String description, Date startDate, Date endDate, String review_comments, Double amount, Double balance, Date dateApproved, String status, List<Requisition> requisitions, BudgetLineCategory budgetLineCategory) {
         this.id = id;
+        this.deleted=deleted;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -54,6 +58,14 @@ public class BudgetLine {
         this.requisitions = requisitions;
         this.budgetLineCategory = budgetLineCategory;
         this.review_comments=review_comments;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Long getId() {

@@ -42,6 +42,9 @@ public class CreateAccountability implements Serializable {
     @Autowired
     private LoginBean loginBean;
 
+    @Autowired
+    private MyRequisitions myRequisitions;
+
     private Long accountabilityId;
 
     private String description;
@@ -69,9 +72,6 @@ public class CreateAccountability implements Serializable {
 //        initialiseAccountability();
     }
 
-//    public CreateAccountability() {
-//        initialiseAccountability();
-//    }
 
     public Long getAccountabilityId() {
         return accountabilityId;
@@ -144,7 +144,7 @@ public class CreateAccountability implements Serializable {
 //            this.receiptImage = input.readAllBytes();
             this.receiptImage = toByteArray(input);  // Use the alternative method
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not process file: " + e.getMessage(),null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not process file", e.getMessage()));
             context.validationFailed();
         }
     }
@@ -161,12 +161,10 @@ public class CreateAccountability implements Serializable {
     }
 
     public void initialiseAccountability(){
-//        Requisition requisition = new Requisition();
-        requisition=myRequisitionHandler.getRequisition();
-//        requisition=requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
+        requisition = requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
+
         if(requisition!=null){
             System.out.println("\nAcc not null\n");
-//            accountability =accountabilityService.getAccountabilityByRequisitionId(requisition.getId());
             accountability=requisition.getAccountability();
             if (accountability != null) {
                 this.accountabilityId=accountability.getId();
@@ -176,15 +174,26 @@ public class CreateAccountability implements Serializable {
                 this.amountSpent=accountability.getAmountSpent();
                 this.dateSubmitted=accountability.getDateSubmitted();
                 this.receiptImage=accountability.getReceiptImage();
+            }else {
+                System.out.println("\nAcc is null.............!!!!!\n");
+                this.accountabilityId=null;
+                this.accountability =new Accountability();
+                this.description=null;
+                this.accountabilityStatus=null;
+                this.extraClaims=null;
+                this.amountSpent=0.0;
+                this.dateSubmitted=new Date();
+                this.receiptImage=new byte[]{};
             }
 
         }else {
-            System.out.println("\nAcc not null.............!!!!!\n");
+            System.out.println("\nAcc is null.............!!!!!\n");
+            this.accountabilityId=null;
             this.accountability =new Accountability();
             this.description=null;
             this.accountabilityStatus=null;
             this.extraClaims=null;
-            this.amountSpent=10.0;
+            this.amountSpent=0.0;
             this.dateSubmitted=new Date();
             this.receiptImage=null;
         }
@@ -201,39 +210,17 @@ public class CreateAccountability implements Serializable {
             accountability.setExtraClaims(extraClaims);
             accountability.setDateSubmitted(new Date());
             accountability.setAmountSpent(amountSpent);
-            accountability.setRequisition(requisition);
             accountability.setReceiptImage(receiptImage);
 
             //setting status to completed
             requisition.setStatus("Completed");
+            requisition.setDateAccountabilityWasSubmitted(new Date());
 
             accountabilityService.validateAccountability(accountability, requisition);
 
-
-//            //balancing books
-//            User user=loginBean.getLoggedInUser();
-//
-//            BudgetLine budgetLine=requisition.getBudgetline();
-//
-//            Double budgetlineBal=budgetLine.getBalance();
-//
             Double requisitionAmountGranted = requisition.getAmountGranted();
-//
-//            Double userAccBal = user.getAccountBalance();
-//
-            Double expenditureBalance = requisitionAmountGranted-amountSpent;
-//
-//            Double newUserAccBal=userAccBal-expenditureBalance;
-//
-//            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
-//
-//            user.setAccountBalance(newUserAccBal);
-//            budgetLine.setBalance(newBudgetLineBal);
-//
-//            //accountabilityService.createAccountability(accountability);
-//            userService.updateUser(user);
 
-//            budgetLineService.updateBudgetLine(budgetLine);
+            Double expenditureBalance = requisitionAmountGranted-amountSpent;
 
             if (expenditureBalance ==0.0) {
                 accountability.setBalanceIsReturned(true);
@@ -243,7 +230,9 @@ public class CreateAccountability implements Serializable {
 
             requisitionService.updateRequisition(requisition);  // this automatically creates
 
-            FacesMessage message = new FacesMessage("Accountability saved/updated successfully. ", "success");
+            myRequisitions.update();
+
+            FacesMessage message = new FacesMessage("Accountability submitted successfully. ", "success");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),null));
@@ -268,39 +257,14 @@ public class CreateAccountability implements Serializable {
             accountability.setStatus("Draft");
             accountability.setId(accountabilityId);
 
-            //setting status to completed
-//            requisition.setStatus("Completed");
-
             accountabilityService.validateAccountability(accountability, requisition);
 
             requisition.setAccountability(accountability);  // this will lead to creation of the accountability in the db
 
-//            //balancing books
-//            User user=loginBean.getLoggedInUser();
-//
-//            BudgetLine budgetLine=requisition.getBudgetline();
-//
-//            Double budgetlineBal=budgetLine.getBalance();
-//
-//            Double requisitionAmountGranted = requisition.getAmountGranted();
-//
-//            Double userAccBal = user.getAccountBalance();
-//
-//            Double expenditureBalance = requisitionAmountGranted-amountSpent;
-//
-//            Double newUserAccBal=userAccBal-expenditureBalance;
-//
-//            Double newBudgetLineBal=budgetlineBal+expenditureBalance;
-//
-//            user.setAccountBalance(newUserAccBal);
-//            budgetLine.setBalance(newBudgetLineBal);
-//
-//            //accountabilityService.createAccountability(accountability);
-//            userService.updateUser(user);
-//
-//            budgetLineService.updateBudgetLine(budgetLine);
-//
+
             requisitionService.updateRequisition(requisition);  // this automatically creates
+
+            myRequisitions.update();
 
             FacesMessage message = new FacesMessage("Accountability saved successfully.", "Success");
             FacesContext.getCurrentInstance().addMessage(null, message);

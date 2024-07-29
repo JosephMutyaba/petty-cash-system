@@ -2,6 +2,7 @@ package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
 import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
+import com.pahappa.systems.pettycashsystem.network.InternetChecker;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;
 import com.pahappa.systems.pettycashsystem.spring.models.Role;
@@ -11,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -27,6 +28,9 @@ public class UserService {
     private Constants con;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
@@ -35,6 +39,26 @@ public class UserService {
     public void createUser(User user) throws Exception {
         validateUser(user, "create");
         userDAO.createUser(user);
+
+
+
+        if (InternetChecker.isInternetAvailable()){
+            // Send registration email
+            String subject = "Registration Successful";
+
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            String link = " <a href=\"http://" + externalContext.getRequestServerName() +
+                    ":" + externalContext.getRequestServerPort() + externalContext.getApplicationContextPath() + "\">Login Page</a>";
+            String message = "Dear " + user.getFirstname() + ",<br/><br/>" +
+                    "Your registration is successful. Use the following to login to your account<br/>" +
+                    "Username: " + user.getUsername() + "<br/>" +
+                    "Password: " + user.getPassword() + "<br/><br/>" +
+                    "You can login using the following link:<br/>" + link +
+                    "<br/><br/>" +
+                    "Regards,<br/>Admin";
+
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+        }
     }
 
     // Read operation: Get user by ID
@@ -56,6 +80,29 @@ public class UserService {
     public void updateUser(User user) throws Exception {
         validateUser(user, "update");
         userDAO.updateUser(user);
+
+
+        if (InternetChecker.isInternetAvailable()){
+            // Send update email
+            String subject = "Update Successful";
+
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            String link = " <a href=\"http://" + externalContext.getRequestServerName() +
+                    ":" + externalContext.getRequestServerPort() + externalContext.getApplicationContextPath() + "\">Login Page</a>";
+            String message = "Dear " + user.getFirstname() + ",<br/><br/>" +
+                    "Your update is successful. Use the following to login to your account<br/>" +
+                    "Username: " + user.getUsername() + "<br/>" +
+                    "Password: " + user.getPassword() + "<br/><br/>" +
+                    "You can login using the following link:<br/>" + link +
+                    "<br/><br/>" +
+                    "Regards,<br/>Admin";
+
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+
+
+        }
+
+
     }
 
     // Delete operation
@@ -106,7 +153,7 @@ public class UserService {
         }
 
         if (!user.getEmail().matches(con.getEmailRegex())) {
-            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
+            throw new NullPointerException("Sorry, only letters (a-z), numbers (0-9), underscores (_) and periods (.) are allowed.");
         }
 
         if (!user.getPassword().matches(con.getPasswordRegex())) {

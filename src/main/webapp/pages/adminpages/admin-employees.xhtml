@@ -4,7 +4,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Employees</ui:define>
+    <ui:define name="title">
+        Employees
+        #{con.setRoute('empl')}
+    </ui:define>
     <ui:define name="main-content">
         #{getEmployees.init()}
         <h2 class="mb">Employees</h2>
@@ -55,41 +58,42 @@
                         <p:inputText id="firstname" value="#{createEmployee.firstName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="2" maximum="30"/>
                         </p:inputText>
+                        <h:message for="firstname" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="lastname" value="Last Name" styleClass="label"/>
                         <p:inputText id="lastname" value="#{createEmployee.lastName}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="2" maximum="30"/>
                         </p:inputText>
-                        <p:message for="lastname"/>
+                        <h:message styleClass="err-msg" for="lastname"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="email" value="Email" styleClass="label"/>
                         <p:inputText id="email" value="#{createEmployee.email}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
-                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
                         </p:inputText>
-                        <p:message for="email"/>
+                        <h:message styleClass="err-msg" for="email"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="password" value="Password" styleClass="label"/>
-                        <p:password id="password" redisplay="true" value="#{createEmployee.password}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
+                        <p:password id="password" value="#{createEmployee.password}" required="true"
+                                    requiredMessage="#{con.requiredMessage}" styleClass="input fillW" toggleMask="true">
                             <f:validateLength minimum="6" maximum="20"/>
                         </p:password>
-                        <p:message for="password"/>
+                        <h:message for="password" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="role" value="Role" styleClass="label"/>
                         <p:selectCheckboxMenu id="role" value="#{createEmployee.roles}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="selectMenu" label="Select Roles">
                             <f:selectItems value="#{createEmployee.rolesFromDB}" var="role" itemLabel="#{role.name}" itemValue="#{role}"/>
                         </p:selectCheckboxMenu>
-                        <p:message for="role"/>
+                        <h:message for="role" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="username" value="Username" styleClass="label"/>
                         <p:inputText id="username" value="#{createEmployee.username}" required="true" requiredMessage="#{con.requiredMessage}" styleClass="input">
                             <f:validateLength minimum="4" maximum="20"/>
                         </p:inputText>
-                        <p:message for="username"/>
+                        <h:message for="username" styleClass="err-msg"/>
                     </h:panelGroup>
                 </p:panelGrid>
 <!--                <p:growl globalOnly="true" life="3000" />-->
@@ -120,12 +124,12 @@
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="emai_l" value="Email" styleClass="label"/>
                         <p:inputText id="emai_l" value="#{updateEmployee.email}" required="true" styleClass="input">
-                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
                         </p:inputText>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <h:outputLabel for="pass_word" value="Password" styleClass="label"/>
-                        <p:password id="pass_word" redisplay="true" value="#{updateEmployee.password}" required="true" styleClass="input">
+                        <p:password id="pass_word" value="#{updateEmployee.password}" redisplay="true"
+                                    required="true" styleClass="input fillW" toggleMask="true">
                             <f:validateLength minimum="6" maximum="20"/>
                         </p:password>
                     </h:panelGroup>
@@ -152,6 +156,10 @@
 
         <p:dialog header="Delete User" widgetVar="deleteUserDialog" modal="true" resizable="false">
             <h:form id="deleteUserForm" styleClass="flex column">
+                <h3 style="color: red">
+                    Warning! This will delete all associated requisitions plus their accountabilities
+                </h3>
+
                 <h:outputText value="Delete the user '#{deleteUser.user.username}'?" styleClass="mb"/>
                 <div class="flex row">
                     <p:commandButton value="Yes" icon="pi pi-trash" action="#{deleteUser.deleteUser}" update="globalM_essages" oncomplete="PF('deleteUserDialog').hide(); updateUsersTable();" styleClass="pill mr bg-r"/>
@@ -164,8 +172,12 @@
 
 
 
-        <p:dialog header="Delete All User" widgetVar="deleteAllUsersDialog" modal="true" resizable="false">
+        <p:dialog header="Delete All Users" widgetVar="deleteAllUsersDialog" modal="true" resizable="false">
             <h:form id="deleteAllUsersForm" styleClass="flex column">
+                <h3 style="color: red">
+                    Warning! This will delete associated requisitions plus their accountabilities
+                </h3>
+
                 <h:outputText value="Delete All users?" styleClass="mb"/>
                 <div class="flex row">
                     <p:commandButton value="Yes" icon="pi pi-trash" action="#{deleteUser.deleteAllUsers}" update="globalM_es_sages" oncomplete="PF('deleteUserDialog').hide(); updateUsersTable();" styleClass="pill mr bg-r"/>

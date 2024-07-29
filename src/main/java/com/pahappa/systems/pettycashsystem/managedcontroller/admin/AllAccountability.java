@@ -1,7 +1,9 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
+import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.services.AccountabilityService;
+import com.pahappa.systems.pettycashsystem.spring.services.RequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +22,16 @@ public class AllAccountability implements Serializable {
     @Autowired
     private AccountabilityService accountabilityService;
 
-    private List<Accountability> accountabilities;
+    @Autowired
+    private RequisitionService requisitionService;
+
+    private List<Requisition> requisitions;
 
     private String searchTerm;
 
     @PostConstruct
     public void init() {
-        accountabilities = accountabilityService.getAllAccountabilities();
+        requisitions = requisitionService.getRequisitionsWithSubmittedAccountability();
     }
 
     public String getSearchTerm() {
@@ -37,14 +42,14 @@ public class AllAccountability implements Serializable {
         this.searchTerm = searchTerm;
     }
 
-    public List<Accountability> getAccountabilities() {
-        accountabilities = accountabilityService.getAllAccountabilities();
+    public List<Requisition> getRequisitions() {
+        this.requisitions = requisitionService.getRequisitionsWithSubmittedAccountability();
         filterAccountabilities();
-        return accountabilities;
+        return requisitions;
     }
 
-    public void setAccountabilities(List<Accountability> accountabilities) {
-        this.accountabilities = accountabilityService.getAllAccountabilities();
+    public void setRequisitions(List<Requisition> requisitions) {
+        this.requisitions = requisitionService.getRequisitionsWithSubmittedAccountability();
     }
 
     public String getReceiptImageBase64(Accountability accountability) {
@@ -56,15 +61,15 @@ public class AllAccountability implements Serializable {
 
     public void filterAccountabilities() {
         if (searchTerm == null || searchTerm.isEmpty()) {
-            accountabilities=accountabilityService.getAllAccountabilities();
+            requisitions=requisitionService.getRequisitionsWithSubmittedAccountability();
         } else {
-            accountabilities = accountabilities.stream()
-                    .filter(accountability ->
-                            accountability.getRequisition().getJustification().toLowerCase().contains(searchTerm.toLowerCase()) ||
-                                    String.valueOf(accountability.getDescription()).toLowerCase().contains(searchTerm.toLowerCase()) ||
-                                    String.valueOf(accountability.getAmountSpent()).toLowerCase().contains(searchTerm.toLowerCase()) ||
-                                    String.valueOf(accountability.getRequisition().getUser().getFirstname()).toLowerCase().contains(searchTerm.toLowerCase())||
-                                    String.valueOf(accountability.getRequisition().getAmountGranted()).toLowerCase().contains(searchTerm.toLowerCase())
+            requisitions = requisitions.stream()
+                    .filter(requisition ->
+                            requisition.getJustification().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getAccountability().getDescription()).toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getAccountability().getAmountSpent()).toLowerCase().contains(searchTerm.toLowerCase()) ||
+                                    String.valueOf(requisition.getUser().getFirstname()).toLowerCase().contains(searchTerm.toLowerCase())||
+                                    String.valueOf(requisition.getAmountGranted()).toLowerCase().contains(searchTerm.toLowerCase())
                     ).collect(Collectors.toList());
         }
     }

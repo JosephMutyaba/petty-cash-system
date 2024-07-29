@@ -1,7 +1,5 @@
 package com.pahappa.systems.pettycashsystem.spring.models;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +11,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     private String Firstname;
     private String Lastname;
@@ -42,8 +43,9 @@ public class User {
 
     public User() {}
 
-    private User(Long id, String firstname, String lastname, String email, String password, Set<Role> roles, String username, List<Requisition> requisition) {
+    private User(Long id, Boolean deleted, String firstname, String lastname, String email, String password, Set<Role> roles, String username, List<Requisition> requisition) {
         this.id = id;
+        this.deleted = deleted;
         Firstname = firstname;
         Lastname = lastname;
         Email = email;
@@ -59,6 +61,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getFirstname() {

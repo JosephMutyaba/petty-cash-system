@@ -7,17 +7,23 @@
 <h:head>
     <title><ui:insert name="title"/></title>
     <h:outputStylesheet name="/css/petty.css"/>
-
 </h:head>
 <h:body>
     <div class="container">
         <ui:include src="/pages/adminpages/sidebar.xhtml"/>
-        <div class="main-content fillW">
+        <div id="main-id" class="main-content fillW">
             <ui:insert name="main-content"/>
-            <p:growl id="mainGrowl" life="3000" globalOnly="true" showDetail="true" showSummary="true" skipDetailIfEqualsSummary="true">
-                <p:autoUpdate on="error"/>
-            </p:growl>
         </div>
     </div>
+    <p:growl id="mainGrowl" life="3000" globalOnly="true" showDetail="true" showSummary="true" skipDetailIfEqualsSummary="true">
+        <p:autoUpdate on="error"/>
+    </p:growl>
+    <h:form>
+        <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton value="Proceed" type="button" styleClass="pill bg-r" icon="pi pi-check" />
+            <p:commandButton value="Cancel" type="button" styleClass="ui-confirmdialog-no pill"
+                             icon="pi pi-times" />
+        </p:confirmDialog>
+    </h:form>
 </h:body>
 </html>

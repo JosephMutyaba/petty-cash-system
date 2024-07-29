@@ -26,9 +26,9 @@ public class AccountabilityService {
         accountabilityDAO.createAccountability(accountability);
     }
 
-    public Accountability getAccountabilityById(Long id) {
-        return accountabilityDAO.getAccountabilityById(id);
-    }
+//    public Accountability getAccountabilityById(Long id) {
+//        return accountabilityDAO.getAccountabilityById(id);
+//    }
 
     public List<Accountability> getAllAccountabilities() {
         return accountabilityDAO.getAllAccountabilities();
@@ -38,18 +38,14 @@ public class AccountabilityService {
         accountabilityDAO.updateAccountability(accountability);
     }
 
-    public void deleteAccountability(Long id) {
-        accountabilityDAO.deleteAccountability(id);
-    }
-
     public void validateAccountability(Accountability accountability, Requisition requisition) throws NullFieldException, IncompatibleValueException {
         if (accountability.getAmountSpent() == null || accountability.getAmountSpent() < 0) {
             throw new NullFieldException("Invalid value for amount spent");
         }
 
-        if (accountability.getRequisition() ==null) {
-            throw new NullFieldException("requisition cannot be null");
-        }
+//        if (accountability.getRequisition() ==null) {
+//            throw new NullFieldException("requisition cannot be null");
+//        }
 
         if (accountability.getAmountSpent()>requisition.getAmountGranted()) {
             throw new IncompatibleValueException("Amount spent cannot be more than what was granted you.");
@@ -57,7 +53,7 @@ public class AccountabilityService {
 
     }
 
-    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
-        return accountabilityDAO.getAccountabilityByRequisitionId(requisitionId);
-    }
+//    public Accountability getAccountabilityByRequisitionId(Long requisitionId) {
+//        return accountabilityDAO.getAccountabilityByRequisitionId(requisitionId);
+//    }
 }

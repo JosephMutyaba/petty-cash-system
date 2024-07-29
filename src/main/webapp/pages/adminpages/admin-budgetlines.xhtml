@@ -3,7 +3,10 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">Budget Lines</ui:define>
+    <ui:define name="title">
+        Budget Lines
+        #{con.setRoute('bline')}
+    </ui:define>
     <ui:define name="main-content">
         <h2 class="mb">BudgetLines</h2>
         <div class="stats mt">
@@ -35,10 +38,11 @@
         <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allBudgetLines.activeTab}">
                 <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budgetlines_table :add_delete_buttons"/>
-                <p:tab id="pendingTab" title="Pending"/>
+                <p:tab id="draftTab" title="Drafts" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','APPROVE_BUDGETLINE', 'REJECT_BUDGETLINE')}"/>
+                <p:tab id="pendingTab" title="Pending" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','APPROVE_BUDGETLINE', 'REJECT_BUDGETLINE')}"/>
                 <p:tab id="approvedTab" title="Approved"/>
-                <p:tab id="rejectedTab" title="Rejected"/>
-                <p:tab id="editLineTab" title="Edit Request"/>
+                <p:tab id="rejectedTab" title="Rejected" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','REJECT_BUDGETLINE')}"/>
+                <p:tab id="editLineTab" title="Edit Request" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','REQUEST_CHANGES')}"/>
                 <p:tab id="expiredTab" title="Expired"/>
             </p:tabView>
         </h:form>
@@ -48,7 +52,7 @@
                 <p:commandButton rendered="#{allBudgetLines.activeTab == 0 and checkPermission.hasPermission('MAKE_BUDGETLINE')}" value="Add New" icon="pi pi-plus" styleClass="mr pill" onclick="PF('new_budgetline_dialog').show()" update="new_budgetline_form">
                     <p:autoUpdate/>
                 </p:commandButton>
-                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
+                <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirmDeleteAllBasedOnStatusDialog').show()" rendered="#{allBudgetLines.activeTab == 0 and checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
         <h:form class="bg-white pad1">
@@ -67,10 +71,14 @@
                 <h:outputText value="#{budgetLine.budgetLineCategory.name}"/>
             </p:column>
             <p:column headerText="Amount">
-                <h:outputText value="#{budgetLine.amount}"/>
+                <h:outputText value="#{budgetLine.amount}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </h:outputText>
             </p:column>
             <p:column headerText="Balance">
-                <h:outputText value="#{budgetLine.balance}"/>
+                <h:outputText value="#{budgetLine.balance}">
+                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                </h:outputText>
             </p:column>
             <p:column headerText="StartDate">
                 <h:outputText value="#{con.formatDate(budgetLine.startDate)}"/>
@@ -92,8 +100,9 @@
                     <p:commandButton title="Edit the status (Approve/Reject/Make changes)" icon="pi pi-pencil" styleClass="pill square bg-y text-blk" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('modify_status_dialog').show()" update="modify_status_form"/>
                 </h:form>
             </p:column>
-            <p:column headerText="Actions" rendered="#{(allBudgetLines.tabId.equals('pendingTab')||allBudgetLines.tabId.equals('editLineTab')) and checkPermission.hasPermission('EDIT_BUDGETLINE','DELETE_BUDGETLINE')}">
+            <p:column headerText="Actions" rendered="#{(allBudgetLines.tabId.equals('draftTab') || allBudgetLines.tabId.equals('pendingTab') ||allBudgetLines.tabId.equals('editLineTab')) and checkPermission.hasPermission('EDIT_BUDGETLINE','DELETE_BUDGETLINE')}">
                 <h:form>
+                    <p:commandButton title="Edit Draft" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE') and budgetLine.status.equals('Draft')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_in_draft_dialog').show()" update="edit_budgetline_in_draft_form"/>
                     <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE') and budgetLine.status.equals('RequestEdit')}" icon="pi pi-pencil" styleClass="bg-g mr mb pill square" action="#{updateBudgetLine.selectedBudgetLine(budgetLine)}" onclick="PF('edit_budgetline_dialog').show()" update="edit_budgetline_form"/>
                     <p:commandButton title="Delete" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE') and not (budgetLine.status.equals('Expired')||budgetLine.status.equals('Rejected')||budgetLine.status.equals('Approved'))}" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetlines.selectSpecificBudgetLine(budgetLine)}" onclick="PF('confirmDeleteDialog').show()"/>
                 </h:form>
@@ -105,34 +114,42 @@
                 <p:panelGrid columns="2" layout="grid">
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="description" value="Description"/>
-                        <p:inputText id="description" value="#{createBudgetLine.description}" required="true" autocomplete="false">
+                        <p:inputText id="description" value="#{createBudgetLine.description}" required="true" requiredMessage="#{con.requiredMessage}" autocomplete="false">
                             <f:validateRequired/>
                             <f:validateLength minimum="5"/>
                         </p:inputText>
+                        <h:message for="description" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="startdate" value="Start Date"/>
-                        <p:calendar navigator="true" id="startdate" value="#{createBudgetLine.startDate}" required="true" showButtonPanel="true" />
+                        <p:calendar navigator="true" id="startdate" value="#{createBudgetLine.startDate}" required="true" requiredMessage="#{con.requiredMessage}" showButtonPanel="true" />
+                        <h:message for="startdate" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="enddate" value="End Date"/>
-                        <p:calendar navigator="true" id="enddate" value="#{createBudgetLine.endDate}" required="true" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
+                        <p:calendar navigator="true" id="enddate" value="#{createBudgetLine.endDate}" required="true" requiredMessage="#{con.requiredMessage}" mindate="#{createBudgetLine.today}" showButtonPanel="true" />
+                        <h:message for="enddate" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="amount" value="Amount"/>
                         <p:inputNumber id="amount" value="#{createBudgetLine.amount}" required="true" />
+                        <h:message for="amount" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="category" value="Category"/>
-                        <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}" required="true">
+                        <p:selectOneMenu id="category" value="#{createBudgetLine.budgetLineCategoryName}" required="true" requiredMessage="#{con.requiredMessage}">
                             <f:selectItem value="#{null}" itemLabel="Select Category" itemValue="#{null}"/>
                             <f:selectItems value="#{createBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
                         </p:selectOneMenu>
+                        <h:message for="category" styleClass="err-msg"/>
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt">
+                    <p:commandButton icon="pi pi-file" styleClass="pill mr" value="save Draft" actionListener="#{createBudgetLine.saveDraftBudgetLine}"
+                                     oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
+
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
-                                     oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide(); updateBudgetLinesTable();" update=":statsForm, messages"/>
+                                     oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </div>
                 <p:messages id="messages" globalOnly="true" closable="true"/>
@@ -145,19 +162,23 @@
                 <p:panelGrid columns="2" layout="grid">
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="desc" value="Description"/>
-                        <p:inputText id="desc" value="#{updateBudgetLine.description}" required="true" autocomplete="false"/>
+                        <p:inputText id="desc" value="#{updateBudgetLine.description}" required="true" requiredMessage="#{con.requiredMessage}" autocomplete="false"/>
+                        <h:message for="desc" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="startdte" value="Start Date"/>
-                        <p:calendar navigator="true" id="startdte" value="#{updateBudgetLine.startDate}" required="true" showButtonPanel="true" />
+                        <p:calendar navigator="true" id="startdte" value="#{updateBudgetLine.startDate}" required="true" requiredMessage="#{con.requiredMessage}" showButtonPanel="true" />
+                        <h:message for="startdte" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="end_date" value="End Date"/>
-                        <p:calendar navigator="true" id="end_date" value="#{updateBudgetLine.endDate}" required="true" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+                        <p:calendar navigator="true" id="end_date" value="#{updateBudgetLine.endDate}" required="true" requiredMessage="#{con.requiredMessage}" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+                        <h:message for="end_date" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="am_ount" value="Amount"/>
                         <p:inputNumber id="am_ount" value="#{updateBudgetLine.amount}" required="true" />
+                        <h:message for="am_ount" styleClass="err-msg"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="categor_y" value="Category"/>
@@ -167,16 +188,65 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
-                                     update=":tabForm:tabView, m_essages, :new_budgetline_form"/>
+
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Update" actionListener="#{updateBudgetLine.updateBudgetLineFromEditLineStatusToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                                     update=":tabForm:tabView, m_essages, :new_budgetline_form, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </div>
                 <p:messages globalOnly="true" closable="true" id="m_essages"/>
             </h:form>
         </p:dialog>
 
+        <p:dialog id="edit_budgetline_in_draft_dialog" widgetVar="edit_budgetline_in_draft_dialog" header="Edit Budgetline" modal="true">
+            <h:form id="edit_budgetline_in_draft_form">
+                <p:panelGrid columns="2" layout="grid">
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="descr" value="Description"/>
+                        <p:inputText id="descr" value="#{updateBudgetLine.description}" required="true" requiredMessage="#{con.requiredMessage}" autocomplete="false"/>
+                        <h:message for="desc" styleClass="err-msg"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="startingdte" value="Start Date"/>
+                        <p:calendar navigator="true" id="startingdte" value="#{updateBudgetLine.startDate}" required="true" requiredMessage="#{con.requiredMessage}" showButtonPanel="true" />
+                        <h:message for="startdte" styleClass="err-msg"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="ending_date" value="End Date"/>
+                        <p:calendar navigator="true" id="ending_date" value="#{updateBudgetLine.endDate}" required="true" requiredMessage="#{con.requiredMessage}" mindate="#{updateBudgetLine.today}" showButtonPanel="true" />
+                        <h:message for="end_date" styleClass="err-msg"/>
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="am_ounting" value="Amount"/>
+                        <p:inputNumber id="am_ounting" value="#{updateBudgetLine.amount}" required="true" />
+                    </h:panelGroup>
+                    <h:panelGroup class="flex column">
+                        <p:outputLabel for="categorie_y" value="Category"/>
+                        <p:selectOneMenu id="categorie_y" value="#{updateBudgetLine.budgetLineCategoryName}">
+                            <f:selectItems value="#{updateBudgetLine.budgetLineCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category.name}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <div class="mt">
+
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Update Draft" actionListener="#{updateBudgetLine.updateDraftBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                                     update=":tabForm:tabView, me_essages, :new_budgetline_form, @form"/>
+
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateDraftBudgetLineToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                                     update=":tabForm:tabView, me_essages, :new_budgetline_form, @form"/>
+
+                    <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
+                </div>
+                <p:messages globalOnly="true" closable="true" id="me_essages"/>
+            </h:form>
+        </p:dialog>
+
         <p:confirmDialog widgetVar="confirmDeleteDialog" id="confirmDialog" message="Delete Budgetline?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+            <h3 style="color: red">
+                Warning! This may delete associated requisitions plus their accountabilities
+            </h3>
+            <p:outputLabel value="Proceed and Delete?"/>
+
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteDialog').hide()"
                              actionListener="#{deleteBudgetlines.deleteSpecificBudgetLine}"
                              update=":statsForm, :budgetlines_table, :new_budgetline_form" />
@@ -185,6 +255,10 @@
 
         <p:confirmDialog widgetVar="confirmDeleteAllBasedOnStatusDialog" id="confirmDeleteAllBasedOnStatusDialog" message="Delete Budgetlines?"
                          header="Confirm" icon="pi pi-exclamation-triangle">
+            <h3 style="color: red">
+                Warning! This may delete associated requisitions plus their accountabilities
+            </h3>
+            <p:outputLabel value="Proceed and Delete?"/>
             <p:commandButton icon="pi pi-check" styleClass="pill bg-r" value="Yes" oncomplete="PF('confirmDeleteAllBasedOnStatusDialog').hide()"
                              actionListener="#{deleteBudgetlines.deleteAllBudgetLinesOfStatus}"
             update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
@@ -196,20 +270,17 @@
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel for="status" value="Status"/>
                     <p:selectOneMenu id="status" value="#{updateBudgetLine.status}" required="true" requiredMessage="#{con.requiredMessage}">
-                        <f:selectItem value="#{null}" itemLabel="Select Status" itemValue="#{null}"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REJECT_BUDGETLINE')}" itemLabel="Reject" itemValue="Rejected"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('APPROVE_BUDGETLINE')}" itemLabel="Approve" itemValue="Approved"/>
-                        <f:selectItem itemDisabled="#{!checkPermission.hasPermission('REQUEST_CHANGES')}" itemLabel="Request changes" itemValue="RequestEdit"/>
+                        <f:selectItems value="#{updateBudgetLine.statusSet}" var="modify" itemValue="#{modify.status}" itemLabel="#{modify.description}"/>
                     </p:selectOneMenu>
+                    <h:message styleClass="err-msg" for="status" closable="true"/>
                 </h:panelGroup>
-                <p:message for="status" closable="true"/>
                 <h:panelGroup class="flex column">
                     <p:outputLabel value="Comment" for="comment"/>
                     <p:inputTextarea id="comment" value="#{updateBudgetLine.review_comments}" />
                 </h:panelGroup>
                 <div class="mt">
                     <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Modify" actionListener="#{updateBudgetLine.updateBudgetLine}"
-                                     onsuccess="PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
+                                     oncomplete="if (!args.validationFailed) PF('modify_status_dialog').hide()" update=":statsForm, :tabForm:tabView, :budgetlines_table, :new_budgetline_form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('modify_status_dialog').hide(); return false;"/>
                 </div>
             </h:form>

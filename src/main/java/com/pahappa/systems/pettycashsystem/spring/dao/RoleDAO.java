@@ -28,7 +28,7 @@ public class RoleDAO {
 
     public List<Role> getAllRoles() {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Role ORDER BY id DESC", Role.class)
+                .createQuery("FROM Role WHERE deleted= false ORDER BY id DESC", Role.class)
                 .getResultList();
     }
 
@@ -55,18 +55,17 @@ public class RoleDAO {
             }
 
             ////////////////////////////////
-            sessionFactory.getCurrentSession().delete(role);
+            role.setDeleted(true);
+            sessionFactory.getCurrentSession().update(role);
         }
     }
 
     public Role findByName(String role_name) {
-        return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE name=:role_name")
+        return (Role) sessionFactory.getCurrentSession().createQuery("FROM Role WHERE deleted=false AND name=:role_name")
                 .setParameter("role_name",role_name).uniqueResult();
     }
 
     public void deleteAllRoles() {
-//        sessionFactory.getCurrentSession().createQuery("DELETE FROM User").executeUpdate();
-
         List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User",User.class)
                 .getResultList();
 
@@ -81,7 +80,8 @@ public class RoleDAO {
         List<Role> roles=sessionFactory.getCurrentSession().createQuery("FROM Role",Role.class).getResultList();
         for (Role role : roles) {
             if (!role.getName().equals("USER")) {
-                sessionFactory.getCurrentSession().delete(role);
+                role.setDeleted(true);
+                sessionFactory.getCurrentSession().update(role);
             }
         }
     }

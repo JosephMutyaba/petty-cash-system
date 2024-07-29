@@ -10,14 +10,20 @@ public class Requisition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Boolean deleted = false;
+
     private String justification;
 
     @ManyToOne
     private User user;
 
+    //// MADE REQUISITION THE PARENT ENTITY FOR ACCOUNTABILITY
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "accountability_id")
     private Accountability accountability;
 
+    private Date dateAccountabilityWasSubmitted;
 
     @ManyToOne
     private BudgetLine budgetline;
@@ -44,9 +50,11 @@ public class Requisition {
     public Requisition() {
     }
 
-    private Requisition(Long id, String justification, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
+    private Requisition(Long id, Boolean deleted, String justification, Date dateAccountabilityWasSubmitted, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
         this.id = id;
+        this.deleted=deleted;
         this.justification = justification;
+        this.dateAccountabilityWasSubmitted=dateAccountabilityWasSubmitted;
         this.user = user;
         this.accountability = accountability;
         this.budgetline = budgetline;
@@ -63,6 +71,14 @@ public class Requisition {
         return id;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -73,6 +89,14 @@ public class Requisition {
 
     public void setJustification(String justification) {
         this.justification = justification;
+    }
+
+    public Date getDateAccountabilityWasSubmitted() {
+        return dateAccountabilityWasSubmitted;
+    }
+
+    public void setDateAccountabilityWasSubmitted(Date dateAccountabilityWasSubmitted) {
+        this.dateAccountabilityWasSubmitted = dateAccountabilityWasSubmitted;
     }
 
     public User getUser() {
@@ -170,6 +194,6 @@ public class Requisition {
 
     @Override
     public String toString() {
-        return "Requisition" + justification;
+        return "#REQ-" + id;
     }
 }

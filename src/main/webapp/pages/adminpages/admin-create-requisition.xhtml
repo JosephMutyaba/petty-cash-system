@@ -4,7 +4,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
     <f:event type="preRenderView" listener="#{myRequisitionHandler.selectRequisition}"/>
-    <ui:define name="title">My Requisitions</ui:define>
+    <ui:define name="title">
+        My Requisitions
+        #{con.setRoute('newreq')}
+    </ui:define>
     <ui:define name="main-content">
         <p:tabView id="bigTab">
             <p:tab title="Current">
@@ -13,30 +16,38 @@
                     <p:panelGrid columns="2" layout="tabular">
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="budgetline" value="Budget Line"/>
-                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}">
+                            <p:selectOneMenu id="budgetline" value="#{myRequisitionHandler.budgetLineId}" disabled="#{not myRequisitionHandler.status.equals('Draft')}" required="true" requiredMessage="#{con.requiredMessage}">
                                 <f:selectItem value="#{null}" itemDisabled="true" itemLabel="Choose Budgetline" />
                                 <f:selectItems value="#{myRequisitionHandler.budgetLines}" var="budgetline" itemValue="#{budgetline.id}" itemLabel="#{budgetline.description}"/>
                             </p:selectOneMenu>
+                            <h:message for="budgetline" styleClass="err-msg"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="status" value="Status"/>
-                            <p:inputText id="status" placeholder="Status" readonly="true" value="#{myRequisitionHandler.status}"/>
+                            <p:inputText id="status" placeholder="Status" disabled="true" value="#{myRequisitionHandler.status}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>
-                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}" disabled="#{(createRequisition.budgetLine ne null) and not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
+                            <p:inputNumber styleClass="fillW" id="amount" value="#{myRequisitionHandler.requestedAmount}"
+                                           disabled="#{(myRequisitionHandler.budgetLine ne null) and (not myRequisitionHandler.status.equals('Draft'))}"
+                                           required="true" requiredMessage="#{con.requiredMessage}" decimalPlaces="0"/>
+                            <h:message for="amount" styleClass="err-msg"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="date_needed" value="Date Needed"/>
-                            <p:calendar navigator="true" styleClass="fillW" id="date_needed" mindate="c" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
+                            <p:calendar navigator="true" styleClass="fillW" id="date_needed" mindate="t" placeholder="Date Needed" value="#{myRequisitionHandler.maxDate}" disabled="#{not myRequisitionHandler.status.equals('Draft')}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                            <h:message for="date_needed" styleClass="err-msg"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="justification" value="Justification"/>
-                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not (myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals('Pending'))}"/>
+                            <p:inputTextarea id="justification" placeholder="Description..." value="#{myRequisitionHandler.justification}" disabled="#{not myRequisitionHandler.status.equals('Draft')}" required="true"/>
+                            <h:message for="justification" styleClass="err-msg"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column" rendered="#{myRequisitionHandler.status.equals('Approved') or myRequisitionHandler.status.equals('Paid')}">
                             <p:outputLabel for="amountGranted" value="Amount Granted"/>
-                            <p:outputLabel id="amountGranted" value="#{myRequisitionHandler.amountGranted}"/>
+                            <p:outputLabel id="amountGranted" value="#{myRequisitionHandler.amountGranted}">
+                                <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                            </p:outputLabel>
                         </h:panelGroup>
                     </p:panelGrid>
                     <div>
@@ -44,44 +55,47 @@
                                       rendered="#{myRequisitionHandler.status.equals('Pending')}"/>
                         <h:outputText value="Your Requisition has been Approved. Please wait a small while for the money to reach you."
                                       rendered="#{myRequisitionHandler.status.equals('Approved')}"/>
-                        <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.updateRequisition}"
-                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
+                        <p:commandButton value="Submit" icon="pi pi-check" styleClass="mt pill mr" actionListener="#{myRequisitionHandler.updateRequisition}"
+                                         update=" @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
 
-                        <p:commandButton value="Save Draft" icon="pi pi-check" styleClass="mt pill" actionListener="#{myRequisitionHandler.saveOrUpdateDraftRequisition}"
-                                         update="globalMessages @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
-                        <p:messages globalOnly="true" id="globalMessages" closable="true"/>
+                        <p:commandButton value="Save Draft" icon="pi pi-save" styleClass="mt pill bg-none text-blk" actionListener="#{myRequisitionHandler.saveOrUpdateDraftRequisition}"
+                                         update=" @form" rendered="#{myRequisitionHandler.status.equals('Draft') or myRequisitionHandler.status.equals(null) or myRequisitionHandler.status.length() lt 1}"/>
                     </div>
                 </h:form>
                 <h:panelGroup id="accountability_section" rendered="#{myRequisitionHandler.status.equals('Paid')}" styleClass="mt pad2">
-                    <f:event type="preRenderView" listener="#{createAccountability.initialiseAccountability}"/>
+                    #{createAccountability.initialiseAccountability()}
 
                     <h3 class="mb">Accountability</h3>
                     <h:form styleClass="flex column pad2">
                         <h:panelGroup styleClass="flex row pad1">
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{createAccountability.amountSpent}" required="true"/>
+                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt"
+                                               value="#{createAccountability.amountSpent}" maxValue="#{(myRequisitionHandler.amountGranted!=null) ? myRequisitionHandler.amountGranted : 0}"
+                                               required="true" requiredMessage="#{con.requiredMessage}"/>
+                                <h:message for="ac_amt_used" styleClass="err-msg"/>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
                                 <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
                             </h:panelGroup>
                         </h:panelGroup>
-                        <div>
+                        <div class="mb">
                             <p:panel header="Upload Image">
-                                <p:fileUpload listener="#{createAccountability.handleFileUpload}" mode="simple" dragDropSupport="true" auto="true" update="imagePreview messages" />
-
-                                <p:graphicImage id="imagePreview" value="#{createAccountability.imageStream}" width="100" height="100"/>
+                                <p:fileUpload styleClass="flex column" listener="#{createAccountability.handleFileUpload}" mode="advanced" dragDropSupport="true" auto="true" update="imagePreview ">
+                                    <div class="pad2 m pill" style="border:dashed 1px #aaa">Drag an image here to upload</div>
+                                    <p:graphicImage styleClass="m-auto pad2 rad2" cache="false" id="imagePreview" value="#{createAccountability.imageStream}" width="500"/>
+                                </p:fileUpload>
                             </p:panel>
                         </div>
 
-                        <div>
-                            <p:commandButton value="Save Draft" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.saveOrUpdateAccountabilityDraft}" styleClass="mt pill"/>
-                            <p:commandButton value="Submit Accountability" update="messages bigTab" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mt pill"/>
-                            <p:messages globalOnly="true" id="messages" closable="true"/>
+                        <div class="mt">
+                            <p:commandButton value="Submit Accountability" update="bigTab, :bigTab:history_form" icon="pi pi-upload" action="#{createAccountability.save}" styleClass="mr pill"/>
+                            <p:commandButton value="Save Draft" update=" bigTab" icon="pi pi-save" action="#{createAccountability.saveOrUpdateAccountabilityDraft}" styleClass="pill bg-none text-blk"/>
                         </div>
                     </h:form>
                 </h:panelGroup>
+                <p:growl globalOnly="true"><p:autoUpdate/></p:growl>
             </p:tab>
             <p:tab title="History">
                 <h:form id="history_form">
@@ -98,6 +112,9 @@
                     </div>
                     <p:dataTable rowIndexVar="index" id="my_requisition_table" paginator="true" rows="5" rowsPerPageTemplate="5,10,15" value="#{myRequisitions.requisitionsForActiveTab}" var="requisition">
                         <p:column headerText="No" width="16px">#{index + 1}</p:column>
+                        <p:column headerText="Requisition No.">
+                            #{requisition}
+                        </p:column>
                         <p:column headerText="Description">
                             #{requisition.justification}
                         </p:column>
@@ -108,16 +125,42 @@
                             #{requisition.estimatedAmount}
                         </p:column>
                         <p:column headerText="Granted">
-                            #{requisition.amountGranted}
+                            <h:outputText value="#{requisition.amountGranted}">
+                                <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Budget Line">
                             #{requisition.budgetline.description}
                         </p:column>
-                        <p:column headerText="Date Approved" rendered="#{requisition.status.equals('Approved')}">
+                        <p:column headerText="Date Approved" visible="#{requisition.status.equals('Approved')}">
                             #{requisition.dateApproved}
+                        </p:column>
+
+                        <p:column rendered="#{myRequisitions.tabId.equals('completedTab')}" headerText="Accountability">
+                            <p:commandButton icon="pi pi-file-edit" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onsuccess="PF('accountabilityDialog').show()" update="bigTab:accountabilityDialogPanel" />
                         </p:column>
                     </p:dataTable>
                 </h:form>
+
+                <p:dialog id="accountabilityDialog" widgetVar="accountabilityDialog" header="Accountability" modal="true" closable="true" closeOnEscape="true" height="18rem">
+                    <h:panelGroup id="accountabilityDialogPanel" styleClass="mt pad1 flex column">
+                        <h:form styleClass="pad1">
+                            <h:panelGroup styleClass="flex column">
+                                <p:outputLabel for="amount_used" value="Amount Used" styleClass="mt"/>
+                                <p:inputText id="amount_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
+                                    <f:convertNumber type="currency" currencySymbol="UGX " integerOnly="true" maxFractionDigits="2"/>
+                                </p:inputText>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="flex column">
+                                <p:outputLabel for="acdescription" value="Description" styleClass="mt"/>
+                                <p:inputTextarea id="acdescription" placeholder="Description" styleClass="mb mt" value="#{handleOneAccountability.accountability.description}" readonly="true"/>
+                            </h:panelGroup>
+                            <p:column headerText="Image">
+                                <h:graphicImage width="500px" value="data:image/png;base64,#{handleOneAccountability.receiptImageBase64}" />
+                            </p:column>
+                        </h:form>
+                    </h:panelGroup>
+                </p:dialog>
             </p:tab>
         </p:tabView>
     </ui:define>

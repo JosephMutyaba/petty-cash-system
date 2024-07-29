@@ -20,6 +20,7 @@ public class AllBudgetLines implements Serializable {
     @Autowired
     private BudgetLineService budgetLineService;
 
+    private List<BudgetLine> draftBudgetLines;
     private List<BudgetLine> pendingBudgetLines;
     private List<BudgetLine> approvedBudgetLines;
     private List<BudgetLine> rejectedBudgetLines;
@@ -32,6 +33,7 @@ public class AllBudgetLines implements Serializable {
 
     @PostConstruct
     public void init() {
+        draftBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Draft");
         editRequestBudgetLines = budgetLineService.getAllBudgetlinesByStatus("RequestEdit");
         pendingBudgetLines = budgetLineService.getAllBudgetlinesByStatus("Pending");
         rejectedBudgetLines = budgetLineService.getAllBudgetlinesByStatusRejected();
@@ -46,6 +48,14 @@ public class AllBudgetLines implements Serializable {
 
     public void setSearchTerm(String searchTerm) {
         this.searchTerm = searchTerm;
+    }
+
+    public List<BudgetLine> getDraftBudgetLines() {
+        return budgetLineService.getAllBudgetlinesByStatus("Draft");
+    }
+
+    public void setDraftBudgetLines(List<BudgetLine> draftBudgetLines) {
+        this.draftBudgetLines = draftBudgetLines;
     }
 
     public List<BudgetLine> getPendingBudgetLines() {
@@ -95,24 +105,28 @@ public class AllBudgetLines implements Serializable {
     public void onTabChange(TabChangeEvent event) {
         tabId = event.getTab().getId();
         switch (tabId) {
-            case "pendingTab":
+            case "draftTab":
                 activeTab = 0;
                 budgetlinesForActiveTab = getPendingBudgetLines();
                 break;
-            case "approvedTab":
+            case "pendingTab":
                 activeTab = 1;
+                budgetlinesForActiveTab = getPendingBudgetLines();
+                break;
+            case "approvedTab":
+                activeTab = 2;
                 budgetlinesForActiveTab = getApprovedBudgetLines();
                 break;
             case "rejectedTab":
-                activeTab = 2;
+                activeTab = 3;
                 budgetlinesForActiveTab = getRejectedBudgetLines();
                 break;
             case "editLineTab":
-                activeTab = 3;
+                activeTab = 4;
                 budgetlinesForActiveTab = getEditRequestBudgetLines();
                 break;
             case "expiredTab":
-                activeTab = 4;
+                activeTab = 5;
                 budgetlinesForActiveTab = getExpiredBudgetLines();
                 break;
             default:
@@ -125,18 +139,21 @@ public class AllBudgetLines implements Serializable {
     public void update() {
         switch (activeTab) {
             case 0:
-                budgetlinesForActiveTab = getPendingBudgetLines();
+                budgetlinesForActiveTab = getDraftBudgetLines();
                 break;
             case 1:
-                budgetlinesForActiveTab = getApprovedBudgetLines();
+                budgetlinesForActiveTab = getPendingBudgetLines();
                 break;
             case 2:
-                budgetlinesForActiveTab = getRejectedBudgetLines();
+                budgetlinesForActiveTab = getApprovedBudgetLines();
                 break;
             case 3:
-                budgetlinesForActiveTab = getEditRequestBudgetLines();
+                budgetlinesForActiveTab = getRejectedBudgetLines();
                 break;
             case 4:
+                budgetlinesForActiveTab = getEditRequestBudgetLines();
+                break;
+            case 5:
                 budgetlinesForActiveTab = getExpiredBudgetLines();
                 break;
             default:
@@ -177,18 +194,21 @@ public class AllBudgetLines implements Serializable {
         if (searchTerm == null || searchTerm.isEmpty()) {
             switch (activeTab) {
                 case 0:
-                    budgetlinesForActiveTab = getPendingBudgetLines();
+                    budgetlinesForActiveTab = getDraftBudgetLines();
                     break;
                 case 1:
-                    budgetlinesForActiveTab = getApprovedBudgetLines();
+                    budgetlinesForActiveTab = getPendingBudgetLines();
                     break;
                 case 2:
-                    budgetlinesForActiveTab = getRejectedBudgetLines();
+                    budgetlinesForActiveTab = getApprovedBudgetLines();
                     break;
                 case 3:
-                    budgetlinesForActiveTab = getEditRequestBudgetLines();
+                    budgetlinesForActiveTab = getRejectedBudgetLines();
                     break;
                 case 4:
+                    budgetlinesForActiveTab = getEditRequestBudgetLines();
+                    break;
+                case 5:
                     budgetlinesForActiveTab = getExpiredBudgetLines();
                     break;
                 default:

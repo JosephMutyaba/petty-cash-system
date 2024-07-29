@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital,wght@0,400;0,700;1,400;1,700&family=Playwrite+NG+Modern:wght@100..400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://unpkg.com/primeflex@latest/primeflex.css');
 * {box-sizing: border-box;margin: 0;padding: 0;font-family:'Work Sans',Arsenal,sans-serif}
 :root {
     --mar: 4px;
@@ -20,6 +21,7 @@
     position: sticky;
     top: 0;
     z-index: 5;
+    overflow-y: auto;
 }
 .sidebar h3 {
     color: black;
@@ -78,11 +80,29 @@ body .ui-message {padding:1px}
     width: 24rem;
     /*margin-bottom: 8px;*/
 }
+body .ui-input-icon-left, body .ui-input-icon-right {
+    position: relative;
+    display: inline!important;
+}
+
 .flex.column {margin-bottom: 8px}
 
 span.flex.column > .selectMenu {
     width: 24rem;
     margin-bottom: 8px;
+}
+
+li.ui-widget.ui-menuitem.ui-corner-all.ui-menu-parent>a.ui-menuitem-link
+{border-bottom-left-radius: 10000px!important;border-top-left-radius: 10000px!important}
+
+.route {
+    background: #e9ecef !important
+}
+
+.err-msg {
+    font-size: 0.75rem !important;
+    color: var(--red-600) !important;
+    margin-left: 1rem !important;
 }
 
 /*Styles*/
@@ -99,7 +119,9 @@ span.flex.column > .selectMenu {
 .pad1 {padding:var(--pad) !important}
 .pad2 {padding:calc(var(--pad)*2) !important}
 .noPad {padding:0!important}
-.pill, body .ui-inputfield:not(.ui-inputtextarea) {border-radius: 10000px!important}
+.pill, body .ui-inputfield:not(.ui-inputtextarea)
+{border-radius: 10000px!important}
+
 .rad1 {border-radius: 12px!important}
 .rad2 {border-radius: 24px!important}
 

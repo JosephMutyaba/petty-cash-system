@@ -2,7 +2,10 @@ package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleDatesException;
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
+import com.pahappa.systems.pettycashsystem.managedcontroller.CheckPermission;
 import com.pahappa.systems.pettycashsystem.managedcontroller.login.LoginBean;
+import com.pahappa.systems.pettycashsystem.spring.enums.ModifyStatus;
+import com.pahappa.systems.pettycashsystem.spring.enums.Perm;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
@@ -17,8 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Named
@@ -36,6 +38,9 @@ public class UpdateRequisition implements Serializable {
 
     @Autowired
     private AllRequisitions allRequisitions;
+
+    @Autowired
+    private CheckPermission checkPermission;
 
     private String justification;
 
@@ -58,6 +63,8 @@ public class UpdateRequisition implements Serializable {
     private String reviewComments;
 
     private Requisition requisition;
+
+    private Set<ModifyStatus> statusSet;
 
     @PostConstruct
     public void init() {
@@ -126,6 +133,19 @@ public class UpdateRequisition implements Serializable {
 
     public void setRequestedAmount(Double requestedAmount) {
         this.requestedAmount = requestedAmount;
+    }
+
+    private void setupStatusSet() {
+//        CheckPermission checkPermission = new CheckPermission();
+        statusSet = EnumSet.of(ModifyStatus.Null);
+        if (checkPermission.hasPermission(Perm.valueOf("ACCEPT_REQUISITION"))) statusSet.add(ModifyStatus.ACCEPT);
+        if (checkPermission.hasPermission(Perm.valueOf("APPROVE_REQUISITION"))) statusSet.add(ModifyStatus.APPROVE);
+        if (checkPermission.hasPermission(Perm.valueOf("REJECT_REQUISITION"))) statusSet.add(ModifyStatus.REJECT);
+    }
+
+    public Set<ModifyStatus> getStatusSet() {
+        setupStatusSet();
+        return statusSet;
     }
 
     public String getStatus() {
