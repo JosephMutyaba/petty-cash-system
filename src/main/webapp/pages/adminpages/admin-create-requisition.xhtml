@@ -136,7 +136,7 @@
                             #{requisition.dateApproved}
                         </p:column>
 
-                        <p:column rendered="#{requisition.status == 'Completed'}" headerText="Accountability">
+                        <p:column rendered="#{myRequisitions.tabId.equals('completedTab')}" headerText="Accountability">
                             <p:commandButton icon="pi pi-file-edit" action="#{handleOneAccountability.selectAccountability(requisition.accountability)}" onsuccess="PF('accountabilityDialog').show()" update="bigTab:accountabilityDialogPanel" />
                         </p:column>
                     </p:dataTable>
