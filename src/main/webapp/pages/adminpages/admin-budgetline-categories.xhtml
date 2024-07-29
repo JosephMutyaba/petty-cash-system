@@ -64,7 +64,6 @@
                 <p:commandButton styleClass="mr pill" icon="pi pi-pencil" action="#{updateBudgetLineCategory.updateCategory}" value="Save" oncomplete="if (!args.validationFailed) PF('edit_category').hide()" update="budgetlines_categories__table, mess_sages, gl_msgs"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('edit_category').hide()"/>
                 <p:messages id="mess_sages" severity="error" closable="true" showDetail="true" globalOnly="true"/>
-
             </h:form>
         </p:dialog>
 

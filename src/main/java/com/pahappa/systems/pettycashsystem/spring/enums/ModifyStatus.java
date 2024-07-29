@@ -3,7 +3,7 @@ package com.pahappa.systems.pettycashsystem.spring.enums;
 public enum ModifyStatus {
     Null(null,"Select Status"),
     APPROVE("Approved","Approve"),
-    ACCEPT("Accepted","Review"),
+    REVIEW("Reviewed","Review"),
     REJECT("Rejected","Reject"),
     REQUEST_CHANGES("RequestEdit","Request Changes");
 

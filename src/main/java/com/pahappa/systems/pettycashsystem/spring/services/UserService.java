@@ -170,7 +170,6 @@ public class UserService {
         return userDAO.getUserByUsername(username);
     }
 
-//    @Transactional
     public void loadPermissions(User user) {
         Set<Permission> permissions = new HashSet<>();
         Hibernate.initialize(user.getRoles());

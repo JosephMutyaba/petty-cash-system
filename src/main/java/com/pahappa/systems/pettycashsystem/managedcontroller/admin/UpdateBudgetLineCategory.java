@@ -45,6 +45,8 @@ public class UpdateBudgetLineCategory implements Serializable {
         budgetLineCategory.setName(cat_name);
         budgetLineCategoryService.updateBudgetLineCategory(budgetLineCategory);
         allCategories.init();
+
+        cat_name = null;
     }
 
 }

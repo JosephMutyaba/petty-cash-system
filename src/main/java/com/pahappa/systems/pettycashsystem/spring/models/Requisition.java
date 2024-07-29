@@ -46,12 +46,15 @@ public class Requisition {
 
     private Date dateApproved;
 
+    private Date dateOfCashDisbursement;
+
     public Requisition() {
     }
 
-    private Requisition(Long id, Boolean deleted, String justification, Date dateAccountabilityWasSubmitted, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
+    private Requisition(Long id, Boolean deleted, Date dateOfCashDisbursement, String justification, Date dateAccountabilityWasSubmitted, User user, Accountability accountability, BudgetLine budgetline, String review_comments, Double estimatedAmount, Double amountGranted, String status, Date dateCreated, Date maxDateNeeded, Date dateApproved) {
         this.id = id;
         this.deleted=deleted;
+        this.dateOfCashDisbursement=dateOfCashDisbursement;
         this.justification = justification;
         this.dateAccountabilityWasSubmitted=dateAccountabilityWasSubmitted;
         this.user = user;
@@ -70,6 +73,10 @@ public class Requisition {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -78,8 +85,12 @@ public class Requisition {
         this.deleted = deleted;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Date getDateOfCashDisbursement() {
+        return dateOfCashDisbursement;
+    }
+
+    public void setDateOfCashDisbursement(Date dateOfCashDisbursement) {
+        this.dateOfCashDisbursement = dateOfCashDisbursement;
     }
 
     public String getJustification() {

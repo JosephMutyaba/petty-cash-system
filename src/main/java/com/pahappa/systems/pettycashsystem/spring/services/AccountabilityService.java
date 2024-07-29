@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,9 +44,17 @@ public class AccountabilityService {
             throw new NullFieldException("Invalid value for amount spent");
         }
 
-//        if (accountability.getRequisition() ==null) {
-//            throw new NullFieldException("requisition cannot be null");
-//        }
+        if (accountability.getDateOfExpenditure()==null) {
+            throw new NullFieldException("Date of expenditure cannot be empty");
+        }
+
+        if (accountability.getDateOfExpenditure().before(requisition.getDateOfCashDisbursement())) {
+            throw new IncompatibleValueException("Date of expenditure cannot be before the date  cash was disbursed");
+        }
+
+        if (accountability.getDateOfExpenditure().after(new Date())) {
+            throw new IncompatibleValueException("Date of expenditure cannot be in the future");
+        }
 
         if (accountability.getAmountSpent()>requisition.getAmountGranted()) {
             throw new IncompatibleValueException("Amount spent cannot be more than what was granted you.");

@@ -21,6 +21,8 @@ public class Accountability {
 
     private String extraClaims;
 
+    private Date dateOfExpenditure;
+
     @Column(nullable = false)
     private Double amountSpent;
 
@@ -38,8 +40,9 @@ public class Accountability {
     public Accountability() {
     }
 
-    private Accountability(Long id, Boolean deleted, String description, Boolean balanceIsReturned, String extraClaims, Double amountSpent, Requisition requisition, Date dateSubmitted, byte[] receiptImage) {
+    private Accountability(Long id, Date dateOfExpenditure, Boolean deleted, String description, Boolean balanceIsReturned, String extraClaims, Double amountSpent, Requisition requisition, Date dateSubmitted, byte[] receiptImage) {
         this.id = id;
+        this.dateOfExpenditure=dateOfExpenditure;
         this.description = description;
         this.deleted = deleted;
         this.balanceIsReturned = balanceIsReturned;
@@ -56,6 +59,14 @@ public class Accountability {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getDateOfExpenditure() {
+        return dateOfExpenditure;
+    }
+
+    public void setDateOfExpenditure(Date dateOfExpenditure) {
+        this.dateOfExpenditure = dateOfExpenditure;
     }
 
     public Boolean getDeleted() {

@@ -33,6 +33,7 @@ public class CreateBudgetLineCategory implements Serializable {
     }
 
     public String getCat_name() {
+
         return cat_name;
     }
 

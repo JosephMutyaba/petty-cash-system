@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Date;
 
 @Named
 @ViewScoped
@@ -82,6 +83,9 @@ public class DisburseCash implements Serializable {
 
             // setting requisition status to paid
             requisition.setStatus("Paid");
+
+            // setting the dateOfDisbursement of the cash
+            requisition.setDateOfCashDisbursement(new Date());
 
             //updating the db
             requisitionService.updateRequisition(requisition);

@@ -138,7 +138,7 @@ public class UpdateRequisition implements Serializable {
     private void setupStatusSet() {
 //        CheckPermission checkPermission = new CheckPermission();
         statusSet = EnumSet.of(ModifyStatus.Null);
-        if (checkPermission.hasPermission(Perm.valueOf("ACCEPT_REQUISITION"))) statusSet.add(ModifyStatus.ACCEPT);
+        if (checkPermission.hasPermission(Perm.valueOf("ACCEPT_REQUISITION"))) statusSet.add(ModifyStatus.REVIEW);
         if (checkPermission.hasPermission(Perm.valueOf("APPROVE_REQUISITION"))) statusSet.add(ModifyStatus.APPROVE);
         if (checkPermission.hasPermission(Perm.valueOf("REJECT_REQUISITION"))) statusSet.add(ModifyStatus.REJECT);
     }
