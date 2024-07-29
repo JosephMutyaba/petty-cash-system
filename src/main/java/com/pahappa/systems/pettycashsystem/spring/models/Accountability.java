@@ -15,6 +15,7 @@ public class Accountability {
 
     private String description;
 
+    @Column(nullable = false)
     private Boolean deleted=false;
 
     private String status;

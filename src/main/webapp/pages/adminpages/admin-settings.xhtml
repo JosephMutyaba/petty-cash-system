@@ -31,7 +31,8 @@
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="password" value="Password"/>
-                        <p:password id="password" placeholder="Password" value="#{loginBean.userPassword}"/>
+                        <p:password id="password" placeholder="Password" value="#{loginBean.userPassword}"
+                                    toggleMask="true" styleClass="fillW"/>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="role" value="Roles"/>

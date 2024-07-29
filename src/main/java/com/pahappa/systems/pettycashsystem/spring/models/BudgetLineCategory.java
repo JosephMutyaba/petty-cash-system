@@ -13,6 +13,7 @@ public class BudgetLineCategory {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Boolean deleted=false;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "budgetLineCategory")

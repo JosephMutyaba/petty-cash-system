@@ -10,6 +10,7 @@ public class Requisition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Boolean deleted = false;
 
     private String justification;

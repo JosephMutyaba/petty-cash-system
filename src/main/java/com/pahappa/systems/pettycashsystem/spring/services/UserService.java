@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,20 +45,17 @@ public class UserService {
         if (InternetChecker.isInternetAvailable()){
             // Send registration email
             String subject = "Registration Successful";
-//            String message = "Dear " + user.getFirstname() + ",\n\n" +
-//                    "Your registration is successful.Use the following to login to your account\n"
-//                    +"Username : " + user.getUsername() + "\n" +
-//                    "Password : " + user.getPassword() + "\n" +
-//                    "Regards,\nAdmin";
 
-
-            String message = "Dear " + user.getFirstname() + ",\n\n" +
-                    "Your registration is successful. Use the following to login to your account\n" +
-                    "Username: " + user.getUsername() + "\n" +
-                    "Password: " + user.getPassword() + "\n\n" +
-                    "You can login using the following link:\n" +
-                    "http://localhost:8356/PCS/pages/auth/login.xhtml\n\n" +
-                    "Regards,\nAdmin";
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            String link = " <a href=\"http://" + externalContext.getRequestServerName() +
+                    ":" + externalContext.getRequestServerPort() + externalContext.getApplicationContextPath() + "\">Login Page</a>";
+            String message = "Dear " + user.getFirstname() + ",<br/><br/>" +
+                    "Your registration is successful. Use the following to login to your account<br/>" +
+                    "Username: " + user.getUsername() + "<br/>" +
+                    "Password: " + user.getPassword() + "<br/><br/>" +
+                    "You can login using the following link:<br/>" + link +
+                    "<br/><br/>" +
+                    "Regards,<br/>Admin";
 
             emailService.sendSimpleMessage(user.getEmail(), subject, message);
         }
@@ -85,15 +84,18 @@ public class UserService {
 
         if (InternetChecker.isInternetAvailable()){
             // Send update email
-            String subject = "Registration Successful";
+            String subject = "Update Successful";
 
-            String message = "Dear " + user.getFirstname() + ",\n\n" +
-                    "Your registration is successful. Use the following to login to your account\n" +
-                    "Username: " + user.getUsername() + "\n" +
-                    "Password: " + user.getPassword() + "\n\n" +
-                    "You can login using the following link:\n" +
-                    "http://localhost:8356/PCS/pages/auth/login.xhtml\n\n" +
-                    "Regards,\nAdmin";
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            String link = " <a href=\"http://" + externalContext.getRequestServerName() +
+                    ":" + externalContext.getRequestServerPort() + externalContext.getApplicationContextPath() + "\">Login Page</a>";
+            String message = "Dear " + user.getFirstname() + ",<br/><br/>" +
+                    "Your update is successful. Use the following to login to your account<br/>" +
+                    "Username: " + user.getUsername() + "<br/>" +
+                    "Password: " + user.getPassword() + "<br/><br/>" +
+                    "You can login using the following link:<br/>" + link +
+                    "<br/><br/>" +
+                    "Regards,<br/>Admin";
 
             emailService.sendSimpleMessage(user.getEmail(), subject, message);
 
