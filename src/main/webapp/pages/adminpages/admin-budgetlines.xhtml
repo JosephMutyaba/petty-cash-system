@@ -151,7 +151,7 @@
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </div>
-                <p:messages id="messages" globalOnly="true" closable="true"/>
+                <p:messages id="messages" severity="error" globalOnly="true" closable="true"/>
             </h:form>
         </p:dialog>
 
@@ -191,7 +191,7 @@
                                      update=":tabForm:tabView, m_essages, :new_budgetline_form, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </div>
-                <p:messages globalOnly="true" closable="true" id="m_essages"/>
+                <p:messages globalOnly="true" severity="error" closable="true" id="m_essages"/>
             </h:form>
         </p:dialog>
 
@@ -234,7 +234,7 @@
 
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>
                 </div>
-                <p:messages globalOnly="true" closable="true" id="me_essages"/>
+                <p:messages globalOnly="true" closable="true" severity="error" id="me_essages"/>
             </h:form>
         </p:dialog>
 

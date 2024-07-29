@@ -48,6 +48,9 @@ public class CreateBudgetLineCategory implements Serializable {
             budgetLineCategoryService.createBudgetLineCategory(budgetLineCategory);
             allCategories.init();
 
+            // clear the cat name value
+            cat_name=null;
+
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"BudgetLine Category created successfully", "Success");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } catch (Exception e) {
