@@ -17,6 +17,9 @@
                 <p:commandButton value="Delete All" icon="pi pi-trash" styleClass="bg-r pill" onclick="PF('confirm_all_dialog').show()" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}"/>
             </h:form>
         </div>
+
+        <p:growl globalOnly="true" severity="info" id="gl_msgs"/>
+
         <h:form>
             <div class="bg-white pad1">
                 <p:inputText styleClass="pill fillW" value="#{allBudgetLineCategories.searchTerm}" placeholder="Search">
@@ -32,8 +35,8 @@
             </p:column>
             <p:column headerText="Actions" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE','DELETE_BUDGETLINE')}">
                 <h:form>
-                    <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE')}" icon="pi pi-pencil" styleClass="mr pill square" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onclick="PF('edit_category').show()"/>
-                    <p:commandButton title="Delete" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onclick="PF('confirm_dialog').show()"/>
+                    <p:commandButton title="Edit" rendered="#{checkPermission.hasPermission('EDIT_BUDGETLINE')}" icon="pi pi-pencil" styleClass="mr pill square" action="#{updateBudgetLineCategory.selectCategory(category)}" update="edit_category_form" onsuccess="PF('edit_category').show()"/>
+                    <p:commandButton title="Delete" rendered="#{checkPermission.hasPermission('DELETE_BUDGETLINE')}" icon="pi pi-times" styleClass="bg-r pill square" action="#{deleteBudgetLineCategory.selectBudgetLineCategory(category)}" onsuccess="PF('confirm_dialog').show()"/>
                 </h:form>
             </p:column>
         </p:dataTable>
@@ -45,8 +48,9 @@
                     <p:inputText id="name" value="#{createBudgetLineCategory.cat_name}" required="true" />
                     <h:message for="name" styleClass="err-msg"/>
                 </h:panelGroup>
-                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="if (!args.validationFailed) PF('new_budgetline_category').hide()" update="budgetlines_categories__table"/>
+                <p:commandButton styleClass="mr pill" icon="pi pi-save" value="Save" action="#{createBudgetLineCategory.createCategory}" oncomplete="if (!args.validationFailed) PF('new_budgetline_category').hide()" update="budgetlines_categories__table, mes_sages, gl_msgs"/>
                 <p:commandButton styleClass="bg-r pill" icon="pi pi-times" value="Cancel" onclick="PF('new_budgetline_category').hide()"/>
+                <p:messages id="mes_sages" severity="error" closable="true" showDetail="true" globalOnly="true"/>
             </h:form>
         </p:dialog>
 

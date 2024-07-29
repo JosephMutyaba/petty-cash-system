@@ -38,7 +38,7 @@
         <h:form id="tabForm">
             <p:tabView id="tabView" activeIndex="#{allBudgetLines.activeTab}">
                 <p:ajax event="tabChange" listener="#{allBudgetLines.onTabChange}" update=":budgetlines_table :add_delete_buttons"/>
-                <p:tab id="draftTab" title="Drafts" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','APPROVE_BUDGETLINE', 'REJECT_BUDGETLINE')}"/>
+                <p:tab id="draftTab" title="Drafts" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE')}"/>
                 <p:tab id="pendingTab" title="Pending" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','APPROVE_BUDGETLINE', 'REJECT_BUDGETLINE')}"/>
                 <p:tab id="approvedTab" title="Approved"/>
                 <p:tab id="rejectedTab" title="Rejected" rendered="#{checkPermission.hasPermission('MAKE_BUDGETLINE','REJECT_BUDGETLINE')}"/>
