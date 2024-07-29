@@ -66,8 +66,6 @@ public class RoleDAO {
     }
 
     public void deleteAllRoles() {
-//        sessionFactory.getCurrentSession().createQuery("DELETE FROM User").executeUpdate();
-
         List<User> users = sessionFactory.getCurrentSession().createQuery("FROM User",User.class)
                 .getResultList();
 
@@ -90,7 +88,7 @@ public class RoleDAO {
 
     public Role getRoleByName(String name) {
         return (Role) sessionFactory.getCurrentSession()
-                .createQuery("FROM Role WHERE deleted=false AND name=:role_name")
+                .createQuery("FROM Role WHERE name=:role_name")
                 .setParameter("role_name",name)
                 .uniqueResult();
     }

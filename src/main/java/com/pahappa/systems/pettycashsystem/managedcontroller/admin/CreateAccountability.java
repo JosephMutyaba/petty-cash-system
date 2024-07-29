@@ -161,14 +161,10 @@ public class CreateAccountability implements Serializable {
     }
 
     public void initialiseAccountability(){
-//        Requisition requisition = new Requisition();
-//        requisition=myRequisitionHandler.getRequisition();
         requisition = requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
 
-//        requisition=requisitionService.getRequisitionByUserIdAndStatusAndMaxDateNotExpired(loginBean.getLoggedInUser().getId());
         if(requisition!=null){
             System.out.println("\nAcc not null\n");
-//            accountability =accountabilityService.getAccountabilityByRequisitionId(requisition.getId());
             accountability=requisition.getAccountability();
             if (accountability != null) {
                 this.accountabilityId=accountability.getId();
@@ -214,7 +210,6 @@ public class CreateAccountability implements Serializable {
             accountability.setExtraClaims(extraClaims);
             accountability.setDateSubmitted(new Date());
             accountability.setAmountSpent(amountSpent);
-//            accountability.setRequisition(requisition);
             accountability.setReceiptImage(receiptImage);
 
             //setting status to completed

@@ -107,23 +107,6 @@ public class UserDAO {
             sessionFactory.getCurrentSession().createQuery("UPDATE Requisition SET deleted=true").executeUpdate();
             sessionFactory.getCurrentSession().createQuery("UPDATE User SET deleted=true").executeUpdate();
 
-
-//            List<User> users=getCurrentSession().createQuery("FROM User").getResultList();
-//            for (User user: users){
-//                List<Requisition> userRequisitions = user.getRequisition();
-//                if (userRequisitions != null) {
-//                    for (Requisition req: userRequisitions){
-//                        Accountability accountability= req.getAccountability();
-//                        if (accountability != null) {
-//                            accountability.setDeleted(true);
-//                        }
-//                    }
-//                    sessionFactory.getCurrentSession().createQuery("UPDATE Requisition SET deleted=true WHERE user_id=:userId")
-//                            .setParameter("userId",user.getDeleted())
-//                            .executeUpdate();
-//                }
-//            }
-
             return true;
         }catch (Exception e) {
             return false;
@@ -132,7 +115,7 @@ public class UserDAO {
 
     public User getUserByUsername(String username) {
         return (User) getCurrentSession()
-                .createQuery("from User where deleted=false and username=:username")
+                .createQuery("from User where username=:username")
                 .setParameter("username", username)
                 .uniqueResult();
     }

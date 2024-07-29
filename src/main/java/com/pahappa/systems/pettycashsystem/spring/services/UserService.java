@@ -86,12 +86,6 @@ public class UserService {
         if (InternetChecker.isInternetAvailable()){
             // Send update email
             String subject = "Registration Successful";
-//            String message = "Dear " + user.getFirstname() + ",\n\n" +
-//                    "Your registration is successful.Use the following to login to your account\n"
-//                    +"Username : " + user.getUsername() + "\n" +
-//                    "Password : " + user.getPassword() + "\n" +
-//                    "Regards,\nAdmin";
-
 
             String message = "Dear " + user.getFirstname() + ",\n\n" +
                     "Your registration is successful. Use the following to login to your account\n" +
