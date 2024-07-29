@@ -83,7 +83,6 @@
             </p:column>
             <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
                 <h:outputText value="#{requisition.amountGranted}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
                 </h:outputText>
             </p:column>
             <p:column headerText="Edit Status" rendered="#{(allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('reviewed')) and checkPermission.hasPermission('APPROVE_REQUISITION','ACCEPT_REQUISITION','REJECT_REQUISITION')}">
@@ -125,7 +124,6 @@
                     <h:panelGroup class="flex column">
                         <p:outputLabel for="edit_amount_requested" value="Amount Requested:"/>
                         <p:inputNumber id="edit_amount_requested" value="#{updateRequisition.requestedAmount}" required="true" autocomplete="false">
-                            <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
                         </p:inputNumber>
                     </h:panelGroup>
                     <h:panelGroup class="flex column">
@@ -202,9 +200,7 @@
                 </h:panelGroup>
                 <h:panelGroup class="flex column">
                     <p:outputLabel for="granted_amount" value="Granted Amount"/>
-                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}" required="true" requiredMessage="#{con.requiredMessage}">
-                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
-                    </p:inputNumber>
+                    <p:inputNumber id="granted_amount" value="#{updateRequisition.amountGranted}" maxValue="#{updateRequisition.requestedAmount != null ? updateRequisition.requestedAmount : 0}" required="true" requiredMessage="#{con.requiredMessage}"/>
                     <h:message for="granted_amount" styleClass="err-msg"/>
                     <p:outputLabel value="Max: #{updateRequisition.requestedAmount}" style="color:cornflowerblue;font-size:0.8rem;padding-left:16px"/>
                 </h:panelGroup>
