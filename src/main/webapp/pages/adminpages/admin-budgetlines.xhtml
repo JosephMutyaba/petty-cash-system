@@ -145,10 +145,9 @@
                     </h:panelGroup>
                 </p:panelGrid>
                 <div class="mt">
-                    <p:commandButton icon="pi pi-file" styleClass="pill mr" value="save Draft" actionListener="#{createBudgetLine.saveDraftBudgetLine}"
+                    <p:commandButton icon="pi pi-upload" styleClass="pill mr" value="Submit" actionListener="#{createBudgetLine.saveBudgetLine}"
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
-
-                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{createBudgetLine.saveBudgetLine}"
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr bg-none text-blk" value="Save Draft" actionListener="#{createBudgetLine.saveDraftBudgetLine}"
                                      oncomplete="if (!args.validationFailed) PF('new_budgetline_dialog').hide();" update=":statsForm, messages, budgetlines_table, @form"/>
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('new_budgetline_dialog').hide(); return false;"/>
                 </div>
@@ -228,10 +227,10 @@
                 </p:panelGrid>
                 <div class="mt">
 
-                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Update Draft" actionListener="#{updateBudgetLine.updateDraftBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                    <p:commandButton icon="pi pi-upload" styleClass="pill mr" value="Submit" actionListener="#{updateBudgetLine.updateDraftBudgetLineToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_in_draft_dialog').hide(); updateBudgetLinesTable();"
                                      update=":tabForm:tabView, me_essages, :new_budgetline_form, @form"/>
 
-                    <p:commandButton icon="pi pi-save" styleClass="pill mr" value="Save" actionListener="#{updateBudgetLine.updateDraftBudgetLineToPending}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_dialog').hide(); updateBudgetLinesTable();"
+                    <p:commandButton icon="pi pi-save" styleClass="pill mr bg-none text-blk" value="Save Draft" actionListener="#{updateBudgetLine.updateDraftBudgetLine}" oncomplete="if (!args.validationFailed) PF('edit_budgetline_in_draft_dialog').hide(); updateBudgetLinesTable();"
                                      update=":tabForm:tabView, me_essages, :new_budgetline_form, @form"/>
 
                     <p:commandButton icon="pi pi-times" styleClass="pill bg-r" value="Cancel" onclick="PF('edit_budgetline_dialog').hide(); return false;"/>

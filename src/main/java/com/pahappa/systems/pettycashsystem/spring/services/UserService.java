@@ -1,7 +1,7 @@
 package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
-import com.pahappa.systems.pettycashsystem.managedcontroller.admin.Constants;
+import com.pahappa.systems.pettycashsystem.managedcontroller.Constants;
 import com.pahappa.systems.pettycashsystem.network.InternetChecker;
 import com.pahappa.systems.pettycashsystem.spring.dao.UserDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.Permission;

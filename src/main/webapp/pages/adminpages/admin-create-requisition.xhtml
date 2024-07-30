@@ -24,7 +24,8 @@
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="status" value="Status"/>
-                            <p:inputText id="status" placeholder="Status" disabled="true" value="#{myRequisitionHandler.status}"/>
+                            <p:outputLabel id="status" value="#{myRequisitionHandler.status}"
+                                         styleClass="font-bold #{requisitionStatusColors.getStatusColor(myRequisitionHandler.status)}"/>
                         </h:panelGroup>
                         <h:panelGroup class="flex column">
                             <p:outputLabel for="amount" value="Amount"/>

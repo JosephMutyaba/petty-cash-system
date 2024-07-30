@@ -141,7 +141,7 @@ public class RequisitionDAO {
     }
 
     public Requisition getRequisitionByAccountabilityId(Long accountabilityId) {
-        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition WHERE deleted=false AND accountability_id=:accId")
+        return (Requisition) sessionFactory.getCurrentSession().createQuery("FROM Requisition r WHERE deleted=false AND r.accountability.id=:accId")
                 .setParameter("accId",accountabilityId)
                 .uniqueResult();
     }
