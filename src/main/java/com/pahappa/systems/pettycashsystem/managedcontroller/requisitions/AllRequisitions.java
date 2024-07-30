@@ -169,22 +169,23 @@ public class AllRequisitions implements Serializable {
                 requisitionsForActiveTab = getPendingRequisitions();
                 break;
             case 1:
-                requisitionsForActiveTab = getApprovedRequisitions();
+                requisitionsForActiveTab= getReviewedRequisitions();
                 break;
             case 2:
-                requisitionsForActiveTab = getRejectedRequisitions();
+                requisitionsForActiveTab = getApprovedRequisitions();
                 break;
             case 3:
-                requisitionsForActiveTab = getPaidRequisitions();
+                requisitionsForActiveTab = getRejectedRequisitions();
                 break;
             case 4:
-                requisitionsForActiveTab = getExpiredRequisitions();
+                requisitionsForActiveTab = getPaidRequisitions();
                 break;
             case 5:
                 requisitionsForActiveTab = getCompletedRequisitions();
                 break;
             case 6:
-                requisitionsForActiveTab= getReviewedRequisitions();
+                requisitionsForActiveTab = getExpiredRequisitions();
+                break;
             default:
                 System.err.println("Error: Unknown activeTab - " + activeTab);
                 break;
