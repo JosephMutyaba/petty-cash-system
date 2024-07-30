@@ -14,7 +14,7 @@ import java.util.List;
 public class PermEnum implements Serializable {
 
     @PostConstruct
-    void ini() {
+    public void init() {
         
     }
 

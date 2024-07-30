@@ -32,7 +32,7 @@ public class  AdminChart implements Serializable {
         ds.setBackgroundColor(colors);
 
         cd.addChartDataSet(ds);
-        List<String> labels = List.of("Pending","Approved","Paid Out", "Rejected", "Completed", "Expired", "Accepted");
+        List<String> labels = List.of("Pending","Approved","Paid Out", "Rejected", "Completed", "Expired", "Reviewed");
         cd.setLabels(labels);
         pcm.setData(cd);
 
