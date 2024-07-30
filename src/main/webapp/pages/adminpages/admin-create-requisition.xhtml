@@ -47,7 +47,7 @@
                         <h:panelGroup class="flex column" rendered="#{myRequisitionHandler.status.equals('Approved') or myRequisitionHandler.status.equals('Paid')}">
                             <p:outputLabel for="amountGranted" value="Amount Granted"/>
                             <p:outputLabel id="amountGranted" value="#{myRequisitionHandler.amountGranted}">
-                                <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                                <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                             </p:outputLabel>
                         </h:panelGroup>
                     </p:panelGrid>
@@ -68,10 +68,10 @@
 
                     <h3 class="mb">Accountability</h3>
                     <h:form styleClass="flex column pad2">
-                        <h:panelGroup styleClass="flex row pad1">
+                        <p:panelGrid columns="2" layout="grid" styleClass="fillW">
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
-                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt"
+                                <p:inputNumber id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt fillW"
                                                value="#{createAccountability.amountSpent}" maxValue="#{(myRequisitionHandler.amountGranted!=null) ? myRequisitionHandler.amountGranted : 0}"
                                                required="true" requiredMessage="#{con.requiredMessage}"/>
                                 <h:message for="ac_amt_used" styleClass="err-msg"/>
@@ -87,7 +87,7 @@
                                 <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
                                 <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>
                             </h:panelGroup>
-                        </h:panelGroup>
+                        </p:panelGrid>
                         <div class="mb">
                             <p:panel header="Upload Image">
                                 <p:fileUpload styleClass="flex column" listener="#{createAccountability.handleFileUpload}" mode="advanced" dragDropSupport="true" auto="true" update="imagePreview ">
@@ -134,7 +134,7 @@
                         </p:column>
                         <p:column headerText="Granted">
                             <h:outputText value="#{requisition.amountGranted}">
-                                <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                                <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                             </h:outputText>
                         </p:column>
                         <p:column headerText="Budget Line">
@@ -156,7 +156,7 @@
                             <h:panelGroup styleClass="flex column">
                                 <p:outputLabel for="amount_used" value="Amount Used" styleClass="mt"/>
                                 <p:inputText id="amount_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
-                                    <f:convertNumber type="currency" currencySymbol="UGX " integerOnly="true" maxFractionDigits="2"/>
+                                    <f:convertNumber type="currency" currencySymbol="UGX " maxFractionDigits="2"/>
                                 </p:inputText>
                             </h:panelGroup>
                             <h:panelGroup styleClass="flex column">

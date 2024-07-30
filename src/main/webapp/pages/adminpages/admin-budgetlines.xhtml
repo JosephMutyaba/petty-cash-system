@@ -72,12 +72,12 @@
             </p:column>
             <p:column headerText="Amount">
                 <h:outputText value="#{budgetLine.amount}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </h:outputText>
             </p:column>
             <p:column headerText="Balance">
                 <h:outputText value="#{budgetLine.balance}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </h:outputText>
             </p:column>
             <p:column headerText="StartDate">

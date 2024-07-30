@@ -17,6 +17,8 @@ public class RequisitionStatusColors {
                 return " text-orange-400 ";
             case "Pending":
                 return " text-purple-400 ";
+            case "Paid":
+                return " text-yellow-600 ";
             default:
                 return " text-blk ";
         }

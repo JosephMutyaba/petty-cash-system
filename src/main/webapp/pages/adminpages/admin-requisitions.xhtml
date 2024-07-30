@@ -78,11 +78,12 @@
             </p:column>
             <p:column headerText="Amount requested">
                 <h:outputText value="#{requisition.estimatedAmount}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </h:outputText>
             </p:column>
             <p:column headerText="Amount granted" rendered="#{allRequisitions.tabId.equals('approvedTab') or allRequisitions.tabId.equals('paid') or allRequisitions.tabId.equals('completed')}">
                 <h:outputText value="#{requisition.amountGranted}">
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </h:outputText>
             </p:column>
             <p:column headerText="Edit Status" rendered="#{(allRequisitions.tabId.equals('pendingTab') or allRequisitions.tabId.equals('reviewed')) and checkPermission.hasPermission('APPROVE_REQUISITION','ACCEPT_REQUISITION','REJECT_REQUISITION')}">
@@ -159,9 +160,18 @@
             <p:commandButton icon="pi pi-times" styleClass="pill bg-g" value="No" onclick="PF('confirmDeleteDialog').hide()" type="button" />
         </p:confirmDialog>
 
-        <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" header="Disburse" icon="pi pi-exclamation-triangle">
-            <p:panelGrid id="disburse_panel">
-                <p:outputLabel value="Transfer Sh.#{disburseCash.requisition.amountGranted} from BudgetLine Acount? Balance in budgetline will be Sh.#{disburseCash.requisition.budgetline.balance - disburseCash.requisition.amountGranted}"/>
+        <p:confirmDialog widgetVar="disburse_money_dialog" id="disburse_money_dialog" header="Disburse" icon="pi pi-exclamation-triangle"
+                         width="420px" message="Transfer money from BudgetLine acocunt?">
+            <p:panelGrid id="disburse_panel" columns="2" layout="tabular">
+                <p:outputLabel for="grantAmount" value="Transfer Amount"/>
+                <p:outputLabel id="grantAmount" value="#{disburseCash.requisition.amountGranted}">
+                    <f:convertNumber type="currency" currencySymbol="Sh." maxFractionDigits="0"/>
+                </p:outputLabel>
+                <p:outputLabel for="balanceAmount" value="Balance in BudgetLine"/>
+                <p:outputLabel id="balanceAmount" value="#{disburseCash.requisition.budgetline.balance - disburseCash.requisition.amountGranted}"
+                               styleClass="#{((disburseCash.requisition.budgetline.balance - disburseCash.requisition.amountGranted) lt 0) ? ' text-red-600 ' : ''}">
+                    <f:convertNumber type="currency" currencySymbol="Sh." maxFractionDigits="0"/>
+                </p:outputLabel>
             </p:panelGrid>
 
             <h:form id="disburse_money_form">
@@ -220,7 +230,7 @@
                     <h:panelGroup styleClass="flex column">
                         <p:outputLabel for="ac_amt_used" value="Amount Used" styleClass="mt"/>
                         <p:inputText id="ac_amt_used" placeholder="Amount Used" styleClass="mb mt" value="#{handleOneAccountability.accountability.amountSpent}" readonly="true">
-                            <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                            <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                         </p:inputText>
                     </h:panelGroup>
                     <h:panelGroup styleClass="flex column">

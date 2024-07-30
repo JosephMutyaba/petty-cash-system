@@ -33,18 +33,21 @@
             </p:column>
             <p:column headerText="Amount Granted">
                 <p:outputLabel value="#{requisition.amountGranted}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </p:outputLabel>
             </p:column>
             <p:column headerText="Amount Spent">
                 <p:outputLabel value="#{requisition.accountability.amountSpent}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </p:outputLabel>
+            </p:column>
+            <p:column headerText="Date of Expenditure">
+                <p:outputLabel value="#{con.formatDate(requisition.accountability.dateOfExpenditure)}"/>
             </p:column>
 
             <p:column headerText="Balance">
                 <p:outputLabel value="#{requisition.amountGranted-requisition.accountability.amountSpent}">
-                    <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                    <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                 </p:outputLabel>
             </p:column>
 
@@ -133,13 +136,13 @@
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel value="Amount Requested" for="requested"/>
                     <p:inputText id="requested" value="#{confirmBalanceReturn.requisition.estimatedAmount}" readonly="true">
-                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                     </p:inputText>
                 </h:panelGroup>
                 <h:panelGroup styleClass="flex column">
                     <p:outputLabel value="Amount Granted" for="granted"/>
                     <p:inputText id="granted" value="#{confirmBalanceReturn.requisition.amountGranted}" readonly="true">
-                        <f:convertNumber type="currency" currencySymbol="" integerOnly="true" maxFractionDigits="0"/>
+                        <f:convertNumber type="currency" currencySymbol="" maxFractionDigits="0"/>
                     </p:inputText>
                 </h:panelGroup>
                 <h:panelGroup styleClass="flex column">
