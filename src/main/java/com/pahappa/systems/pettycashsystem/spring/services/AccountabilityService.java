@@ -2,6 +2,7 @@ package com.pahappa.systems.pettycashsystem.spring.services;
 
 import com.pahappa.systems.pettycashsystem.exceptions.IncompatibleValueException;
 import com.pahappa.systems.pettycashsystem.exceptions.NullFieldException;
+import com.pahappa.systems.pettycashsystem.managedcontroller.timeutil.TimeUtil;
 import com.pahappa.systems.pettycashsystem.spring.dao.AccountabilityDAO;
 import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
@@ -52,7 +53,7 @@ public class AccountabilityService {
             throw new IncompatibleValueException("Date of expenditure cannot be before the date  cash was disbursed");
         }
 
-        if (accountability.getDateOfExpenditure().after(new Date())) {
+        if (accountability.getDateOfExpenditure().after(TimeUtil.getCurrentDate())) {
             throw new IncompatibleValueException("Date of expenditure cannot be in the future");
         }
 

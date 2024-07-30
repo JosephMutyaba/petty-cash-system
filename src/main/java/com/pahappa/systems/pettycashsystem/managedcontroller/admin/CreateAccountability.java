@@ -1,6 +1,7 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
 import com.pahappa.systems.pettycashsystem.managedcontroller.login.LoginBean;
+import com.pahappa.systems.pettycashsystem.managedcontroller.timeutil.TimeUtil;
 import com.pahappa.systems.pettycashsystem.spring.models.Accountability;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.services.AccountabilityService;
@@ -18,6 +19,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Named
@@ -112,7 +117,23 @@ public class CreateAccountability implements Serializable {
     }
 
     public void setDateOfExpenditure(Date dateOfExpenditure) {
-        this.dateOfExpenditure = dateOfExpenditure;
+        if (dateOfExpenditure != null) {
+            // Convert the selected date to LocalDate
+            LocalDate selectedDate = dateOfExpenditure.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            // Get the current time
+            LocalTime currentTime = LocalTime.now();
+
+            // Combine selected date and current time
+            LocalDateTime dateTimeWithCurrentTime = LocalDateTime.of(selectedDate, currentTime);
+
+            // Convert back to Date
+            this.dateOfExpenditure = Date.from(dateTimeWithCurrentTime.atZone(ZoneId.systemDefault()).toInstant());
+        } else {
+            this.dateOfExpenditure = null;
+        }
     }
 
     public Double getAmountSpent() {
@@ -222,14 +243,14 @@ public class CreateAccountability implements Serializable {
             accountability.setStatus("Submitted");
             accountability.setDescription(description);
             accountability.setExtraClaims(extraClaims);
-            accountability.setDateSubmitted(new Date());
+            accountability.setDateSubmitted(TimeUtil.getCurrentDate());
             accountability.setAmountSpent(amountSpent);
             accountability.setReceiptImage(receiptImage);
             accountability.setDateOfExpenditure(dateOfExpenditure);
 
             //setting status to completed
             requisition.setStatus("Completed");
-            requisition.setDateAccountabilityWasSubmitted(new Date());
+            requisition.setDateAccountabilityWasSubmitted(TimeUtil.getCurrentDate());
 
             accountabilityService.validateAccountability(accountability, requisition);
 

@@ -1,5 +1,6 @@
 package com.pahappa.systems.pettycashsystem.managedcontroller.admin;
 
+import com.pahappa.systems.pettycashsystem.managedcontroller.timeutil.TimeUtil;
 import com.pahappa.systems.pettycashsystem.spring.models.BudgetLine;
 import com.pahappa.systems.pettycashsystem.spring.models.Requisition;
 import com.pahappa.systems.pettycashsystem.spring.models.User;
@@ -85,7 +86,7 @@ public class DisburseCash implements Serializable {
             requisition.setStatus("Paid");
 
             // setting the dateOfDisbursement of the cash
-            requisition.setDateOfCashDisbursement(new Date());
+            requisition.setDateOfCashDisbursement(TimeUtil.getCurrentDate());
 
             //updating the db
             requisitionService.updateRequisition(requisition);
