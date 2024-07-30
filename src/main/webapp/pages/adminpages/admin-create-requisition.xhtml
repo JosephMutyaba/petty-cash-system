@@ -75,6 +75,13 @@
                                                required="true" requiredMessage="#{con.requiredMessage}"/>
                                 <h:message for="ac_amt_used" styleClass="err-msg"/>
                             </h:panelGroup>
+
+                            <h:panelGroup class="flex column">
+                                <p:outputLabel for="date_of_expenditure" value="Date of expenditure"/>
+                                <p:calendar navigator="true" styleClass="fillW" id="date_of_expenditure" mindate="t" placeholder="Date of expenditure" value="#{createAccountability.dateOfExpenditure}" required="true" requiredMessage="#{con.requiredMessage}"/>
+                                <h:message for="date_of_expenditure" styleClass="err-msg"/>
+                            </h:panelGroup>
+
                             <h:panelGroup styleClass="flex column fillW">
                                 <p:outputLabel for="ac_description" value="Description" styleClass="mt"/>
                                 <p:inputTextarea id="ac_description" placeholder="Description" styleClass="mb mt" value="#{createAccountability.description}"/>

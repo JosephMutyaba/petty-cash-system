@@ -47,6 +47,8 @@ public class CreateAccountability implements Serializable {
 
     private Long accountabilityId;
 
+    private Date dateOfExpenditure;
+
     private String description;
 
     private String accountabilityStatus;
@@ -103,6 +105,14 @@ public class CreateAccountability implements Serializable {
 
     public void setAccountabilityStatus(String accountabilityStatus) {
         this.accountabilityStatus = accountabilityStatus;
+    }
+
+    public Date getDateOfExpenditure() {
+        return dateOfExpenditure;
+    }
+
+    public void setDateOfExpenditure(Date dateOfExpenditure) {
+        this.dateOfExpenditure = dateOfExpenditure;
     }
 
     public Double getAmountSpent() {
@@ -174,6 +184,7 @@ public class CreateAccountability implements Serializable {
                 this.amountSpent=accountability.getAmountSpent();
                 this.dateSubmitted=accountability.getDateSubmitted();
                 this.receiptImage=accountability.getReceiptImage();
+                this.dateOfExpenditure=accountability.getDateOfExpenditure();
             }else {
                 System.out.println("\nAcc is null.............!!!!!\n");
                 this.accountabilityId=null;
@@ -184,6 +195,7 @@ public class CreateAccountability implements Serializable {
                 this.amountSpent=0.0;
                 this.dateSubmitted=new Date();
                 this.receiptImage=new byte[]{};
+                this.dateOfExpenditure= null;
             }
 
         }else {
@@ -196,6 +208,8 @@ public class CreateAccountability implements Serializable {
             this.amountSpent=0.0;
             this.dateSubmitted=new Date();
             this.receiptImage=null;
+            this.dateOfExpenditure= null;
+
         }
     }
 
@@ -211,6 +225,7 @@ public class CreateAccountability implements Serializable {
             accountability.setDateSubmitted(new Date());
             accountability.setAmountSpent(amountSpent);
             accountability.setReceiptImage(receiptImage);
+            accountability.setDateOfExpenditure(dateOfExpenditure);
 
             //setting status to completed
             requisition.setStatus("Completed");
@@ -256,6 +271,7 @@ public class CreateAccountability implements Serializable {
             accountability.setId(accountabilityId);
             accountability.setStatus("Draft");
             accountability.setId(accountabilityId);
+            accountability.setDateOfExpenditure(dateOfExpenditure);
 
             accountabilityService.validateAccountability(accountability, requisition);
 
